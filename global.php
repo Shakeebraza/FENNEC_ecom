@@ -5,8 +5,10 @@ require_once 'classes/Security.php';
 require_once 'classes/CsrfProtection.php';
 require_once 'classes/DatabaseFunctions.php';
 
-$db = new Database(); // This will establish the database connection
-$security = new Security('fennec'); // Initialize Security class
-$dbFunctions = new DatabaseFunctions($db, $security); // Pass the Database object and Security object
+$urlval ="http://localhost/fennec/";
+$db = new Database();
+$pdo = $db->getConnection();
+$security = new Security('fennec');
+$dbFunctions = new DatabaseFunctions($db, $security);
 
 ?>
