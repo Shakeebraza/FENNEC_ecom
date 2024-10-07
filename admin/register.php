@@ -29,7 +29,7 @@ require_once("../global.php");
     <link href="<?php echo $urlval?>admin/asset/vendor/select2/select2.min.css" rel="stylesheet" media="all">
     <link href="<?php echo $urlval?>admin/asset/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
 
-    <link href="css/theme.css" rel="stylesheet" media="all">
+    <link href="<?php echo $urlval?>admin/asset/css/theme.css" rel="stylesheet" media="all">
 
 </head>
 
@@ -41,7 +41,8 @@ require_once("../global.php");
                     <div class="login-content">
                         <div class="login-logo">
                             <a href="#">
-                                <img src="images/icon/logo.png" alt="CoolAdmin">
+                            <img src="<?php echo $urlval?>admin/asset/images/icon/logo2.png" alt="CoolAdmin">
+                            <p>Fennec</p>
                             </a>
                         </div>
                         <div class="login-form">

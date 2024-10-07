@@ -34,7 +34,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 $_SESSION['username'] = $security->decrypt($user['username']);
                 $_SESSION['user_role'] = $security->decrypt($user['role']);
 
-                echo json_encode(['status' => 'success', 'role' => $user['role']]);
+                echo json_encode(['status' => 'success', 'role' => $security->decrypt($user['role'])]);
             } else {
                 echo json_encode(['status' => 'error', 'message' => 'Invalid password.']);
             }

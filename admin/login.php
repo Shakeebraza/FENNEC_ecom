@@ -35,8 +35,9 @@ require_once("../global.php");
             <div class="login-wrap">
                 <div class="login-content">
                     <div class="login-logo">
-                        <a href="#">
-                            <img src="images/icon/logo.png" alt="CoolAdmin">
+                        <a href="<?php echo $urlval?>">
+                            <img src="<?php echo $urlval?>admin/asset/images/icon/logo2.png" alt="CoolAdmin">
+                            <p>Fennec</p>
                         </a>
                     </div>
                     <div class="login-form">
