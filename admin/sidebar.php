@@ -1,146 +1,107 @@
-<header class="header-mobile d-block d-lg-none">
-            <div class="header-mobile__bar">
-                <div class="container-fluid">
-                    <div class="header-mobile-inner">
-                        <a class="logo" href="index.html">
-                            <img src="<?php echo $urlval?>admin/asset/images/icon/logo.png" alt="CoolAdmin" />
-                        </a>
-                        <button class="hamburger hamburger--slider" type="button">
-                            <span class="hamburger-box">
-                                <span class="hamburger-inner"></span>
-                            </span>
-                        </button>
-                    </div>
-                </div>
+<nav id="coolAdminNavbar" class="navbar navbar-light bg-light d-lg-none">
+    <div class="container-fluid">
+        <a class="navbar-brand" href="#">
+            <img src="https://via.placeholder.com/40" alt="Cool Admin Logo" width="40" height="40">
+            <span>Fennec</span>
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#coolAdminOffcanvas" aria-controls="coolAdminOffcanvas" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="offcanvas offcanvas-end" tabindex="-1" id="coolAdminOffcanvas" aria-labelledby="coolAdminOffcanvasLabel">
+            <div class="offcanvas-header">
+                <h5 class="offcanvas-title" id="coolAdminOffcanvasLabel">fennec</h5>
+                <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas" aria-label="Close"></button>
             </div>
-            <nav class="navbar-mobile">
-                <div class="container-fluid">
-                    <ul class="navbar-mobile__list list-unstyled">
-                        <li class="has-sub">
-                            <a class="js-arrow" href="#">
-                                <i class="fas fa-tachometer-alt"></i>Dashboard</a>
-                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                                <li>
-                                    <a href="index.html">Dashboard 1</a>
-                                </li>
-                                <li>
-                                    <a href="index2.html">Dashboard 2</a>
-                                </li>
-                                <li>
-                                    <a href="index3.html">Dashboard 3</a>
-                                </li>
-                                <li>
-                                    <a href="index4.html">Dashboard 4</a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li class="has-sub">
-                            <a class="js-arrow" href="#">
-                                <i class="fas fa-users"></i>Users</a>
-                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                                <li>
-                                    <a href="<?php echo $urlval?>admin/user/index.php">All Users</a>
-                                </li>
-                                <li>
-                                    <a href="index2.html">Add Users</a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <li class="has-sub">
-                            <a class="js-arrow" href="#">
-                                <i class="fas fa-copy"></i>Pages</a>
-                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                                <li>
-                                    <a href="login.html">Login</a>
-                                </li>
-                                <li>
-                                    <a href="register.html">Register</a>
-                                </li>
-                                <li>
-                                    <a href="forget-pass.html">Forget Password</a>
-                                </li>
-                            </ul>
-                        </li>
-                        <li class="has-sub">
-                            <a class="js-arrow" href="#">
-                                <i class="fas fa-desktop"></i>UI Elements</a>
-                            <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
-                                <li>
-                                    <a href="button.html">Button</a>
-                                </li>
-                                <li>
-                                    <a href="badge.html">Badges</a>
-                                </li>
-                                <li>
-                                    <a href="tab.html">Tabs</a>
-                                </li>
-                                <li>
-                                    <a href="card.html">Cards</a>
-                                </li>
-                                <li>
-                                    <a href="alert.html">Alerts</a>
-                                </li>
-                                <li>
-                                    <a href="progress-bar.html">Progress Bars</a>
-                                </li>
-                                <li>
-                                    <a href="modal.html">Modals</a>
-                                </li>
-                                <li>
-                                    <a href="switch.html">Switchs</a>
-                                </li>
-                                <li>
-                                    <a href="grid.html">Grids</a>
-                                </li>
-                                <li>
-                                    <a href="fontawesome.html">Fontawesome Icon</a>
-                                </li>
-                                <li>
-                                    <a href="typo.html">Typography</a>
-                                </li>
-                            </ul>
-                        </li>
-                    </ul>
-                </div>
-            </nav>
-        </header>
-        <!-- END HEADER MOBILE-->
-
-        <!-- MENU SIDEBAR-->
-        <aside class="menu-sidebar d-none d-lg-block">
-            <div class="logo">
-                <a href="#">
-                    <img src="<?php echo $urlval?>admin/asset/images/icon/logo.png" alt="Cool Admin" />
-                </a>
+            <div class="offcanvas-body">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo $urlval?>admin/index.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    </li>
+                    <li class="nav-item has-sub">
+                        <a class="nav-link js-arrow" href="#"><i class="fas fa-users"></i> Users</a>
+                        <ul class="list-unstyled navbar__sub-list js-sub-list">
+                            <li>
+                                <a href="<?php echo $urlval?>admin/user/index.php">All Users</a>
+                            </li>
+                            <li>
+                                <a href="<?php echo $urlval?>admin/user/adduser.php">Add Users</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo $urlval?>admin/menu/index.php"><i class="fas fa-bars"></i>Menus</a>
+                    </li>
+                    <li class="nav-item has-sub">
+                        <a class="nav-link js-arrow" href="#"><i class="fas fa-copy"></i>Pages</a>
+                        <ul class="list-unstyled navbar__sub-list js-sub-list">
+                            <li>
+                                <a href="<?php echo $urlval?>admin/page/index.php">All Page</a>
+                            </li>
+                            <li>
+                                <a href="<?php echo $urlval?>admin/page/addpage.php">Add Page</a>
+                            </li>
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo $urlval?>admin/box/index.php"><i class="fas fa-desktop"></i> Box</a>
+                    </li>
+                </ul>
             </div>
-            <div class="menu-sidebar__content js-scrollbar1">
-                <nav class="navbar-sidebar">
-                    <ul class="list-unstyled navbar__list">
-                       
+        </div>
+    </div>
+</nav>
+<!-- END HEADER MOBILE-->
+
+<!-- MENU SIDEBAR-->
+<aside class="menu-sidebar d-none d-lg-block">
+    <div class="logo">
+        <a href="#">
+            <img src="<?php echo $urlval?>admin/asset/images/icon/logo.png" alt="Cool Admin" />
+        </a>
+    </div>
+    <div class="menu-sidebar__content js-scrollbar1">
+        <nav class="navbar-sidebar">
+            <ul class="list-unstyled navbar__list">
+                <li>
+                    <a href="<?php echo $urlval?>admin/index.php">
+                        <i class="fas fa-tachometer-alt"></i>Dashboard</a>
+                </li>
+                <li class="has-sub">
+                    <a class="js-arrow" href="#">
+                        <i class="fas fa-users"></i>Users</a>
+                    <ul class="list-unstyled navbar__sub-list js-sub-list">
                         <li>
-                            <a href="<?php echo $urlval?>admin/index.php">
-                                <i class="fas fa-tachometer-alt"></i>Dashboard</a>
-                        </li>
-                        <li class="has-sub">
-                            <a class="js-arrow" href="#">
-                                <i class="fas fa-users"></i>Users</a>
-                            <ul class="list-unstyled navbar__sub-list js-sub-list">
-                                <li>
-                                    <a href="<?php echo $urlval?>admin/user/index.php">All Users</a>
-                                </li>
-                                <li>
-                                    <a href="<?php echo $urlval?>admin/user/adduser.php">Add users</a>
-                                </li>
-                            </ul>
+                            <a href="<?php echo $urlval?>admin/user/index.php">All Users</a>
                         </li>
                         <li>
-                            <a href="<?php echo $urlval?>admin/box/index.php">
-                                <i class="fas fa-desktop"></i>Box</a>
+                            <a href="<?php echo $urlval?>admin/user/adduser.php">Add users</a>
                         </li>
                     </ul>
-                </nav>
-            </div>
-        </aside>
-        <!-- END MENU SIDEBAR-->
+                </li>
+
+                <li>
+                    <a href="<?php echo $urlval?>admin/menu/index.php">
+                        <i class="fas fa-bars"></i>Menus</a>
+                </li>
+                <li class="has-sub">
+                    <a class="js-arrow" href="#">
+                        <i class="fas fa-copy"></i>Pages</a>
+                    <ul class="list-unstyled navbar__sub-list js-sub-list">
+                        <li>
+                            <a href="<?php echo $urlval?>admin/page/index.php">All Page</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo $urlval?>admin/page/addpage.php">Add Pages</a>
+                        </li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="<?php echo $urlval?>admin/box/index.php">
+                        <i class="fas fa-desktop"></i>Box</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</aside>
+<!-- END MENU SIDEBAR-->

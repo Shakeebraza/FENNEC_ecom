@@ -11,7 +11,7 @@ include_once('../header.php');
             <div class="row">
                             <div class="col-md-12">
  
-                                <h3 class="title-5 m-b-35">Box Table</h3>
+                                <h3 class="title-5 m-b-35">Menus Table</h3>
                                 <div class="table-data__tool">
                                     <div class="table-data__tool-left">
                                         <div class="rs-select2--light rs-select2--md">
@@ -43,8 +43,7 @@ include_once('../header.php');
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Name</th>
-                                                <th>Heading</th>
+                                                <th>Menu name</th>
                                                 <th>date</th>
                                                 <th>status</th>
                                                 <th>Action</th>
@@ -58,7 +57,6 @@ include_once('../header.php');
                        
                             </div>
                         </div>
-
             </div>
         </div>
     </div>
@@ -75,43 +73,19 @@ include_once('../footer.php');
             "processing": true,
             "serverSide": true,
             "ajax": {
-                "url": "<?php echo $urlval; ?>admin/ajax/box/fetchbox.php", // Make sure $urlval is correctly set
+                "url": "<?php echo $urlval; ?>admin/ajax/page/fetchpahes.php",
                 "type": "POST"
             },
             "columns": [
                 {"data": "checkbox"},
                 {"data": "name"},
-                {"data": "heading"},
                 {"data": "date"},
                 {"data": "status"},
                 {"data": "actions"}
             ],
         });
 
-        // Handle delete button click
-        $('#userTable').on('click', '.btn-danger', function() {
-            var userId = $(this).data('id');
 
-            if (confirm('Are you sure you want to delete this user?')) {
-                $.ajax({
-                    url: '<?php echo $urlval; ?>admin/ajax/box/deletebox.php',
-                    type: 'POST',
-                    data: { id: userId },
-                    dataType: 'json',
-                    success: function(response) {
-                        if (response.success) {
-                            alert('User deleted successfully!');
-                            table.ajax.reload();
-                        } else {
-                            alert('Error deleting user: ' + response.message);
-                        }
-                    },
-                    error: function() {
-                        alert('An error occurred while deleting the user.');
-                    }
-                });
-            }
-        });
     });
 
 

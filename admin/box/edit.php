@@ -24,6 +24,51 @@ if (!$box) {
     $permission=$fun->getBoxPermission($boxId);
    
 }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Retrieve form data
+    $heading = $_POST['heading'] ?? '';
+    $description = $_POST['description'] ?? '';
+    $text_field = $_POST['text_field'] ?? '';
+    $text_area = $_POST['text_area'] ?? '';
+    $status = $_POST['status'] ?? '';
+
+    // Initialize image variables
+    $image1 = null;
+    $image2 = null;
+
+    if (isset($_FILES['image1']) && $_FILES['image1']['error'] === UPLOAD_ERR_OK) {
+        $image1 = $fun->uploadImage($_FILES['image1']);
+    }
+
+    if (isset($_FILES['image2']) && $_FILES['image2']['error'] === UPLOAD_ERR_OK) {
+        $image2 = $fun->uploadImage($_FILES['image2']);
+    }
+
+    $updateData = [
+        'heading' => $heading,
+        'phara' => $description,
+        'text' => $text_field,
+        'longtext' => $text_area,
+        'is_enable' => $status,
+    ];
+
+    if ($image1) {
+        $updateData['image'] = $image1;
+    }
+
+    if ($image2) {
+        $updateData['image2'] = $image2;
+    }
+
+    $updateResult = $dbFunctions->setData('box', $updateData, ['id' => $boxId]);
+    if ($updateResult['success']) {
+        echo "<script>alert('Box updated successfully.');</script>";
+    } else {
+        echo "<script>alert('Error updating box: {$updateResult['message']}');</script>";
+    }
+}
+
+
 
 
 ?>
@@ -53,7 +98,7 @@ if (!$box) {
                                 <div class="form-group">
                                     <label for="title">Title</label>
                                     <input type="text" id="title" name="title" class="form-control"
-                                        value="<?= htmlspecialchars($security->decrypt($box['title'])) ?>" required>
+                                        value="<?= htmlspecialchars($security->decrypt($box['title'])) ?>" required readonly>
                                 </div>
                                 
                                 <div class="form-group">

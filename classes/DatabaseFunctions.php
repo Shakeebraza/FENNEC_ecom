@@ -154,5 +154,52 @@ class DatabaseFunctions {
             return ['success' => false, 'message' => 'Database error: ' . $e->getMessage()];
         }
     }
+
+    public function updateData($tableName, $data, $id) {
+        // Sanitize the table name to prevent SQL injection
+        $tableName = preg_replace('/[^a-zA-Z0-9_]/', '', $tableName);
+    
+        // Sanitize data values
+        $sanitizedData = [];
+        foreach ($data as $key => $value) {
+            $value = strip_tags($value);
+            $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+            $sanitizedData[$key] = $value;
+        }
+    
+        // Create the SET clause for the SQL statement
+        $setClause = [];
+        foreach ($sanitizedData as $key => $value) {
+            $setClause[] = "`$key` = :$key";
+        }
+        $setClause = implode(', ', $setClause);
+    
+        try {
+            // Prepare the SQL statement
+            $stmt = $this->pdo->prepare("UPDATE `$tableName` SET $setClause WHERE id = :id");
+            
+            // Add the ID to the sanitized data for binding
+            $sanitizedData['id'] = $id; 
+    
+            // Bind the values to the prepared statement
+            foreach ($sanitizedData as $key => $value) {
+                $stmt->bindValue(":$key", $value);
+            }
+    
+            // Execute the statement
+            $stmt->execute();
+    
+            // Check if any row was affected
+            if ($stmt->rowCount() > 0) {
+                return ['success' => true, 'message' => 'Data updated successfully.'];
+            } else {
+                return ['success' => false, 'message' => 'No changes made; the data was the same.'];
+            }
+        } catch (PDOException $e) {
+            // Handle any database errors
+            return ['success' => false, 'message' => 'Database error: ' . $e->getMessage()];
+        }
+    }
+    
 }
 ?>

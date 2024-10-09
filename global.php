@@ -12,6 +12,6 @@ $db = new Database();
 $pdo = $db->getConnection();
 $security = new Security('fennec');
 $dbFunctions = new DatabaseFunctions($db, $security);
-$fun = new Fun($db, $security, $dbFunctions);
+$fun = new Fun($db, $security, $dbFunctions,$urlval);
 
 ?>

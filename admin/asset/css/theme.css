@@ -14774,3 +14774,6 @@ a.cancel-btn {
     color: #6c757d;
     text-decoration: none;
 }
+a{
+    text-decoration: none !important;
+}

@@ -4,10 +4,13 @@ class Fun {
     private $security;
     private $dbfun;
 
-    public function __construct($database, $security, $dbfun) {
+    private $urlval;
+
+    public function __construct($database, $security, $dbfun,$urlval) {
         $this->pdo = $database->getConnection();
         $this->security = $security;
         $this->dbfun = $dbfun;
+        $this->urlval = $urlval;
     }
 
 
@@ -82,6 +85,113 @@ class Fun {
         } else {
 
             return [];
+        }
+    }
+    public function uploadImage($file) {
+        $uploadDir = __DIR__ . '/../upload/';
+        $fileName = basename($file['name']);
+        $uniqueFileName = uniqid() . '_' . $fileName;
+        $targetFilePath = $uploadDir . $uniqueFileName;
+
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+
+        $check = getimagesize($file['tmp_name']);
+        if ($check === false) {
+            return null;
+        }
+
+        if (move_uploaded_file($file['tmp_name'], $targetFilePath)) {
+            return $this->urlval . $targetFilePath;
+        } else {
+            return null;
+        }
+    }
+    public function deleteData($id) {
+        if (isset($id)) {
+
+            $checkBoxSetting = $this->dbfun->getData('boxsetting', "boxid = '$id'");
+
+            if ($checkBoxSetting) {
+
+                $result = $this->dbfun->delData('boxsetting', "boxid = '$id'");
+
+                if ($result['success'] == true) {
+                    echo "Attempting to delete from box with id = $id";
+
+                    $result = $this->dbfun->delData('box', "id = '$id'");
+
+                    if ($result['success'] == true) {
+                        return ['success' => true, 'message' => 'Record deleted successfully from both tables.'];
+                    } else {
+
+                        return ['success' => false, 'message' => 'Failed to delete record from box table. Error: ' . $result['message']];
+                    }
+                } else {
+                    return ['success' => false, 'message' => 'Failed to delete record from boxsetting table.'];
+                }
+            } else {
+                return ['success' => false, 'message' => 'Record not found in boxsetting.'];
+            }
+        }
+    }
+
+
+    public function getTotalMenuCount() {
+        $query = "SELECT COUNT(*) AS total FROM menus";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total'];
+    }
+    public function getAllMenu($start,$length) {
+        try {
+            $tabledata = $this->dbfun->getData('menus','', '', 'updated_at', 'DESC', $start, $length);
+            if (empty($tabledata)) {
+
+                return [];
+            } else {
+
+            }
+            foreach ($tabledata as &$row) {
+                foreach ($row as $key => $value) {
+                    $row[$key] = $this->security->decrypt($value);
+                }
+            }
+
+            return $tabledata;
+        } catch (PDOException $e) {
+            return 'Error: ' . $e->getMessage();
+        }
+    }
+
+    public function getTotalPageCount() {
+        $query = "SELECT COUNT(*) AS total FROM pages";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total'];
+    }
+
+    public function getAllPages($start,$length) {
+        try {
+            $tabledata = $this->dbfun->getData('pages','', '', 'created_at', 'DESC', $start, $length);
+            if (empty($tabledata)) {
+
+                return [];
+            } else {
+
+            }
+            foreach ($tabledata as &$row) {
+                foreach ($row as $key => $value) {
+                    $row[$key] = $this->security->decrypt($value);
+                }
+            }
+
+            return $tabledata;
+        } catch (PDOException $e) {
+            return 'Error: ' . $e->getMessage();
         }
     }
     

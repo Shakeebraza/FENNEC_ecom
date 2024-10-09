@@ -6,21 +6,21 @@ $start = intval($_POST['start']);
 $length = intval($_POST['length']);
 
 
-$totalRecords = $fun->getTotalBoxCount(); 
+$totalRecords = $fun->getTotalPageCount();
 
 
-$boxData = $fun->getAllBox($start, $length);
+$pagesData = $fun->getAllPages($start, $length);
 
 
-if (empty($boxData)) {
+if (empty($pagesData)) {
     echo json_encode(['draw' => $draw, 'recordsTotal' => $totalRecords, 'recordsFiltered' => 0, 'data' => []]);
     exit;
 }
 
 
 $data = [];
-foreach ($boxData as $index => $box) {
-    if($box['is_enable'] == 1){
+foreach ($pagesData as $index => $page) {
+    if($page['is_enable'] == 1){
         $stats='process';
         $statsTest='Active';
     }else{
@@ -30,16 +30,15 @@ foreach ($boxData as $index => $box) {
     }
     $data[] = [
         'checkbox' => '<label class="au-checkbox"><input type="checkbox"><span class="au-checkmark"></span></label>',
-        'name' => htmlspecialchars($box['title']),
-        'heading' => '<span class="block-email">' . htmlspecialchars($box['heading']) . '</span>',
-        'date' => htmlspecialchars($box['created_at']),
+        'name' => htmlspecialchars($page['name']),
+        'date' => htmlspecialchars($page['created_at']),
         'status' => '<span class="status--'.$stats.'">'.$statsTest.'</span>',
         'actions' => '
-    <div class="table-data-feature">
-        <a href="'.$urlval.'admin/box/edit.php?boxid='.$security->encrypt($box['id']).'" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+ <div class="table-data-feature">
+        <a href="'.$urlval.'admin/box/edit.php?boxid='.$security->encrypt($page['id']).'" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
             <i class="zmdi zmdi-edit"></i>
         </a>
-        <button class="item btn-danger" data-id="' . $security->encrypt($box['id']) . '" data-toggle="tooltip" data-placement="top" title="Delete">
+        <button class="item btn-danger" data-id="' . $security->encrypt($page['id']) . '" data-toggle="tooltip" data-placement="top" title="Delete">
             <i class="zmdi zmdi-delete"></i>
         </button>
     </div>'
@@ -50,8 +49,8 @@ foreach ($boxData as $index => $box) {
 
 $response = [
     'draw' => $draw,
-    'recordsTotal' => $totalRecords, 
-    'recordsFiltered' => $totalRecords, 
+    'recordsTotal' => $totalRecords,
+    'recordsFiltered' => $totalRecords,
     'data' => $data
 ];
 
