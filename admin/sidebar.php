@@ -1,3 +1,15 @@
+<?php
+// Get the current URL
+// $current_url = $_SERVER['REQUEST_URI'];
+
+// // Function to check if the current URL matches the link
+// function isActive($link) {
+//     global $current_url;
+//     return strpos($current_url, $link) !== false ? 'active' : '';
+// }
+// $test= isActive('/fennec/admin/page/index.php'); 
+// var_dump($current_url,$test);
+?>
 <nav id="coolAdminNavbar" class="navbar navbar-light bg-light d-lg-none">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
@@ -43,6 +55,17 @@
                             </li>
                         </ul>
                     </li>
+                    <li class="nav-item has-sub">
+                        <a class="nav-link js-arrow" href="#"><i class="fa fa-folder"></i>Product</a>
+                        <ul class="list-unstyled navbar__sub-list js-sub-list">
+                            <li>
+                                <a href="<?php echo $urlval?>admin/categories/index.php">All Categories</a>
+                            </li>
+                            <li>
+                                <a href="<?php echo $urlval?>admin/subcategories/index.php">Add sub-Categories</a>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="nav-item">
                         <a class="nav-link" href="<?php echo $urlval?>admin/box/index.php"><i class="fas fa-desktop"></i> Box</a>
                     </li>
@@ -84,6 +107,7 @@
                     <a href="<?php echo $urlval?>admin/menu/index.php">
                         <i class="fas fa-bars"></i>Menus</a>
                 </li>
+
                 <li class="has-sub">
                     <a class="js-arrow" href="#">
                         <i class="fas fa-copy"></i>Pages</a>
@@ -93,6 +117,18 @@
                         </li>
                         <li>
                             <a href="<?php echo $urlval?>admin/page/addpage.php">Add Pages</a>
+                        </li>
+                    </ul>
+                </li>
+                <li class="has-sub">
+                    <a class="js-arrow" href="#">
+                        <i class="fa fa-folder"></i>Product</a>
+                    <ul class="list-unstyled navbar__sub-list js-sub-list">
+                        <li>
+                            <a href="<?php echo $urlval?>admin/categories/index.php">All Categories</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo $urlval?>admin/subcategories/addpage.php">All Sub-Categories</a>
                         </li>
                     </ul>
                 </li>

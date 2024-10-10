@@ -11,7 +11,7 @@ include_once('../header.php');
             <div class="row">
                             <div class="col-md-12">
  
-                                <h3 class="title-5 m-b-35">Menus Table</h3>
+                                <h3 class="title-5 m-b-35">Categories Table</h3>
                                 <div class="table-data__tool">
                                     <div class="table-data__tool-left">
                                         <div class="rs-select2--light rs-select2--md">
@@ -32,10 +32,14 @@ include_once('../header.php');
                                         </div>
                                         
                                     </div>
+                                    
                                     <div class="table-data__tool-right">
-                                        
-                                            <div class="dropDownSelect2"></div>
-                                        </div>
+                                        <a href="<?= $urlval?>admin/categories/addcat.php" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                            <i class="zmdi zmdi-plus"></i>add Categories</a>
+                                        <a href="<?= $urlval?>admin/categories/sortcat.php" class="au-btn au-btn-icon btn-dark au-btn--small" style="color:white;">
+                                            <i class="zmdi zmdi-sort"></i>Sort</a>
+                                    
+                                    </div>
                                     </div>
                                 </div>
                                 <div  class="table-responsive table-responsive-data2">
@@ -43,7 +47,7 @@ include_once('../header.php');
                                         <thead>
                                             <tr>
                                                 <th>#</th>
-                                                <th>Menu name</th>
+                                                <th>Category name</th>
                                                 <th>date</th>
                                                 <th>status</th>
                                                 <th>Action</th>
@@ -73,7 +77,7 @@ include_once('../footer.php');
             "processing": true,
             "serverSide": true,
             "ajax": {
-                "url": "<?php echo $urlval; ?>admin/ajax/page/fetchpages.php",
+                "url": "<?php echo $urlval; ?>admin/ajax/categories/fetchcat.php",
                 "type": "POST"
             },
             "columns": [

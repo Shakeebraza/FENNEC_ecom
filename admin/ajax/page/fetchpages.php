@@ -35,7 +35,7 @@ foreach ($pagesData as $index => $page) {
         'status' => '<span class="status--'.$stats.'">'.$statsTest.'</span>',
         'actions' => '
  <div class="table-data-feature">
-        <a href="'.$urlval.'admin/box/edit.php?boxid='.$security->encrypt($page['id']).'" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+        <a href="'.$urlval.'admin/page/edit.php?pageid='.$security->encrypt($page['id']).'" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
             <i class="zmdi zmdi-edit"></i>
         </a>
         <button class="item btn-danger" data-id="' . $security->encrypt($page['id']) . '" data-toggle="tooltip" data-placement="top" title="Delete">

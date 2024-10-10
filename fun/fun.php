@@ -89,6 +89,7 @@ class Fun {
     }
     public function uploadImage($file) {
         $uploadDir = __DIR__ . '/../upload/';
+        $uploadnewDir = 'upload/';
         $fileName = basename($file['name']);
         $uniqueFileName = uniqid() . '_' . $fileName;
         $targetFilePath = $uploadDir . $uniqueFileName;
@@ -103,7 +104,7 @@ class Fun {
         }
 
         if (move_uploaded_file($file['tmp_name'], $targetFilePath)) {
-            return $this->urlval . $targetFilePath;
+            return $uploadnewDir . $uniqueFileName;
         } else {
             return null;
         }
@@ -195,4 +196,54 @@ class Fun {
         }
     }
     
+
+    public function getTotalCatCount() {
+        $query = "SELECT COUNT(*) AS total FROM categories";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total'];
+    }
+
+    public function getAllcat($start,$length) {
+        try {
+            $tabledata = $this->dbfun->getData('categories','', '', 'created_at', 'DESC', $start, $length);
+            if (empty($tabledata)) {
+
+                return [];
+            } else {
+
+            }
+            foreach ($tabledata as &$row) {
+                foreach ($row as $key => $value) {
+                    $row[$key] = $this->security->decrypt($value);
+                }
+            }
+
+            return $tabledata;
+        } catch (PDOException $e) {
+            return 'Error: ' . $e->getMessage();
+        }
+    }
+
+    public function findAllsubcat($categoryId) {
+        try {
+            $subcatData = $this->dbfun->getData('subcategories',"category_id='$categoryId' ", '', 'created_at', 'DESC');
+    
+            if (empty($subcatData)) {
+                return [];
+            }
+    
+           
+            foreach ($subcatData as &$row) {
+                foreach ($row as $key => $value) {
+                    $row[$key] = $this->security->decrypt($value);
+                }
+            }
+    
+            return $subcatData; 
+        } catch (PDOException $e) {
+            return 'Error: ' . $e->getMessage();
+        }
+    }
 }
