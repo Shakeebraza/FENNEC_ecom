@@ -8,62 +8,62 @@ include_once('../header.php');
     <div class="main-content">
         <div class="section__content section__content--p30">
             <div class="container-fluid">
-            <div class="row">
-                            <div class="col-md-12">
- 
-                                <h3 class="title-5 m-b-35">Categories Table</h3>
-                                <div class="table-data__tool">
-                                    <div class="table-data__tool-left">
-                                        <div class="rs-select2--light rs-select2--md">
-                                            <select class="js-select2" name="property">
-                                                <option selected="selected">All Properties</option>
-                                                <option value="">Option 1</option>
-                                                <option value="">Option 2</option>
-                                            </select>
-                                            <div class="dropDownSelect2"></div>
-                                        </div>
-                                        <div class="rs-select2--light rs-select2--sm">
-                                            <select class="js-select2" name="time">
-                                                <option selected="selected">Today</option>
-                                                <option value="">3 Days</option>
-                                                <option value="">1 Week</option>
-                                            </select>
-                                            <div class="dropDownSelect2"></div>
-                                        </div>
-                                        
-                                    </div>
-                                    
-                                    <div class="table-data__tool-right">
-                                        <a href="<?= $urlval?>admin/categories/addcat.php" class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                            <i class="zmdi zmdi-plus"></i>add Categories</a>
-                                        <a href="<?= $urlval?>admin/categories/sortcat.php" class="au-btn au-btn-icon btn-dark au-btn--small" style="color:white;">
-                                            <i class="zmdi zmdi-sort"></i>Sort</a>
-                                    
-                                    </div>
-                                    </div>
+                <div class="row">
+                    <div class="col-md-12">
+
+                        <h3 class="title-5 m-b-35">Categories Table</h3>
+                        <div class="table-data__tool">
+                            <div class="table-data__tool-left">
+                                <div class="rs-select2--light rs-select2--md">
+                                    <select class="js-select2" name="property">
+                                        <option selected="selected">All Properties</option>
+                                        <option value="">Option 1</option>
+                                        <option value="">Option 2</option>
+                                    </select>
+                                    <div class="dropDownSelect2"></div>
                                 </div>
-                                <div  class="table-responsive table-responsive-data2">
-                                    <table id="userTable" class="table table-data2">
-                                        <thead>
-                                            <tr>
-                                                <th>#</th>
-                                                <th>Category name</th>
-                                                <th>date</th>
-                                                <th>status</th>
-                                                <th>Action</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                       
-                                        </tbody>
-                                    </table>
+                                <div class="rs-select2--light rs-select2--sm">
+                                    <select class="js-select2" name="time">
+                                        <option selected="selected">Today</option>
+                                        <option value="">3 Days</option>
+                                        <option value="">1 Week</option>
+                                    </select>
+                                    <div class="dropDownSelect2"></div>
                                 </div>
-                       
+
+                            </div>
+
+                            <div class="table-data__tool-right">
+                                <a href="<?= $urlval ?>admin/categories/addcat.php" class="au-btn au-btn-icon au-btn--green au-btn--small">
+                                    <i class="zmdi zmdi-plus"></i>add Categories</a>
+                                <a href="<?= $urlval ?>admin/categories/sort.php" class="au-btn au-btn-icon btn-dark au-btn--small" style="color:white;">
+                                    <i class="zmdi zmdi-sort"></i>Sort</a>
+
                             </div>
                         </div>
+                    </div>
+                    <div class="table-responsive table-responsive-data2">
+                        <table id="userTable" class="table table-data2">
+                            <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Category name</th>
+                                    <th>date</th>
+                                    <th>status</th>
+                                    <th>Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+
+                            </tbody>
+                        </table>
+                    </div>
+
+                </div>
             </div>
         </div>
     </div>
+</div>
 </div>
 
 
@@ -80,12 +80,21 @@ include_once('../footer.php');
                 "url": "<?php echo $urlval; ?>admin/ajax/categories/fetchcat.php",
                 "type": "POST"
             },
-            "columns": [
-                {"data": "checkbox"},
-                {"data": "name"},
-                {"data": "date"},
-                {"data": "status"},
-                {"data": "actions"}
+            "columns": [{
+                    "data": "checkbox"
+                },
+                {
+                    "data": "name"
+                },
+                {
+                    "data": "date"
+                },
+                {
+                    "data": "status"
+                },
+                {
+                    "data": "actions"
+                }
             ],
         });
 
@@ -94,9 +103,11 @@ include_once('../footer.php');
 
             if (confirm('Are you sure you want to delete this user?')) {
                 $.ajax({
-                    url: '<?php echo $urlval; ?>admin/ajax/page/deletepage.php',
+                    url: '<?php echo $urlval; ?>admin/ajax/categories/deletecat.php',
                     type: 'POST',
-                    data: { id: userId },
+                    data: {
+                        id: userId
+                    },
                     dataType: 'json',
                     success: function(response) {
                         if (response.success) {
@@ -113,8 +124,6 @@ include_once('../footer.php');
             }
         });
     });
-
-
 </script>
 
 </body>

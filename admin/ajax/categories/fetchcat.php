@@ -9,20 +9,20 @@ $length = intval($_POST['length']);
 $totalRecords = $fun->getTotalCatCount();
 
 
-$pagesData = $fun->getAllcat($start, $length);
+$catsData = $fun->getAllcat($start, $length);
 
 
 
-if (empty($pagesData)) {
+if (empty($catsData)) {
     echo json_encode(['draw' => $draw, 'recordsTotal' => $totalRecords, 'recordsFiltered' => 0, 'data' => []]);
     exit;
 }
 
 
 $data = [];
-foreach ($pagesData as $index => $page) {
-    $finddata = $fun->findAllsubcat($page['id']);
-    if ($page['is_enable'] == 1) {
+foreach ($catsData as $index => $cat) {
+    $finddata = $fun->findAllsubcat($cat['id']);
+    if ($cat['is_enable'] == 1) {
         $stats = 'process';
         $statsTest = 'Active';
     } else {
@@ -34,20 +34,24 @@ foreach ($pagesData as $index => $page) {
     $deleteButton = '';
     if (empty($finddata)) {
 
-        $deleteButton = '<button class="item btn-danger" data-id="' . $security->encrypt($page['id']) . '" data-toggle="tooltip" data-placement="top" title="Delete">
+        $deleteButton = '<button class="item btn-danger" data-id="' . $security->encrypt($cat['id']) . '" data-toggle="tooltip" data-placement="top" title="Delete">
             <i class="zmdi zmdi-delete"></i>
         </button>';
     }
 
     $data[] = [
         'checkbox' => '<label class="au-checkbox"><input type="checkbox"><span class="au-checkmark"></span></label>',
-        'name' => htmlspecialchars($page['category_name']),
-        'date' => htmlspecialchars($page['created_at']),
+        'name' => htmlspecialchars($cat['category_name']),
+        'date' => htmlspecialchars($cat['created_at']),
         'status' => '<span class="status--' . $stats . '">' . $statsTest . '</span>',
         'actions' => '
             <div class="table-data-feature">
-                <a href="' . $urlval . 'admin/page/edit.php?pageid=' . $security->encrypt($page['id']) . '" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+                <a href="' . $urlval . 'admin/categories/edit.php?catid=' . $security->encrypt($cat['id']) . '" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
                     <i class="zmdi zmdi-edit"></i>
+                </a>
+
+                <a href="' . $urlval . 'admin/categories/addsubcat.php?catid=' . $security->encrypt($cat['id']) . '" class="item" data-toggle="tooltip" data-placement="top" title="Add Sub Categories">
+                    <i class="zmdi zmdi-layers"></i>
                 </a>
                 ' . $deleteButton . '
             </div>'

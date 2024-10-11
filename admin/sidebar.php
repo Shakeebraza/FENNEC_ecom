@@ -1,14 +1,11 @@
 <?php
-// Get the current URL
-// $current_url = $_SERVER['REQUEST_URI'];
+$current_url = $_SERVER['REQUEST_URI'];
 
-// // Function to check if the current URL matches the link
-// function isActive($link) {
-//     global $current_url;
-//     return strpos($current_url, $link) !== false ? 'active' : '';
-// }
-// $test= isActive('/fennec/admin/page/index.php'); 
-// var_dump($current_url,$test);
+function isActive($link) {
+    global $current_url;
+    return strpos($current_url, $link) !== false ? 'active' : '';
+}
+
 ?>
 <nav id="coolAdminNavbar" class="navbar navbar-light bg-light d-lg-none">
     <div class="container-fluid">
@@ -27,24 +24,24 @@
             </div>
             <div class="offcanvas-body">
                 <ul class="navbar-nav">
-                    <li class="nav-item">
-                        <a class="nav-link" href="<?php echo $urlval?>admin/index.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
+                    <li class="nav-item <?=isActive('/fennec/admin/index.php');  ?>">
+                        <a class="nav-link" <?=isActive('/fennec/admin/index.php');  ?>href="<?php echo $urlval?>admin/index.php"><i class="fas fa-tachometer-alt"></i> Dashboard</a>
                     </li>
-                    <li class="nav-item has-sub">
-                        <a class="nav-link js-arrow" href="#"><i class="fas fa-users"></i> Users</a>
+                    <li class="nav-item has-sub <?=isActive('/fennec/admin/user/index.php');  ?> <?=isActive('/fennec/admin/user/adduser.php');  ?>">
+                        <a class="nav-link js-arrow" <?=isActive('/fennec/admin/user/index.php');  ?> href="#"><i class="fas fa-users"></i> Users</a>
                         <ul class="list-unstyled navbar__sub-list js-sub-list">
                             <li>
-                                <a href="<?php echo $urlval?>admin/user/index.php">All Users</a>
+                                <a <?=isActive('/fennec/admin/user/index.php');  ?> href="<?php echo $urlval?>admin/user/index.php">All Users</a>
                             </li>
                             <li>
-                                <a href="<?php echo $urlval?>admin/user/adduser.php">Add Users</a>
+                                <a <?=isActive('/fennec/admin/user/index.php');  ?> href="<?php echo $urlval?>admin/user/adduser.php">Add Users</a>
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item <?=isActive('/fennec/admin/menu/index.php');  ?>">
                         <a class="nav-link" href="<?php echo $urlval?>admin/menu/index.php"><i class="fas fa-bars"></i>Menus</a>
                     </li>
-                    <li class="nav-item has-sub">
+                    <li class="nav-item has-sub <?=isActive('/fennec/admin/page/index.php');  ?> <?=isActive('/fennec/admin/page/addpage.php');  ?>">
                         <a class="nav-link js-arrow" href="#"><i class="fas fa-copy"></i>Pages</a>
                         <ul class="list-unstyled navbar__sub-list js-sub-list">
                             <li>
@@ -55,7 +52,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item has-sub">
+                    <li class="nav-item has-sub <?=isActive('/fennec/admin/subcategories/index.php');  ?> <?=isActive('/fennec/admin/categories/index.php');  ?>">
                         <a class="nav-link js-arrow" href="#"><i class="fa fa-folder"></i>Product</a>
                         <ul class="list-unstyled navbar__sub-list js-sub-list">
                             <li>
@@ -66,7 +63,7 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item <?=isActive('/fennec/admin/box/index.php');  ?>">
                         <a class="nav-link" href="<?php echo $urlval?>admin/box/index.php"><i class="fas fa-desktop"></i> Box</a>
                     </li>
                 </ul>
@@ -86,11 +83,11 @@
     <div class="menu-sidebar__content js-scrollbar1">
         <nav class="navbar-sidebar">
             <ul class="list-unstyled navbar__list">
-                <li>
+                <li class="<?=isActive('/fennec/admin/index.php');  ?>">
                     <a href="<?php echo $urlval?>admin/index.php">
                         <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                 </li>
-                <li class="has-sub">
+                <li class="has-sub <?=isActive('/fennec/admin/user/index.php');  ?> <?=isActive('/fennec/admin/user/adduser.php');  ?>">
                     <a class="js-arrow" href="#">
                         <i class="fas fa-users"></i>Users</a>
                     <ul class="list-unstyled navbar__sub-list js-sub-list">
@@ -103,12 +100,12 @@
                     </ul>
                 </li>
 
-                <li>
+                <li class="<?=isActive('/fennec/admin/menu/index.php');  ?> ">
                     <a href="<?php echo $urlval?>admin/menu/index.php">
                         <i class="fas fa-bars"></i>Menus</a>
                 </li>
 
-                <li class="has-sub">
+                <li class="has-sub <?=isActive('/fennec/admin/page/index.php');  ?> <?=isActive('/fennec/admin/page/addpage.php');  ?>">
                     <a class="js-arrow" href="#">
                         <i class="fas fa-copy"></i>Pages</a>
                     <ul class="list-unstyled navbar__sub-list js-sub-list">
@@ -120,19 +117,19 @@
                         </li>
                     </ul>
                 </li>
-                <li class="has-sub">
-                    <a class="js-arrow" href="#">
+                <li class="has-sub <?=isActive('/fennec/admin/categories/index.php');  ?> <?=isActive('/fennec/admin/subcategories/index.php');  ?>">
+                    <a  class="js-arrow " href="#">
                         <i class="fa fa-folder"></i>Product</a>
                     <ul class="list-unstyled navbar__sub-list js-sub-list">
                         <li>
                             <a href="<?php echo $urlval?>admin/categories/index.php">All Categories</a>
                         </li>
                         <li>
-                            <a href="<?php echo $urlval?>admin/subcategories/addpage.php">All Sub-Categories</a>
+                            <a  href="<?php echo $urlval?>admin/subcategories/index.php">All Sub-Categories</a>
                         </li>
                     </ul>
                 </li>
-                <li>
+                <li class="<?=isActive('/fennec/admin/box/index.php');  ?>">
                     <a href="<?php echo $urlval?>admin/box/index.php">
                         <i class="fas fa-desktop"></i>Box</a>
                 </li>
@@ -140,4 +137,3 @@
         </nav>
     </div>
 </aside>
-<!-- END MENU SIDEBAR-->

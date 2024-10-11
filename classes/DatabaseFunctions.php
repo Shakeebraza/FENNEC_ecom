@@ -156,10 +156,10 @@ class DatabaseFunctions {
     }
 
     public function updateData($tableName, $data, $id) {
-        // Sanitize the table name to prevent SQL injection
+
         $tableName = preg_replace('/[^a-zA-Z0-9_]/', '', $tableName);
     
-        // Sanitize data values
+
         $sanitizedData = [];
         foreach ($data as $key => $value) {
             $value = strip_tags($value);
@@ -167,7 +167,7 @@ class DatabaseFunctions {
             $sanitizedData[$key] = $value;
         }
     
-        // Create the SET clause for the SQL statement
+
         $setClause = [];
         foreach ($sanitizedData as $key => $value) {
             $setClause[] = "`$key` = :$key";
@@ -175,30 +175,90 @@ class DatabaseFunctions {
         $setClause = implode(', ', $setClause);
     
         try {
-            // Prepare the SQL statement
+
             $stmt = $this->pdo->prepare("UPDATE `$tableName` SET $setClause WHERE id = :id");
             
-            // Add the ID to the sanitized data for binding
+
             $sanitizedData['id'] = $id; 
     
-            // Bind the values to the prepared statement
+
             foreach ($sanitizedData as $key => $value) {
                 $stmt->bindValue(":$key", $value);
             }
     
-            // Execute the statement
+     
             $stmt->execute();
     
-            // Check if any row was affected
+     
             if ($stmt->rowCount() > 0) {
                 return ['success' => true, 'message' => 'Data updated successfully.'];
             } else {
                 return ['success' => false, 'message' => 'No changes made; the data was the same.'];
             }
         } catch (PDOException $e) {
-            // Handle any database errors
+ 
             return ['success' => false, 'message' => 'Database error: ' . $e->getMessage()];
         }
+    }
+
+    function getLastIdshort($tableName) {
+        try {
+            $query = $this->pdo->prepare("SELECT MAX(sort_order) as last_id FROM $tableName");
+            $query->execute();
+            
+
+            $result = $query->fetch(PDO::FETCH_ASSOC);
+            
+            return $result ? $result['last_id'] : 0;
+        } catch (PDOException $e) {
+            echo "Error: " . $e->getMessage();
+            return null;
+        }
+    }
+    function getCategories() {
+        // Fetch categories ordered by sort_order
+        $stmt = $this->pdo->query("SELECT id, category_name, slug, category_image, icon, sort_order, is_enable FROM categories WHERE is_enable = 1 ORDER BY sort_order ASC");
+        $categories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        $categoryTree = [];
+        foreach ($categories as $category) {
+            $categoryTree[$category['id']] = [
+                'id' => $category['id'],
+                'name' => $category['category_name'],
+                'slug' => $category['slug'],
+                'category_image' => $category['category_image'],
+                'icon' => $category['icon'],
+                'sort_order' => $category['sort_order'],
+                'children' => [] 
+            ];
+        }
+    
+        // Fetch subcategories ordered by sort_order
+        $stmt = $this->pdo->query("SELECT id, subcategory_name, slug, subcategory_image, icon, sort_order, is_enable, category_id FROM subcategories WHERE is_enable = 1 ORDER BY sort_order ASC");
+        $subcategories = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        foreach ($subcategories as $subcategory) {
+            if (isset($categoryTree[$subcategory['category_id']])) {
+                $categoryTree[$subcategory['category_id']]['children'][] = [
+                    'id' => $subcategory['id'], 
+                    'name' => $subcategory['subcategory_name'],
+                    'slug' => $subcategory['slug'],
+                    'subcategory_image' => $subcategory['subcategory_image'],
+                    'icon' => $subcategory['icon'],
+                    'sort_order' => $subcategory['sort_order'],
+                    'category_id' => $subcategory['category_id'],
+                ];
+            }
+        }
+    
+        // Sort the children by sort_order as well, in case they are not sorted correctly after fetching
+        foreach ($categoryTree as &$category) {
+            usort($category['children'], function($a, $b) {
+                return $a['sort_order'] <=> $b['sort_order'];
+            });
+        }
+    
+        return $categoryTree;
     }
     
 }

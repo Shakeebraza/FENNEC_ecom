@@ -246,4 +246,14 @@ class Fun {
             return 'Error: ' . $e->getMessage();
         }
     }
+    public function ordercat($order, $parent_id) {
+   
+        $stmt = $this->pdo->prepare("UPDATE subcategories SET sort_order = ? , category_id = ? WHERE id = ? ");
+        
+        foreach ($order as $position => $id) {
+            $stmt->execute([$position,  $parent_id,$id]);
+        }
+        
+        echo json_encode(['success' => true, 'message' => 'Order updated successfully.']);
+    }
 }
