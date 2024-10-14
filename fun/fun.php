@@ -256,4 +256,54 @@ class Fun {
         
         echo json_encode(['success' => true, 'message' => 'Order updated successfully.']);
     }
+
+    public function getTotalSubCatCount() {
+        $query = "SELECT COUNT(*) AS total FROM subcategories";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total'];
+    }
+
+    public function getAllSubcat($start,$length) {
+        try {
+            $tabledata = $this->dbfun->getData('subcategories','', '', 'created_at', 'DESC', $start, $length);
+            if (empty($tabledata)) {
+
+                return [];
+            } else {
+
+            }
+            foreach ($tabledata as &$row) {
+                foreach ($row as $key => $value) {
+                    $row[$key] = $this->security->decrypt($value);
+                }
+            }
+
+            return $tabledata;
+        } catch (PDOException $e) {
+            return 'Error: ' . $e->getMessage();
+        }
+    }
+
+    public function findAllPerentcat($categoryId) {
+        try {
+            $subcatData = $this->dbfun->getData('categories',"id='$categoryId' ");
+    
+            if (empty($subcatData)) {
+                return [];
+            }
+    
+           
+            foreach ($subcatData as &$row) {
+                foreach ($row as $key => $value) {
+                    $row[$key] = $this->security->decrypt($value);
+                }
+            }
+    
+            return $subcatData; 
+        } catch (PDOException $e) {
+            return 'Error: ' . $e->getMessage();
+        }
+    }
 }

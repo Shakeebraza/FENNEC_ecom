@@ -117,7 +117,7 @@ function isActive($link) {
                         </li>
                     </ul>
                 </li>
-                <li class="has-sub <?=isActive('/fennec/admin/categories/index.php');  ?> <?=isActive('/fennec/admin/subcategories/index.php');  ?>">
+                <li class="has-sub <?=isActive('/fennec/admin/categories/index.php');  ?> <?=isActive('/fennec/admin/subcategories/index.php');  ?><?=isActive('/fennec/admin/product/index.php');  ?>">
                     <a  class="js-arrow " href="#">
                         <i class="fa fa-folder"></i>Product</a>
                     <ul class="list-unstyled navbar__sub-list js-sub-list">
@@ -126,6 +126,9 @@ function isActive($link) {
                         </li>
                         <li>
                             <a  href="<?php echo $urlval?>admin/subcategories/index.php">All Sub-Categories</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo $urlval?>admin/product/index.php">All Product</a>
                         </li>
                     </ul>
                 </li>
