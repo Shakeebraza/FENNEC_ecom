@@ -116,6 +116,7 @@ include_once('view.php');
 include_once('../footer.php');
 ?>
 
+
 <script>
 $(document).ready(function() {
     fetchProducts(1);
@@ -169,7 +170,7 @@ function fetchProducts(page) {
                                         ${product.country} | ${product.city}
                                     </div>
                                     <div class="btn-group">
-                                        <a href="#" class="btn btn-sm btn-light view-product" data-id="${product.id}">
+                                        <a href="#" class="btn btn-sm btn-warning view-product" data-id="${product.id}">
                                             <i class="fa fa-eye"></i> View
                                         </a>
                                         <a href="#" class="btn btn-sm btn-danger delete-product" data-id="${product.id}">
@@ -215,8 +216,18 @@ function showProductDetails(productId) {
         dataType: 'json',
         success: function(data) {
             if (data.success) {
+                var galleryImagesArray = data.product.gallery_images ? data.product.gallery_images.split(',') : [];
+
                 var detailsHTML = `
-                    <img src="<?= $urlval?>${data.product.product_image}" alt="${data.product.product_name}" class="img-fluid mb-3">
+                <div class="profileimagee"><img src="<?= $urlval?>${data.product.product_image}" alt="${data.product.product_name}" class="img-fluid mb-3 profileimg"></div>
+                <h3>Gallery images</h3>    
+                <div class="product-images multiple-items">
+                    
+                        
+                        ${galleryImagesArray.map(image => `
+                            <div><img src="<?= $urlval?>${image}" alt="Additional Image" class=""></div>
+                        `).join('')}
+                    </div>
                     <h4>${data.product.product_name}</h4>
                     <p><strong>Price:</strong> <span class="discount-price">$${data.product.product_discount_price}</span>
                     <span class="original-price text-muted"><del>$${data.product.product_price}</del></span></p>
@@ -227,6 +238,15 @@ function showProductDetails(productId) {
                     <p><strong>Available in:</strong> ${data.product.country_name} | ${data.product.city_name}</p>
                 `;
                 $('#productDetailContent').html(detailsHTML);
+
+                $('.multiple-items').slick({
+                    infinite: true,
+                    slidesToShow: 2,
+                    slidesToScroll: 1,
+                    arrows: true,
+                    dots: true
+                });
+
                 $('#productDetailModal').modal('show');
             } else {
                 alert('Product details not found.');
@@ -238,6 +258,9 @@ function showProductDetails(productId) {
     });
 }
 
+
+
+
 function deleteProduct(productId) {
     $.ajax({
         url: '<?php echo $urlval ?>admin/ajax/product/deleteProduct.php', 
@@ -247,7 +270,7 @@ function deleteProduct(productId) {
         success: function(data) {
             if (data.success) {
                 alert('Product deleted successfully.');
-                fetchProducts(1);  // Refresh the product list after deletion
+                fetchProducts(1); 
             } else {
                 alert('Error deleting product: ' + data.error);
             }

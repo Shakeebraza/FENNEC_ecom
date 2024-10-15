@@ -4,6 +4,7 @@ require_once('../../../global.php');
 if (isset($_GET['id'])) {
     $productId = $_GET['id'];
 
+    // Fetch the main product details
     $stmt = $pdo->prepare("
         SELECT 
             p.id AS product_id,
@@ -31,13 +32,21 @@ if (isset($_GET['id'])) {
         WHERE 
             p.is_enable = 1 AND p.id = :product_id");
 
-    // Corrected parameter binding
     $stmt->bindParam(':product_id', $productId, PDO::PARAM_INT);
-
     $stmt->execute();
-
+    
     if ($stmt->rowCount() > 0) {
         $product = $stmt->fetch(PDO::FETCH_ASSOC);
+
+     
+        $imagesStmt = $pdo->prepare("SELECT image_path FROM product_images WHERE product_id = :product_id");
+        $imagesStmt->bindParam(':product_id', $productId, PDO::PARAM_INT);
+        $imagesStmt->execute();
+        $gallery_images = $imagesStmt->fetchAll(PDO::FETCH_COLUMN);
+
+       
+        $product['gallery_images'] = implode(',', $gallery_images);
+        
         echo json_encode(['success' => true, 'product' => $product]);
     } else {
         echo json_encode(['success' => false, 'message' => 'Product not found.']);

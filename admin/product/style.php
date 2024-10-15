@@ -148,5 +148,91 @@
             max-width: 100%;
         }
     }
-    
+/* Modal Dialog */
+.modal-dialog.modal-lg {
+    max-width: 90%;
+    margin: 1.75rem auto;
+}
+
+/* Modal Content */
+.modal-content {
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* Modal Header */
+.modal-header {
+    background-color: #28a745; /* Green background for the header */
+    color: white;
+    border-bottom: none;
+}
+
+/* Modal Title */
+.modal-header .modal-title {
+    font-size: 1.75rem;
+    font-weight: bold;
+}
+
+/* Modal Body */
+.modal-body {
+    padding: 20px;
+    background-color: #fff; /* White background for the body */
+    color: #333;
+}
+
+/* Product Image Styling */
+.profileimagee img {
+    border-radius: 10px; /* Rounded corners for the main image */
+}
+
+/* Slider Customization */
+.product-images .slick-slide img {
+    border-radius: 10px; /* Rounded corners for slider images */
+}
+
+/* Slick Dots */
+.slick-dots li button {
+    background-color: #28a745; /* Green color for dots */
+}
+
+.slick-dots li.slick-active button {
+    background-color: #dc3545; /* Red color for active dot */
+}
+
+/* Product Details Styling */
+h4 {
+    font-size: 1.75rem;
+    font-weight: bold;
+    color: #28a745; /* Green color for product name */
+}
+
+.discount-price {
+    color: #dc3545; /* Red color for discount price */
+    font-size: 1.25rem; /* Larger font for discount price */
+    font-weight: bold;
+}
+
+.original-price {
+    font-size: 1rem;
+    color: #7f8c8d; /* Muted color for original price */
+    text-decoration: line-through;
+}
+
+/* Additional Spacing */
+.mb-3 {
+    margin-bottom: 1rem; /* Margin for spacing */
+}
+
+.profileimagee {
+  display: flex;
+  justify-content: center;
+ align-items: center;
+}
+.profileimg{
+    border: 1px solid black;
+  border-radius: 50%;
+}
+
+
 </style>
