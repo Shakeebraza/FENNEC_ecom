@@ -4,158 +4,9 @@ include_once('../header.php');
 
 $getproduct = $dbFunctions->getData("products", "is_enable = 1", '', '', "DESC");
 
+include_once('style.php');
 ?>
-<style>
-    .product-card {
-        border: 1px solid #e0e0e0;
-        border-radius: 10px;
-        overflow: hidden;
-        transition: all 0.3s ease-in-out;
-        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        padding: 15px;
-        background-color: #fff;
-    }
 
-    .product-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
-    }
-
-    .product-card .card-img-top {
-        height: 50%;
-        width: 50%;
-        margin: auto;
-        object-fit: cover;
-        border-bottom: 1px solid #e0e0e0;
-        transition: transform 0.3s ease;
-    }
-
-    .product-card:hover .card-img-top {
-        transform: scale(1.05);
-    }
-
-    .product-card .card-body {
-        padding: 15px;
-        text-align: left;
-    }
-
-    .product-card .card-title {
-        font-size: 20px;
-        font-weight: bold;
-        color: #333;
-        margin-bottom: 10px;
-    }
-
-    .product-card .card-text {
-        font-size: 14px;
-        color: #666;
-        margin-bottom: 8px;
-    }
-
-    .discount-price {
-        color: #e74c3c;
-        font-size: 20px;
-        font-weight: bold;
-        margin-right: 10px;
-    }
-
-    .original-price {
-        font-size: 16px;
-        color: #7f8c8d;
-        text-decoration: line-through;
-    }
-
-    .card-body p.card-text {
-        font-size: 14px;
-        color: #666;
-    }
-
-
-    .product-card .btn-group .btn {
-        margin: 5px;
-        border-radius: 5px;
-        transition: background-color 0.3s ease;
-    }
-
-    .product-card .btn-group .btn:hover {
-        background-color: #f1f1f1;
-    }
-
-    .product-card .btn-group .btn-outline-secondary {
-        color: #333;
-        border-color: #e0e0e0;
-    }
-
-    .product-card .btn-group .btn-outline-secondary:hover {
-        background-color: #e0e0e0;
-    }
-
-
-    .pagination .page-link {
-        color: #007bff;
-        padding: 10px 15px;
-        border-radius: 5px;
-    }
-
-    .pagination .page-link:hover {
-        color: #0056b3;
-        background-color: #e7f1ff;
-    }
-
-    .pagination .page-item.active .page-link {
-        background-color: #007bff;
-        border-color: #007bff;
-        color: white;
-    }
-
-    .city-country {
-        font-size: small;
-        color: #00000057;
-
-    }
-
-    .custom-form {
-        background-color: #f8f9fa;
-        /* Light background color */
-        border-radius: 10px;
-        /* Rounded corners */
-        padding: 20px;
-        /* Padding around the form */
-        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-        /* Subtle shadow */
-    }
-
-    .custom-form .form-control,
-    .custom-form .form-select {
-        border: 1px solid #ced4da;
-        /* Custom border */
-        border-radius: 5px;
-        /* Rounded corners for inputs */
-        transition: border-color 0.3s;
-        /* Smooth transition for border color */
-    }
-
-    .custom-form .form-control:focus,
-    .custom-form .form-select:focus {
-        border-color: #80bdff;
-        /* Change border color on focus */
-        box-shadow: 0 0 0 0.2rem rgba(0, 123, 255, 0.25);
-        /* Shadow on focus */
-    }
-
-
-
-    /* Responsive adjustments */
-    @media (max-width: 576px) {
-
-        .custom-form .col-md-2,
-        .custom-form .col-md-3 {
-            flex: 0 0 100%;
-            /* Full width on smaller screens */
-            max-width: 100%;
-        }
-    }
-</style>
 <div class="page-container">
     <div class="main-content">
         <div class="section__content section__content--p30">
@@ -212,7 +63,7 @@ $getproduct = $dbFunctions->getData("products", "is_enable = 1", '', '', "DESC")
                                     <option value="">All Countries</option>
                                     <option value="usa" <?php if (isset($_GET['country']) && $_GET['country'] == 'usa') echo 'selected'; ?>>USA</option>
                                     <option value="canada" <?php if (isset($_GET['country']) && $_GET['country'] == 'canada') echo 'selected'; ?>>Canada</option>
-                                    <!-- Add more countries as needed -->
+                                  
                                 </select>
                             </div>
 
@@ -221,13 +72,13 @@ $getproduct = $dbFunctions->getData("products", "is_enable = 1", '', '', "DESC")
                                     <option value="">All Cities</option>
                                     <option value="new_york" <?php if (isset($_GET['city']) && $_GET['city'] == 'new_york') echo 'selected'; ?>>New York</option>
                                     <option value="toronto" <?php if (isset($_GET['city']) && $_GET['city'] == 'toronto') echo 'selected'; ?>>Toronto</option>
-                                    <!-- Add more cities as needed -->
+                                 
                                 </select>
                             </div>
 
-                            <!-- Submit Button -->
+                       
                             <div class="col-md-2">
-                                <button type="submit" class="btn btn-primary custom-button">Filter</button>
+                                <button type="submit" class="btn btn-warning custom-button">Filter</button>
                                 <a href="http://localhost/fennec/admin/product/add.php" class="btn btn-success custom-button">Add</a>
                             </div>
                         </div>
@@ -255,43 +106,27 @@ $getproduct = $dbFunctions->getData("products", "is_enable = 1", '', '', "DESC")
 </div>
 </div>
 
-<!-- Product Detail Modal -->
-<div class="modal fade" id="productDetailModal" tabindex="-1" aria-labelledby="productDetailModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="productDetailModalLabel">Product Details</h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <div id="productDetailContent">
-                    <!-- Product details will be injected here -->
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+
 
 
 
 
 <?php
+include_once('view.php');
 include_once('../footer.php');
 ?>
 
 <script>
-    $(document).ready(function() {
+$(document).ready(function() {
+    fetchProducts(1);
 
+    $('form').on('submit', function(e) {
+        e.preventDefault();
         fetchProducts(1);
-
-
-        $('form').on('submit', function(e) {
-            e.preventDefault();
-            fetchProducts(1);
-        });
     });
+});
 
-    function fetchProducts(page) {
+function fetchProducts(page) {
     var product_name = $('input[name="product_name"]').val();
     var min_price = $('input[name="min_price"]').val();
     var max_price = $('input[name="max_price"]').val();
@@ -337,7 +172,7 @@ include_once('../footer.php');
                                         <a href="#" class="btn btn-sm btn-light view-product" data-id="${product.id}">
                                             <i class="fa fa-eye"></i> View
                                         </a>
-                                        <a href="#" class="btn btn-sm btn-danger">
+                                        <a href="#" class="btn btn-sm btn-danger delete-product" data-id="${product.id}">
                                             <i class="fa fa-trash"></i> Delete
                                         </a>
                                     </div>
@@ -353,11 +188,17 @@ include_once('../footer.php');
                 $('#product-container').html('<p>No products found.</p>');
             }
 
-            // Add event listener for view product buttons
+            // Add event listeners for view and delete product buttons
             $('.view-product').click(function(e) {
                 e.preventDefault();
                 var productId = $(this).data('id');
                 showProductDetails(productId);
+            });
+
+            $('.delete-product').click(function(e) {
+                e.preventDefault();
+                var productId = $(this).data('id');
+                deleteProduct(productId);
             });
         },
         error: function() {
@@ -365,15 +206,15 @@ include_once('../footer.php');
         }
     });
 }
+
 function showProductDetails(productId) {
     $.ajax({
-        url: '<?php echo $urlval ?>admin/ajax/product/fetchProductDetails.php', // URL to fetch product details
+        url: '<?php echo $urlval ?>admin/ajax/product/fetchProductDetails.php', 
         type: 'GET',
         data: { id: productId },
         dataType: 'json',
         success: function(data) {
             if (data.success) {
-                // Populate the modal with product details
                 var detailsHTML = `
                     <img src="<?= $urlval?>${data.product.product_image}" alt="${data.product.product_name}" class="img-fluid mb-3">
                     <h4>${data.product.product_name}</h4>
@@ -397,33 +238,53 @@ function showProductDetails(productId) {
     });
 }
 
-
-    function setupPagination(totalProducts, currentPage) {
-        var totalPages = Math.ceil(totalProducts / 6);
-        var paginationHTML = '';
-
-        if (currentPage > 1) {
-            paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="fetchProducts(${currentPage - 1})">Previous</a></li>`;
-        } else {
-            paginationHTML += `<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>`;
-        }
-
-        for (var i = 1; i <= totalPages; i++) {
-            if (i == currentPage) {
-                paginationHTML += `<li class="page-item active"><a class="page-link" href="#">${i}</a></li>`;
+function deleteProduct(productId) {
+    $.ajax({
+        url: '<?php echo $urlval ?>admin/ajax/product/deleteProduct.php', 
+        type: 'POST',
+        data: { id: productId },
+        dataType: 'json',
+        success: function(data) {
+            if (data.success) {
+                alert('Product deleted successfully.');
+                fetchProducts(1);  // Refresh the product list after deletion
             } else {
-                paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="fetchProducts(${i})">${i}</a></li>`;
+                alert('Error deleting product: ' + data.error);
             }
+        },
+        error: function() {
+            alert('Error deleting product.');
         }
+    });
+}
 
-        if (currentPage < totalPages) {
-            paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="fetchProducts(${currentPage + 1})">Next</a></li>`;
-        } else {
-            paginationHTML += `<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>`;
-        }
+function setupPagination(totalProducts, currentPage) {
+    var totalPages = Math.ceil(totalProducts / 6);
+    var paginationHTML = '';
 
-        $('.pagination').html(paginationHTML);
+    if (currentPage > 1) {
+        paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="fetchProducts(${currentPage - 1})">Previous</a></li>`;
+    } else {
+        paginationHTML += `<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>`;
     }
+
+    for (var i = 1; i <= totalPages; i++) {
+        if (i == currentPage) {
+            paginationHTML += `<li class="page-item active"><a class="page-link" href="#">${i}</a></li>`;
+        } else {
+            paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="fetchProducts(${i})">${i}</a></li>`;
+        }
+    }
+
+    if (currentPage < totalPages) {
+        paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="fetchProducts(${currentPage + 1})">Next</a></li>`;
+    } else {
+        paginationHTML += `<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>`;
+    }
+
+    $('.pagination').html(paginationHTML);
+}
+
 </script>
 
 </body>
