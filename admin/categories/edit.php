@@ -11,6 +11,7 @@ if (!isset($_GET['catid'])) {
 
 
 $catid = $security->decrypt($_GET['catid']);
+
 $cat = $dbFunctions->getDataById('categories', $catid); 
 
 

@@ -1,25 +1,27 @@
 <?php
 require_once('../../../global.php');
 
-// Get the total number of records in the 'users' table
 $totalRecords = $dbFunctions->getCount('users', '*', "");
 
-// Fetch filtered query with descending order
-$filteredQuery = $dbFunctions->getData('users', "", '', '', 'DESC');
+$filteredQuery = $dbFunctions->getDatanotenc('users', "", '', '', 'DESC');
 
 $data = [];
 
 foreach ($filteredQuery as $row) {
-    $roleClass = $security->decrypt($row['role']) == 1 ? 'admin' : 'user'; 
-    $roleText = $security->decrypt($row['role']) == 1 ? 'Admin' : 'User'; 
+    $roleClass = $row['role'] == 1 ? 'admin' : 'user'; 
+    $roleText = $row['role'] == 1 ? 'Admin' : 'User'; 
     
+    // Determine actions based on user role
+    $editButton = $row['role'] != 1 ? '<button class="btn btn-warning btn-sm" data-id="'. $security->encrypt($row['id']). '" >Edit</button>': 'Admin can not delete and edit';
+    $deleteButton = $row['role'] != 1 ? '<button class="btn btn-danger btn-sm" data-id="'. $security->encrypt($row['id']). '">Delete</button>' : '';
+
     $data[] = [
         'checkbox' => '<input type="checkbox">',
         'name' => '<div class="table-data__info">
-                      <h6>' . $security->decrypt($row['username']) . '</h6>
-                      <span><a href="#">' . $security->decrypt($row['email']) . '</a></span>
+                      <h6>' .$row['username'] . '</h6>
+                      <span><a href="#">' . $row['email'] . '</a></span>
                    </div>',
-        'email' => $security->decrypt($row['email']),
+        'email' => $row['email'],
         'role' => '<span class="role ' . $roleClass . '">' . $roleText . '</span>',
         'type' => '<div style="position: relative; display: inline-block; width: 100%; margin: 0 auto;">
                       <select class="js-select2" name="property"
@@ -56,8 +58,7 @@ foreach ($filteredQuery as $row) {
                           ▼
                       </span>
                   </div>',
-        'actions' => '<button class="btn btn-warning btn-sm" data-id="'. $row['id']. '" >Edit</button>
-                      <button class="btn btn-danger btn-sm" data-id="'. $row['id']. '">Delete</button>'
+        'actions' => $editButton . ' ' . $deleteButton
     ];
 }
 

@@ -1,40 +1,18 @@
 <?php
 
 class Security {
+    private $cipher = "AES-128-ECB";
     private $key;
 
     public function __construct($key) {
-        $this->key = sodium_crypto_secretbox_keygen();
-        sodium_memzero($key);
+        $this->key = substr(hash('sha256', $key), 0, 16);
     }
 
     public function encrypt($data) {
-   
-        if (empty($data)) {
-            return null;
-        }
-
-
-        $nonce = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
-        
-
-        $encrypted = sodium_crypto_secretbox($data, $nonce, $this->key);
-
-    
-        return base64_encode($nonce . $encrypted);
+        return base64_encode(openssl_encrypt($data, $this->cipher, $this->key, OPENSSL_RAW_DATA));
     }
 
     public function decrypt($data) {
-       
-        if (empty($data)) {
-            return null; 
-        }
-
-        $data = base64_decode($data);
-        $nonce = mb_substr($data, 0, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, '8bit'); 
-        $encryptedData = mb_substr($data, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, null, '8bit'); 
-
-   
-        return sodium_crypto_secretbox_open($encryptedData, $nonce, $this->key);
+        return openssl_decrypt(base64_decode($data), $this->cipher, $this->key, OPENSSL_RAW_DATA);
     }
 }

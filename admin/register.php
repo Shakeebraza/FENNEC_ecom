@@ -1,6 +1,23 @@
 <?php
 require_once("../global.php");
+if (isset($_COOKIE['remember_token'])) {
+    $rememberTokenCookie = $fun->rememberTokenCheckByCookie($_COOKIE['remember_token']);
+    
+    if ($rememberTokenCookie === true) {
+        header('Location: index.php');
+        exit();
+    }
+}
+$setSession = $fun->isSessionSet();
 
+if ($setSession == true) {
+    $redirectUrl = $urlval . 'admin/index.php'; 
+    echo '
+    <script>
+        window.location.href = "' . $redirectUrl . '";
+    </script>';
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
