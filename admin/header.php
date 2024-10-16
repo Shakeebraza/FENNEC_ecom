@@ -1,3 +1,16 @@
+<?php
+$setSession = $fun->isSessionSet();
+
+if ($setSession == false) {
+    $redirectUrl = $urlval . 'admin/login.php'; 
+    echo '
+    <script>
+        window.location.href = "' . $redirectUrl . '";
+    </script>'; // Correctly closing the script tag
+    exit();
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 

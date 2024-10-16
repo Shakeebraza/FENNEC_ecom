@@ -318,7 +318,6 @@ class Fun {
                 $_SESSION['userid'] = base64_encode($this->security->decrypt($userData[0]['id']));
                 $_SESSION['username'] = $this->security->decrypt($userData[0]['username']);
                 $_SESSION['email'] = $this->security->decrypt($userData[0]['email']);
-                $_SESSION['userid'] = base64_encode($this->security->decrypt($userData[0]['id']));
                 $_SESSION['email_verified_at'] = $this->security->decrypt($userData[0]['email_verified_at']);
                 $_SESSION['role'] = $this->security->decrypt($userData[0]['role']);
                 $_SESSION['profile'] = $userData[0]['profile'] == NULL 
@@ -374,6 +373,20 @@ class Fun {
         session_start();
         session_unset();
         session_destroy();
+    }
+    public function isSessionSet() {
+        if (session_status() == PHP_SESSION_NONE) {
+            session_start();
+        }
+    
+        if (isset($_SESSION['userid'], $_SESSION['username'], $_SESSION['email']) &&
+            !empty($_SESSION['userid']) &&
+            !empty($_SESSION['username']) &&
+            !empty($_SESSION['email'])) {
+            return true; 
+        }
+    
+        return false; 
     }
     
     

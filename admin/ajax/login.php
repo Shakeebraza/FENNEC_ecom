@@ -26,7 +26,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo json_encode(['status' => 'error', 'message' => 'Please verify your email first.']);
                 exit;
             }
-
+            if ($user['role'] == 0) {
+                echo json_encode(['status' => 'error', 'message' => 'Please login and admin account.']);
+                exit;
+            }
             if (password_verify($password, $security->decrypt($user['password']))) {
                 
                 if ($remember) {
