@@ -1,29 +1,40 @@
 <?php
 
 class Security {
-    private $cipher = "aes-256-cbc";
     private $key;
-    private $iv;
 
     public function __construct($key) {
-        $this->key = hash('sha256', $key, true); 
-        $this->iv = openssl_random_pseudo_bytes(openssl_cipher_iv_length($this->cipher)); 
+        $this->key = sodium_crypto_secretbox_keygen();
+        sodium_memzero($key);
     }
 
     public function encrypt($data) {
-        $encrypted = openssl_encrypt($data, $this->cipher, $this->key, 0, $this->iv);
+   
+        if (empty($data)) {
+            return null;
+        }
 
-        return base64_encode($this->iv . $encrypted);
+
+        $nonce = random_bytes(SODIUM_CRYPTO_SECRETBOX_NONCEBYTES);
+        
+
+        $encrypted = sodium_crypto_secretbox($data, $nonce, $this->key);
+
+    
+        return base64_encode($nonce . $encrypted);
     }
 
     public function decrypt($data) {
-        $data = base64_decode($data);
-        // Extract the IV and the encrypted data
-        $iv_length = openssl_cipher_iv_length($this->cipher);
-        $iv = substr($data, 0, $iv_length);
-        $encryptedData = substr($data, $iv_length);
+       
+        if (empty($data)) {
+            return null; 
+        }
 
-        return openssl_decrypt($encryptedData, $this->cipher, $this->key, 0, $iv);
+        $data = base64_decode($data);
+        $nonce = mb_substr($data, 0, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, '8bit'); 
+        $encryptedData = mb_substr($data, SODIUM_CRYPTO_SECRETBOX_NONCEBYTES, null, '8bit'); 
+
+   
+        return sodium_crypto_secretbox_open($encryptedData, $nonce, $this->key);
     }
 }
-?>
