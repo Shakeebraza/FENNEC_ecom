@@ -306,4 +306,76 @@ class Fun {
             return 'Error: ' . $e->getMessage();
         }
     }
+    public function sessionSet($email = NULL) {
+        if (isset($email) && !empty($email)) {
+            $userData = $this->dbfun->getData('users', "email = '$email'");
+            
+            if ($userData) {
+                if (session_status() == PHP_SESSION_NONE) {
+                    session_start();
+                }
+                
+                $_SESSION['userid'] = base64_encode($this->security->decrypt($userData[0]['id']));
+                $_SESSION['username'] = $this->security->decrypt($userData[0]['username']);
+                $_SESSION['email'] = $this->security->decrypt($userData[0]['email']);
+                $_SESSION['userid'] = base64_encode($this->security->decrypt($userData[0]['id']));
+                $_SESSION['email_verified_at'] = $this->security->decrypt($userData[0]['email_verified_at']);
+                $_SESSION['role'] = $this->security->decrypt($userData[0]['role']);
+                $_SESSION['profile'] = $userData[0]['profile'] == NULL 
+                    ? $this->urlval . 'images/profile.jpg' 
+                    : $this->security->decrypt($userData[0]['profile']);
+                
+        
+                return true;
+            }
+        }
+        
+        
+        return false;
+    }
+    
+    public function rememberTokenCheckByCookie($remember_token = NULL) {
+        if (isset($remember_token) && !empty($remember_token)) {
+            $userData = $this->dbfun->getData('users', "remember_token = '$remember_token'");
+            if ($userData) {
+          
+                if (isset($userData[0]['email_verified_at'])) {
+                    session_start();
+                    $_SESSION['username'] = $this->security->decrypt($userData[0]['username']);
+                    $_SESSION['userid'] = base64_encode($this->security->decrypt($userData[0]['id']));
+                    $_SESSION['email'] = $this->security->decrypt($userData[0]['email']);
+                    $_SESSION['email_verified_at'] = $this->security->decrypt($userData[0]['email_verified_at']);
+                    $_SESSION['role'] = $this->security->decrypt($userData[0]['role']);
+                    $_SESSION['profile'] = $userData[0]['profile'] == NULL 
+                        ? $this->urlval . 'images/profile.jpg' 
+                        : $this->security->decrypt($userData[0]['profile']);
+                    return true; 
+                } else {
+                    $this->dbfun->updateData('users', ['remember_token' => ''], $this->security->decrypt($userData[0]['id']));
+                    $this->destroyRememberMe();
+                    return false; 
+                }
+            }
+        }
+    
+  
+        $this->destroyRememberMe();
+        return false;
+    }
+    
+
+    private function destroyRememberMe() {
+      
+        if (isset($_COOKIE['remember_token'])) {
+            setcookie('remember_token', '', time() - 3600, '/'); 
+        }
+    
+
+        session_start();
+        session_unset();
+        session_destroy();
+    }
+    
+    
+    
 }

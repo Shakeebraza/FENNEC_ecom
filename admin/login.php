@@ -1,5 +1,15 @@
 <?php
 require_once("../global.php");
+
+if (isset($_COOKIE['remember_token'])) {
+    $rememberTokenCookie = $fun->rememberTokenCheckByCookie($_COOKIE['remember_token']);
+    
+    if ($rememberTokenCookie === true) {
+        header('Location: index.php');
+        exit();
+    }
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +21,7 @@ require_once("../global.php");
     <meta name="author" content="Hau Nguyen">
     <meta name="keywords" content="au theme template">
 
-    <title>Register</title>
+    <title>Login</title>
 
     <link href="<?php echo $urlval?>admin/asset/css/font-face.css" rel="stylesheet" media="all">
     <link href="<?php echo $urlval?>admin/asset/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
@@ -111,7 +121,7 @@ $(document).ready(function() {
                     if (response.role === 1) {
                         window.location.href = 'admin/index.php';
                     } else {
-                        window.location.href = 'dashboard.php';
+                        window.location.href = 'index.php';
                     }
                 } else {
                     $('#message-content').text(response.message).fadeIn();
