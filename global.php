@@ -14,4 +14,7 @@ $pdo = $db->getConnection();
 $security = new Security('fennec');
 $dbFunctions = new DatabaseFunctions($db, $security);
 $fun = new Fun($db, $security, $dbFunctions,$urlval);
+$currentDate = date('Y-m-d'); 
+$currentTime = date('H:i:s');
+$currentDateTime = date('Y-m-d H:i:s'); 
 ?>

@@ -26,6 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $errors[] = 'Email is already registered.';
         }
     }
+    
     if (empty($password)) {
         $errors[] = 'Password is required.';
     } elseif (strlen($password) < 8) {
@@ -36,18 +37,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     if (empty($errors)) {
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+        $verificationToken = bin2hex(random_bytes(16)); 
 
         $data = [
             'username' => $username,
             'email' => $email,
             'password' => $hashedPassword,
-            'role'=>0
+            'role' => 0,
+            'verification_token' => $verificationToken 
         ];
 
         $response = $dbFunctions->setData('users', $data);
 
         if ($response['success']) {
-            echo json_encode(['status' => 'success', 'message' => 'Registration successful!']);
+           
+            $verificationLink = $urlval."verify_email.php?token=$verificationToken&email=$email";
+            $mailResponse = smtp_mailer($email, 'Email Verification', "Please click the link below to verify your email address:\n$verificationLink");
+
+            if ($mailResponse['success']) {
+                echo json_encode(['status' => 'success', 'message' => 'Registration successful! Verification email sent.']);
+            } else {
+                echo json_encode(['status' => 'error', 'message' => 'Registration successful, but failed to send verification email: ' . $mailResponse['error']]);
+            }
         } else {
             echo json_encode(['status' => 'error', 'message' => $response['message']]);
         }
