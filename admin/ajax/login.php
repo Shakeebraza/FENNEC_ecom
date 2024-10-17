@@ -15,7 +15,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     try {
       
         $where = "email = '" . $email . "'";
-        $user = $dbFunctions->getData('users', $where);
+        $user = $dbFunctions->getDatanotenc('users', $where);
 
         if ($user) {
  
@@ -30,23 +30,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo json_encode(['status' => 'error', 'message' => 'Please login and admin account.']);
                 exit;
             }
-            if (password_verify($password, $security->decrypt($user['password']))) {
+            if (password_verify($password, $user['password'])) {
                 
                 if ($remember) {
                     $token = bin2hex(random_bytes(16));
                     $expiryTime = time() + (86400 * 30);
                     
-                    $dbFunctions->updateData('users', ['remember_token' => $token], $security->decrypt($user['id']));
+                    $dbFunctions->updateData('users', ['remember_token' => $token], $user['id']);
                 
                     setcookie("remember_token",  $token, $expiryTime, "/", "", true, true);
                 }
 
           
-                $email = $security->decrypt($user['email']);
+                $email = $user['email'];
                 $sessionSet = $fun->sessionSet($email);
 
      
-                echo json_encode(['status' => 'success', 'role' => $security->decrypt($user['role'])]);
+                echo json_encode(['status' => 'success', 'role' => $user['role']]);
             } else {
                 echo json_encode(['status' => 'error', 'message' => 'Invalid password.']);
             }

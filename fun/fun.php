@@ -308,21 +308,19 @@ class Fun {
     }
     public function sessionSet($email = NULL) {
         if (isset($email) && !empty($email)) {
-            $userData = $this->dbfun->getData('users', "email = '$email'");
+            $userData = $this->dbfun->getDatanotenc('users', "email = '$email'");
             
             if ($userData) {
                 if (session_status() == PHP_SESSION_NONE) {
                     session_start();
                 }
                 
-                $_SESSION['userid'] = base64_encode($this->security->decrypt($userData[0]['id']));
-                $_SESSION['username'] = $this->security->decrypt($userData[0]['username']);
-                $_SESSION['email'] = $this->security->decrypt($userData[0]['email']);
-                $_SESSION['email_verified_at'] = $this->security->decrypt($userData[0]['email_verified_at']);
-                $_SESSION['role'] = $this->security->decrypt($userData[0]['role']);
-                $_SESSION['profile'] = $userData[0]['profile'] == NULL 
-                    ? $this->urlval . 'images/profile.jpg' 
-                    : $this->security->decrypt($userData[0]['profile']);
+                $_SESSION['userid'] = base64_encode($userData[0]['id']);
+                $_SESSION['username'] = $userData[0]['username'];
+                $_SESSION['email'] = $userData[0]['email'];
+                $_SESSION['email_verified_at'] = $userData[0]['email_verified_at'];
+                $_SESSION['role'] = $userData[0]['role'];
+                $_SESSION['profile'] = $this->urlval.$userData[0]['profile'];
                 
         
                 return true;
@@ -335,19 +333,17 @@ class Fun {
     
     public function rememberTokenCheckByCookie($remember_token = NULL) {
         if (isset($remember_token) && !empty($remember_token)) {
-            $userData = $this->dbfun->getData('users', "remember_token = '$remember_token'");
+            $userData = $this->dbfun->getDatanotenc('users', "remember_token = '$remember_token'");
             if ($userData) {
           
                 if (isset($userData[0]['email_verified_at'])) {
                     session_start();
-                    $_SESSION['username'] = $this->security->decrypt($userData[0]['username']);
-                    $_SESSION['userid'] = base64_encode($this->security->decrypt($userData[0]['id']));
-                    $_SESSION['email'] = $this->security->decrypt($userData[0]['email']);
-                    $_SESSION['email_verified_at'] = $this->security->decrypt($userData[0]['email_verified_at']);
-                    $_SESSION['role'] = $this->security->decrypt($userData[0]['role']);
-                    $_SESSION['profile'] = $userData[0]['profile'] == NULL 
-                        ? $this->urlval . 'images/profile.jpg' 
-                        : $this->security->decrypt($userData[0]['profile']);
+                    $$_SESSION['userid'] = base64_encode($userData[0]['id']);
+                    $_SESSION['username'] = $userData[0]['username'];
+                    $_SESSION['email'] = $userData[0]['email'];
+                    $_SESSION['email_verified_at'] = $userData[0]['email_verified_at'];
+                    $_SESSION['role'] = $userData[0]['role'];
+                    $_SESSION['profile'] = $this->urlval.$userData[0]['profile'];
                     return true; 
                 } else {
                     $this->dbfun->updateData('users', ['remember_token' => ''], $this->security->decrypt($userData[0]['id']));

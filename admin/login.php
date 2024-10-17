@@ -128,8 +128,8 @@ $(document).ready(function() {
             dataType: 'json',
             success: function(response) {
                 if (response.status === 'success') {
-                    if (response.role === 1) {
-                        window.location.href = 'admin/index.php';
+                    if (response.role === 0) {
+                        window.location.href = '../index.php';
                     } else {
                         window.location.href = 'index.php';
                     }

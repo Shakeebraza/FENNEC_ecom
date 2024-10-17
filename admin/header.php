@@ -6,10 +6,10 @@ if ($setSession == false) {
     echo '
     <script>
         window.location.href = "' . $redirectUrl . '";
-    </script>'; // Correctly closing the script tag
+    </script>'; 
     exit();
 }
-
+$profile = $_SESSION['profile'] === "" ? $urlval . 'images/profile.jpg' : $_SESSION['profile'];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -183,7 +183,7 @@ if ($setSession == false) {
                                 <div class="account-wrap">
                                     <div class="account-item clearfix js-item-menu">
                                         <div class="image">
-                                            <img src="<?php echo $_SESSION['profile']?>" alt="Image Not found" />
+                                            <img src="<?php echo $profile?>" alt="Image Not found" />
                                         </div>
                                         <div class="content">
                                             <a class="js-acc-btn" href="#"><?php echo $_SESSION['username']?></a>
@@ -192,7 +192,7 @@ if ($setSession == false) {
                                             <div class="info clearfix">
                                                 <div class="image">
                                                     <a href="#">
-                                                        <img src="<?php echo $_SESSION['profile']?>" alt="Image Not found" />
+                                                        <img src="<?php echo $profile?>" alt="Image Not found" />
                                                     </a>
                                                 </div>
                                                 <div class="content">
@@ -204,7 +204,7 @@ if ($setSession == false) {
                                             </div>
                                             <div class="account-dropdown__body">
                                                 <div class="account-dropdown__item">
-                                                    <a href="#">
+                                                    <a href="<?= $urlval?>admin/account.php">
                                                         <i class="zmdi zmdi-account"></i>Account</a>
                                                 </div>
                                                 <div class="account-dropdown__item">
@@ -217,7 +217,7 @@ if ($setSession == false) {
                                                 </div>
                                             </div>
                                             <div class="account-dropdown__footer">
-                                                <a href="logout.php">
+                                                <a href="<?= $urlval?>admin/logout.php">
                                                     <i class="zmdi zmdi-power"></i>Logout</a>
                                             </div>
                                         </div>
