@@ -146,9 +146,36 @@ class Fun {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result['total'];
     }
+    public function getTotalBannerCount() {
+        $query = "SELECT COUNT(*) AS total FROM banners";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total'];
+    }
     public function getAllMenu($start,$length,$where='') {
         try {
             $tabledata = $this->dbfun->getData('menus',$where, '', 'updated_at', 'DESC', $start, $length);
+            if (empty($tabledata)) {
+
+                return [];
+            } else {
+
+            }
+            foreach ($tabledata as &$row) {
+                foreach ($row as $key => $value) {
+                    $row[$key] = $this->security->decrypt($value);
+                }
+            }
+
+            return $tabledata;
+        } catch (PDOException $e) {
+            return 'Error: ' . $e->getMessage();
+        }
+    }
+    public function getAllBanner($start,$length,$where='') {
+        try {
+            $tabledata = $this->dbfun->getData('banners',$where, '', 'id', 'DESC', $start, $length);
             if (empty($tabledata)) {
 
                 return [];

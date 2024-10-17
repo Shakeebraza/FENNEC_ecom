@@ -10,11 +10,11 @@ include_once('../header.php');
         <div class="container-fluid">
             <div class="row">
                 <div class="col-md-12">
-                    <h3 class="title-5 m-b-35">Menus Table</h3>
+                    <h3 class="title-5 m-b-35">Banners Table</h3>
                     <form id="userSearchForm">
                         <div class="form-row searchfromwhite">
                             <div class="form-group col-md-3">
-                                <label for="name">Menu Name</label>
+                                <label for="name">Name</label>
                                 <input type="text" class="form-control" id="name" placeholder="Enter name">
                             </div>
                             <div class="form-group col-md-3">
@@ -33,8 +33,9 @@ include_once('../header.php');
                             <thead>
                                 <tr>
                                     <th>#</th>
-                                    <th>Menu name</th>
+                                    <th>Name</th>
                                     <th>date</th>
+                                    <th>Image</th>
                                     <th>status</th>
                                     <th>Action</th>
                                 </tr>
@@ -63,7 +64,7 @@ $(document).ready(function() {
         "serverSide": true,
         "searching": false,
         "ajax": {
-            "url": "<?php echo $urlval; ?>admin/ajax/menu/fetchmenu.php",
+            "url": "<?php echo $urlval; ?>admin/ajax/banner/fetchbanner.php",
             "type": "POST",
             "data": function(d) {
                 d.name = $('#name').val();  
@@ -74,16 +75,43 @@ $(document).ready(function() {
             {"data": "checkbox"},
             {"data": "name"},
             {"data": "date"},
+            {"data": "image"},
             {"data": "status"},
             {"data": "actions"}
         ],
     });
 
-
     $('#searchMenu').on('click', function() {
         table.draw();
     });
+
+    $(document).on('click', '.delete-banner', function() {
+        var bannerId = $(this).data('id');
+        var confirmDelete = confirm('Are you sure you want to delete this banner?');
+
+        if (confirmDelete) {
+            $.ajax({
+                url: '<?php echo $urlval; ?>admin/ajax/banner/deletebanner.php',
+                type: 'POST',
+                data: { id: bannerId },
+                success: function(response) {
+                    var result = JSON.parse(response);
+                    if (result.status === 'success') {
+                        alert('Banner deleted successfully');
+                        location.reload();
+                    } else {
+                        alert('Failed to delete banner');
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.error(error);
+                    alert('Error occurred. Please try again.');
+                }
+            });
+        }
+    });
 });
+
 
 
 </script>
