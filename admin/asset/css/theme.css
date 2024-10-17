@@ -14777,3 +14777,8 @@ a.cancel-btn {
 a{
     text-decoration: none !important;
 }
+.searchfrom{
+    border: 1px solid #ffffff3d;
+    padding: 25px;
+    background: #e5e5e5;
+}

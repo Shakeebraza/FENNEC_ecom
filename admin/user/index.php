@@ -10,28 +10,46 @@ include_once('../header.php');
             <div class="container-fluid">
                 <div class="row">
                     <div class="col-lg-12">
-                        <!-- USER DATA-->
+                      
                         <div class="user-data m-b-30">
                             <h3 class="title-3 m-b-30">
                                 <i class="zmdi zmdi-account-calendar"></i>User Data
                             </h3>
                             <div class="filters m-b-45">
-                                <div class="rs-select2--dark rs-select2--md m-r-10 rs-select2--border">
-                                    <select class="js-select2" name="property">
-                                        <option selected="selected">All Properties</option>
-                                        <option value="">Products</option>
-                                        <option value="">Services</option>
-                                    </select>
-                                    <div class="dropDownSelect2"></div>
+                            <form id="userSearchForm">
+                                <div class="form-row searchfrom">
+                        
+                                    <div class="form-group col-md-3">
+                                        <label for="name">Name</label>
+                                        <input type="text" class="form-control" id="name" placeholder="Enter name">
+                                    </div>
+                
+                                    <div class="form-group col-md-3">
+                                        <label for="email">Email</label>
+                                        <input type="email" class="form-control" id="email" placeholder="Enter email">
+                                    </div>
+                        
+                                    <div class="form-group col-md-3">
+                                        <label for="role">Role</label>
+                                        <select class="form-control" id="role">
+                                            <option value="" selected>All Roles</option>
+                                            <option value="1">Admin</option>
+                                            <option value="0">User</option>
+                                        </select>
+                                    </div>
+                                
+                                    <div class="form-group col-md-3">
+                                        <label for="status">Status</label>
+                                        <select class="form-control" id="status">
+                                            <option value="" selected>All Statuses</option>
+                                            <option value="1">Activated</option>
+                                            <option value="0">Blocked</option>
+                                        </select>
+                                    </div>
+                                    <button type="button" class="btn btn-success" id="searchUsers">Search</button>
                                 </div>
-                                <div class="rs-select2--dark rs-select2--sm rs-select2--border">
-                                    <select class="js-select2 au-select-dark" name="time">
-                                        <option selected="selected">All Time</option>
-                                        <option value="">By Month</option>
-                                        <option value="">By Day</option>
-                                    </select>
-                                    <div class="dropDownSelect2"></div>
-                                </div>
+
+                            </form>
                             </div>
                             <div class="table-responsive table-data">
                                 <table id="userTable" class="table display">
@@ -46,7 +64,7 @@ include_once('../header.php');
                                             <td>Name</td>
                                             <td>Email</td>
                                             <td>Role</td>
-                                            <td>Type</td>
+                                            <td>Status</td>
                                             <td>Actions</td>
                                         </tr>
                                     </thead>
@@ -86,9 +104,16 @@ $(document).ready(function() {
     var table = $('#userTable').DataTable({
         "processing": true,
         "serverSide": true,
+        "searching": false, 
         "ajax": {
             "url": "<?php echo $urlval ?>admin/ajax/user/fetchUsers.php",
-            "type": "POST"
+            "type": "POST",
+            "data": function(d) {
+                d.name = $('#name').val();  
+                d.email = $('#email').val(); 
+                d.role = $('#role').val();   
+                d.status = $('#status').val(); 
+            }
         },
         "columns": [
             {"data": "checkbox"}, 
@@ -98,6 +123,11 @@ $(document).ready(function() {
             {"data": "type"}, 
             {"data": "actions"}
         ]
+    });
+
+
+    $('#searchUsers').on('click', function() {
+        table.draw();
     });
 
     $('#userTable').on('click', '.btn-danger', function() {
@@ -119,6 +149,27 @@ $(document).ready(function() {
                 }
             });
     
+    });
+
+    $(document).on('change', '.user-status-select', function() {
+        var userId = $(this).data('id');
+        var status = $(this).val();
+
+        $.ajax({
+            url: '<?php echo $urlval ?>admin/ajax/user/update_status.php',
+            type: 'POST',
+            data: {
+                id: userId,
+                status: status
+            },
+            success: function(response) {
+                alert('User status updated successfully!');
+            },
+            error: function(xhr, status, error) {
+                // Handle error
+                alert('An error occurred while updating status.');
+            }
+        });
     });
 });
 
