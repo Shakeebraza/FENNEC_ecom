@@ -38,6 +38,17 @@ function isActive($link) {
                             </li>
                         </ul>
                     </li>
+                    <li class="nav-item has-sub <?=isActive('/fennec/admin/banner/index.php');  ?> <?=isActive('/fennec/admin/banner/addbanner.php');  ?>">
+                        <a class="nav-link js-arrow" <?=isActive('/fennec/admin/user/index.php');  ?> href="#"><i class="fas fa-sliders"></i> Banners</a>
+                        <ul class="list-unstyled navbar__sub-list js-sub-list">
+                            <li>
+                                <a <?=isActive('/fennec/admin/banner/index.php');  ?> href="<?php echo $urlval?>admin/user/index.php">All Banner</a>
+                            </li>
+                            <li>
+                                <a <?=isActive('/fennec/admin/banner/addbanner.php');  ?> href="<?php echo $urlval?>admin/user/adduser.php">Add Banner</a>
+                            </li>
+                        </ul>
+                    </li>
                     <li class="nav-item <?=isActive('/fennec/admin/menu/index.php');  ?>">
                         <a class="nav-link" href="<?php echo $urlval?>admin/menu/index.php"><i class="fas fa-bars"></i>Menus</a>
                     </li>
@@ -96,6 +107,19 @@ function isActive($link) {
                         </li>
                         <li>
                             <a href="<?php echo $urlval?>admin/user/adduser.php">Add users</a>
+                        </li>
+                    </ul>
+                </li>
+
+                <li class="has-sub <?=isActive('/fennec/admin/banner/index.php');  ?> <?=isActive('/fennec/admin/banner/addbanner.php');  ?>">
+                    <a class="js-arrow" href="#">
+                        <i class="fas fa-sliders"></i>Banners</a>
+                    <ul class="list-unstyled navbar__sub-list js-sub-list">
+                        <li>
+                            <a href="<?php echo $urlval?>admin/banner/index.php">All Banner</a>
+                        </li>
+                        <li>
+                            <a href="<?php echo $urlval?>admin/banner/addbanner.php">Add Banner</a>
                         </li>
                     </ul>
                 </li>

@@ -146,9 +146,9 @@ class Fun {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result['total'];
     }
-    public function getAllMenu($start,$length) {
+    public function getAllMenu($start,$length,$where='') {
         try {
-            $tabledata = $this->dbfun->getData('menus','', '', 'updated_at', 'DESC', $start, $length);
+            $tabledata = $this->dbfun->getData('menus',$where, '', 'updated_at', 'DESC', $start, $length);
             if (empty($tabledata)) {
 
                 return [];

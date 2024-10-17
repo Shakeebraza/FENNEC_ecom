@@ -14782,3 +14782,10 @@ a{
     padding: 25px;
     background: #e5e5e5;
 }
+.searchfromwhite{
+    border: 1px solid #ffffff3d;
+    padding: 25px;
+    background: #fff;
+    margin-bottom: 38px;
+    border-radius: 7px;
+}

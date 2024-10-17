@@ -8,8 +8,19 @@ $length = intval($_POST['length']);
 
 $totalRecords = $fun->getTotalMenuCount();
 
+$searchName = $_POST['name'] ?? '';
+$searchStatus = $_POST['status'] ?? '';
+$conditions = [];
 
-$menuData = $fun->getAllMenu($start, $length);
+if (!empty($searchName)) {
+    $conditions[] = "name LIKE '%" . $searchName . "%'";
+}
+if ($searchStatus == 0 || $searchStatus == 1) {
+    $conditions[] = "is_enabled = '" . $searchStatus. "'";
+}
+$where = !empty($conditions) ? implode(' AND ', $conditions) : '';
+
+$menuData = $fun->getAllMenu($start, $length,$where);
 
 
 if (empty($menuData)) {
