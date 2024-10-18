@@ -7,9 +7,19 @@ $length = intval($_POST['length']);
 
 
 $totalRecords = $fun->getTotalPageCount();
+$searchName = $_POST['name'] ?? '';
+$searchStatus = $_POST['status'] ?? '';
+$conditions = [];
 
+if (!empty($searchName)) {
+    $conditions[] = "name LIKE '%" . $searchName . "%'";
+}
+if ($searchStatus == 0 || $searchStatus == 1) {
+    $conditions[] = "is_enable = '" . $searchStatus. "'";
+}
+$where = !empty($conditions) ? implode(' AND ', $conditions) : '';
 
-$pagesData = $fun->getAllPages($start, $length);
+$pagesData = $fun->getAllPages($start, $length,$where);
 
 
 if (empty($pagesData)) {

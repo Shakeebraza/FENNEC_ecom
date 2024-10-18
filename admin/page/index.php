@@ -11,32 +11,24 @@ include_once('../header.php');
             <div class="row">
                             <div class="col-md-12">
  
-                                <h3 class="title-5 m-b-35">Menus Table</h3>
-                                <div class="table-data__tool">
-                                    <div class="table-data__tool-left">
-                                        <div class="rs-select2--light rs-select2--md">
-                                            <select class="js-select2" name="property">
-                                                <option selected="selected">All Properties</option>
-                                                <option value="">Option 1</option>
-                                                <option value="">Option 2</option>
-                                            </select>
-                                            <div class="dropDownSelect2"></div>
-                                        </div>
-                                        <div class="rs-select2--light rs-select2--sm">
-                                            <select class="js-select2" name="time">
-                                                <option selected="selected">Today</option>
-                                                <option value="">3 Days</option>
-                                                <option value="">1 Week</option>
-                                            </select>
-                                            <div class="dropDownSelect2"></div>
-                                        </div>
-                                        
+                                <h3 class="title-5 m-b-35">Pages Table</h3>
+                                <form id="userSearchForm">
+                                <div class="form-row searchfromwhite">
+                                    <div class="form-group col-md-3">
+                                        <label for="name">Page Name</label>
+                                        <input type="text" class="form-control" id="name" placeholder="Enter name">
                                     </div>
-                                    <div class="table-data__tool-right">
-                                        
-                                            <div class="dropDownSelect2"></div>
-                                        </div>
+                                    <div class="form-group col-md-3">
+                                        <label for="status">Status</label>
+                                        <select class="form-control" id="status">
+                                            <option value="" selected>All Statuses</option>
+                                            <option value="1">Activated</option>
+                                            <option value="0">Unactivated</option>
+                                        </select>
                                     </div>
+                                    <button type="button" class="btn btn-success" id="searchPage" style="height: 37px;margin-top: 30px;">Search</button>
+                                </div>
+                            </form>
                                 </div>
                                 <div  class="table-responsive table-responsive-data2">
                                     <table id="userTable" class="table table-data2">
@@ -72,9 +64,14 @@ include_once('../footer.php');
         var table = $('#userTable').DataTable({
             "processing": true,
             "serverSide": true,
+            "searching": false,
             "ajax": {
                 "url": "<?php echo $urlval; ?>admin/ajax/page/fetchpages.php",
-                "type": "POST"
+                "type": "POST",
+                "data": function(d) {
+                d.name = $('#name').val();  
+                d.status = $('#status').val();  
+            }
             },
             "columns": [
                 {"data": "checkbox"},
@@ -84,6 +81,9 @@ include_once('../footer.php');
                 {"data": "actions"}
             ],
         });
+        $('#searchPage').on('click', function() {
+        table.draw();
+    });
 
         $('#userTable').on('click', '.btn-danger', function() {
             var userId = $(this).data('id');

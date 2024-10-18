@@ -202,9 +202,9 @@ class Fun {
         return $result['total'];
     }
 
-    public function getAllPages($start,$length) {
+    public function getAllPages($start,$length,$where='') {
         try {
-            $tabledata = $this->dbfun->getData('pages','', '', 'created_at', 'DESC', $start, $length);
+            $tabledata = $this->dbfun->getData('pages',$where, '', 'created_at', 'DESC', $start, $length);
             if (empty($tabledata)) {
 
                 return [];
