@@ -42,7 +42,7 @@ foreach ($bannerData as $index => $banner) {
         'checkbox' => '<label class="au-checkbox"><input type="checkbox"><span class="au-checkmark"></span></label>',
         'name' => htmlspecialchars($banner['title']),
         'date' => htmlspecialchars($banner['updated_at']),
-        'image' => '<img src="' .$urlval.htmlspecialchars($banner['image_url']).'"/>',
+        'image' => '<img style="width:44%; border-radius: 50%;border: 1px solid black;" src="' .$urlval.htmlspecialchars($banner['image_url']).'"/>',
         'status' => '<span class="status--'.$stats.'">'.$statsTest.'</span>',
         'actions' => '
     <div class="table-data-feature">
