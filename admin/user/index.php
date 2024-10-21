@@ -65,6 +65,7 @@ include_once('../header.php');
                                             <td>Email</td>
                                             <td>Role</td>
                                             <td>Status</td>
+                                            <td>Chat</td>
                                             <td>Actions</td>
                                         </tr>
                                     </thead>
@@ -121,6 +122,7 @@ $(document).ready(function() {
             {"data": "email"},
             {"data": "role"},
             {"data": "type"}, 
+            {"data": "chat"}, 
             {"data": "actions"}
         ]
     });
@@ -168,6 +170,28 @@ $(document).ready(function() {
             error: function(xhr, status, error) {
                 // Handle error
                 alert('An error occurred while updating status.');
+            }
+        });
+    });
+    $('#userTable').on('click', '.create-chat-btn', function() {
+        var chatId = $(this).data('chatid');
+        
+        $.ajax({
+            url: '<?php echo $urlval ?>admin/ajax/user/create_chat.php',
+            type: 'POST',
+            data: {
+                chatId: chatId
+            },
+            success: function(response) {
+                if (response.success) {
+                    alert('Chat created successfully!');
+                    table.ajax.reload();
+                } else {
+                    alert('Error creating chat: ' + response.message);
+                }
+            },
+            error: function() {
+                alert('An error occurred while creating the chat.');
             }
         });
     });
