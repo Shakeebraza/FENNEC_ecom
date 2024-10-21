@@ -14667,6 +14667,9 @@ section {
     margin-right: 10px;
     width: 20px;
 }
+i.zmdi.zmdi-comment-more.active {
+    color: #4272d7;
+}
 @media (min-width: 992px) {
     #coolAdminNavbar {
         display: none !important;

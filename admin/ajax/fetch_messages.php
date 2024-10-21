@@ -4,7 +4,6 @@ require_once("../../global.php");
 if (isset($_GET['conversation_id'])) {
     $conversationId = $_GET['conversation_id'];
 
-    // Fetch messages for the given conversation
     $messages = $dbFunctions->getDatanotenc('messages', "conversation_id = '$conversationId'", '', 'created_at', 'ASC');
 
     if (!empty($messages)) {
@@ -12,7 +11,6 @@ if (isset($_GET['conversation_id'])) {
             $senderId = $message['sender_id'];
             $userdata = $dbFunctions->getDatanotenc('users', "id = '$senderId'");
 
-            // Set a default image if no user data is found
             $image = !empty($userdata) && !empty($userdata[0]['profile']) ? $urlval . $userdata[0]['profile'] : $urlval . 'images/profile.jpg';
             
             echo '<div class="message">';

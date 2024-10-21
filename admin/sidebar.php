@@ -1,13 +1,3 @@
-<?php
-$current_url = $_SERVER['REQUEST_URI'];
-
-function isActive($link) {
-    global $current_url;
-    return strpos($current_url, $link) !== false ? 'active' : '';
-}
-
-?>
-<nav id="coolAdminNavbar" class="navbar navbar-light bg-light d-lg-none">
     <div class="container-fluid">
         <a class="navbar-brand" href="#">
             <img src="https://via.placeholder.com/40" alt="Cool Admin Logo" width="40" height="40">
