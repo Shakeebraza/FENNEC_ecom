@@ -494,7 +494,7 @@ class Fun {
             'gold' => 0
         ];
     
-        // Sum the counts based on product type
+  
         foreach ($productData as $data) {
             $counts[$data['product_type']] = (int)$data['count'];
         }
@@ -512,4 +512,61 @@ class Fun {
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+    public function generateSettingsForm() {
+        $settings = $this->dbfun->getDatanotenc('site_settings', '', '', '', 'ASC', 0, 100);
+        $formHtml = '<form method="POST" action="" enctype="multipart/form-data" style="max-width: 100%; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">';
+    
+        foreach ($settings as $setting) {
+            $key = htmlspecialchars($setting['key']);
+            $value = htmlspecialchars($setting['value']);  // Encode only when displaying data
+            $inputType = htmlspecialchars($setting['input_type']);
+            
+            $label = ucwords(str_replace('_', ' ', $key));
+    
+            $formHtml .= "<div style='margin-bottom: 15px;'>";
+            $formHtml .= "<label for='{$key}' style='display: block; margin-bottom: 5px; font-weight: bold; color: #333;'>{$label}</label>";
+    
+            switch ($inputType) {
+                case 'text':
+                    $formHtml .= "<input type='text' id='{$key}' name='{$key}' value='{$value}' required style='width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;'>";
+                    break;
+    
+                case 'url':
+                    $formHtml .= "<input type='url' id='{$key}' name='{$key}' value='{$value}' required style='width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;'>";
+                    break;
+    
+                case 'image':
+                    $formHtml .= "<input type='file' id='{$key}' name='{$key}' value='".$this->urlval . $value."' required placeholder='Image URL' style='width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;'>";
+                    $formHtml .= "<img src='".$this->urlval . $value."' alt='{$key}' style='width: 100px; height: auto; margin-top: 5px;'><br>";
+                    $formHtml .= "<small style='color: #555;'>Upload a new image URL above if needed.</small>";
+                    break;
+    
+                default:
+                    $formHtml .= "<input type='text' id='{$key}' name='{$key}' value='{$value}' required style='width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;'>";
+                    break;
+            }
+    
+            $formHtml .= "</div>";
+        }
+    
+        $formHtml .= '<div>
+                        <button type="submit" style="background-color: #4CAF50; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer;">Save Settings</button>
+                      </div>';
+        $formHtml .= '</form>';
+    
+        return $formHtml;
+    }
+    
+    public function updateDatasiteseeting($table, $dataArray) {
+        foreach ($dataArray as $key => $value) {
+            $sql = "UPDATE {$table} SET `value` = :value WHERE `key` = :key";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':key', $key);
+            $stmt->bindParam(':value', $value);
+            $stmt->execute();
+        }
+        return true; 
+    }
+    
+    
 }

@@ -67,6 +67,9 @@
                     <li class="nav-item <?=isActive('/fennec/admin/box/index.php');  ?>">
                         <a class="nav-link" href="<?php echo $urlval?>admin/box/index.php"><i class="fas fa-desktop"></i> Box</a>
                     </li>
+                    <li class="nav-item <?=isActive('/fennec/admin/box/setting.php');  ?>">
+                        <a class="nav-link" href="<?php echo $urlval?>admin/box/setting.php"><i class="fas fa-cog"></i> Site Setting</a>
+                    </li>
                 </ul>
             </div>
         </div>
@@ -149,6 +152,10 @@
                 <li class="<?=isActive('/fennec/admin/box/index.php');  ?>">
                     <a href="<?php echo $urlval?>admin/box/index.php">
                         <i class="fas fa-desktop"></i>Box</a>
+                </li>
+                <li class="<?=isActive('/fennec/admin/setting.php');  ?>">
+                    <a href="<?php echo $urlval?>admin/setting.php">
+                        <i class="fas fa-cog"></i>Site Setting</a>
                 </li>
             </ul>
         </nav>
