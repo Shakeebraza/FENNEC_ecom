@@ -3,25 +3,23 @@ require_once("../../global.php");
 include_once('../header.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
     $heading = $_POST['heading'] ?? '';
     $slug = $_POST['slug'] ?? '';
     $link = $_POST['link'] ?? '';
     $description = $_POST['description'] ?? '';
-    $text_area = $_POST['textaera'] ?? '';
+    $text_area = $_POST['textaera'] ?? ''; // Ensure correct spelling: 'text_area'
     $status = $_POST['status'] ?? '';
 
     $addNewData = [
-        'name' => $heading,
-        'slug' => $slug,
-        'link' => $link,
-        'content' => $description,
-        'subcontent' => $text_area,
+        'name' => htmlspecialchars($heading, ENT_QUOTES, 'UTF-8'), // Sanitize heading
+        'slug' => htmlspecialchars($slug, ENT_QUOTES, 'UTF-8'), // Sanitize slug
+        'link' => htmlspecialchars($link, ENT_QUOTES, 'UTF-8'), // Sanitize link
+        'content' => htmlspecialchars($description, ENT_QUOTES, 'UTF-8'), // Sanitize description
+        'subcontent' => $text_area, // Allow HTML in this field
         'is_enable' => $status,
     ];
 
-
-    $updateResult = $dbFunctions->setData('pages', $addNewData); 
+    $updateResult = $dbFunctions->setDataWithHtmlAllowed('pages', $addNewData);
 
     if ($updateResult['success']) {
         echo "<script>alert('Page added successfully.');</script>";
@@ -29,6 +27,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo "<script>alert('Error adding page: {$updateResult['message']}');</script>";
     }
 }
+
 
 
 

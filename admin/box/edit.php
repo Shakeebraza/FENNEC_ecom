@@ -11,7 +11,7 @@ if (!isset($_GET['boxid'])) {
     exit;
 }
 
-$boxId = $security->decrypt($_GET['boxid']);
+$boxId = base64_decode($_GET['boxid']);
 $box = $dbFunctions->getDataById('box', $boxId); 
 
 if (!$box) {

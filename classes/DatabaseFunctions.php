@@ -173,6 +173,61 @@ class DatabaseFunctions {
             return ['success' => false, 'message' => 'Database error: ' . $e->getMessage()];
         }
     }
+
+    public function setDataWithHtmlAllowed($tableName, $data, $where = null) {
+        $tableName = preg_replace('/[^a-zA-Z0-9_]/', '', $tableName);
+        
+        $sanitizedData = [];
+        
+        foreach ($data as $key => $value) {
+       
+         
+                $sanitizedData[$key] = $value; 
+            
+        }
+        
+        try {
+            if ($where) {
+      
+                $set = '';
+                $params = [];
+                foreach ($sanitizedData as $key => $value) {
+                    $set .= "`$key` = :$key, ";
+                    $params[":$key"] = $value;
+                }
+                $set = rtrim($set, ', ');
+                
+                $whereClause = '';
+                foreach ($where as $col => $val) {
+                    $whereClause .= "`$col` = :$col AND ";
+                    $params[":$col"] = $val;
+                }
+                $whereClause = rtrim($whereClause, ' AND ');
+        
+                $stmt = $this->pdo->prepare("UPDATE `$tableName` SET $set WHERE $whereClause");
+            } else {
+
+                $columns = implode('`, `', array_keys($sanitizedData));
+                $placeholders = ':' . implode(', :', array_keys($sanitizedData));
+                $stmt = $this->pdo->prepare("INSERT INTO `$tableName` (`$columns`) VALUES ($placeholders)");
+                foreach ($sanitizedData as $key => $value) {
+                    $params[":$key"] = $value;
+                }
+            }
+  
+            $stmt->execute($params);
+            return ['success' => true, 'message' => 'Data saved successfully.'];
+    
+        } catch (PDOException $e) {
+            if ($e->getCode() == 23000) {
+                return ['success' => false, 'message' => 'Duplicate entry error: The email or field you are trying to use already exists.'];
+            }
+            return ['success' => false, 'message' => 'Database error: ' . $e->getMessage()];
+        }
+    }
+    
+    
+    
     
     function delData($tableName, $whereCondition) {
     

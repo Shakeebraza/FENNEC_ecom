@@ -56,7 +56,10 @@
     </div>
   </div>
 </footer>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-<script src="<?php echo $urlval ?>custom/js/index.js"></script>
-<script src="js/header.js"></script>
-<script src="/js/forsale.js"></script>
+
+
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+<script src="<?php echo $urlval?>custom/js/index.js"></script>
+<script src="<?php echo $urlval?>custom/js/header.js"></script>
+<script src="<?php echo $urlval?>custom/js/js/forsale.js"></script>
