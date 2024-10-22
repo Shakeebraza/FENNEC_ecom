@@ -21,6 +21,8 @@ class Fun {
                 if (empty($tabledata)) {
                     echo "No data found or an issue with the query.";
                     return [];
+                } else {
+                    // echo "Data retrieved successfully: <br>";
                 }
     
                 foreach ($tabledata as &$row) {
@@ -200,9 +202,9 @@ class Fun {
         return $result['total'];
     }
 
-    public function getAllPages($start,$length) {
+    public function getAllPages($start,$length,$where='') {
         try {
-            $tabledata = $this->dbfun->getData('pages','', '', 'created_at', 'DESC', $start, $length);
+            $tabledata = $this->dbfun->getData('pages',$where, '', 'created_at', 'DESC', $start, $length);
             if (empty($tabledata)) {
 
                 return [];
@@ -409,15 +411,142 @@ class Fun {
     
         return false; 
     }
-    // public function getcategories(){
-    //     $userData = $this->dbfun->getDatanotenc('categories', "is_enable = 1",'','sort_order','DESC');
-    //     if($userData){
+    
+    function getUserRegistrationData() {
+        $query = "SELECT DATE(created_at) as date, COUNT(*) as count 
+                  FROM users 
+                  WHERE created_at >= NOW() - INTERVAL 30 DAY 
+                  GROUP BY DATE(created_at) 
+                  ORDER BY DATE(created_at) ASC"; 
+        $registrationData = $this->pdo->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    
+        $dates = [];
+        $userCounts = [];
+        foreach ($registrationData as $data) {
+            $dates[] = $data['date'];         
+            $userCounts[] = $data['count']; 
+        }
+        $fullDates = [];
+        $fullCounts = [];
+        for ($i = 29; $i >= 0; $i--) { 
+            $date = date('Y-m-d', strtotime("-$i days"));
+            $fullDates[] = $date;
+            $fullCounts[] = 0; 
+            foreach ($registrationData as $data) {
+                if ($data['date'] == $date) {
+                    $fullCounts[29 - $i] = $data['count'];
+                    break;
+                }
+            }
+        }
+        $totalNewMembers = array_sum($fullCounts);
+        return [
+            'dates' => $fullDates,
+            'userCounts' => $fullCounts,
+            'totalNewMembers' => $totalNewMembers
+        ];
+    }
+    function getProductAdditionData() {
+        $query = "SELECT DATE(created_at) as date, COUNT(*) as count 
+                  FROM products 
+                  WHERE created_at >= NOW() - INTERVAL 6 MONTH 
+                  GROUP BY DATE(created_at) 
+                  ORDER BY DATE(created_at) ASC"; 
+    
+        $productData = $this->pdo->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    
+        $fullDates = [];
+        $fullCounts = [];
 
-    //         return $userData;
-    //     }
-    //     return false;
+        for ($i = 5; $i >= 0; $i--) { 
+          
+            $date = date('Y-m-01', strtotime("-$i months"));
+            $fullDates[] = $date;
+            $fullCounts[] = 0; 
+        }
+    
+   
+        foreach ($productData as $data) {
+      
+            $dateIndex = array_search(date('Y-m-01', strtotime($data['date'])), $fullDates);
+            if ($dateIndex !== false) {
+                $fullCounts[$dateIndex] = $data['count']; 
+            }
+        }
+    
+        $totalProducts = array_sum($fullCounts);
+   
+        return [
+            'dates' => array_map(function($d) { return date('F', strtotime($d)); }, $fullDates), 
+            'productCounts' => $fullCounts,
+            'totalProducts' => $totalProducts
+        ];
+    }
+    
+    function getProductCounts() {
+        $query = "SELECT product_type, COUNT(*) as count FROM products GROUP BY product_type";
+        $productData = $this->pdo->query($query)->fetchAll(PDO::FETCH_ASSOC);
+    
+        // Initialize counts
+        $counts = [
+            'standard' => 0,
+            'premium' => 0,
+            'gold' => 0
+        ];
+    
+        // Sum the counts based on product type
+        foreach ($productData as $data) {
+            $counts[$data['product_type']] = (int)$data['count'];
+        }
+    
+        return $counts;
+    }
+
+    public function getUserVerificationCounts() {
+        $query = "SELECT 
+                    COUNT(CASE WHEN email_verified_at IS NOT NULL THEN 1 END) AS verified_count,
+                    COUNT(CASE WHEN email_verified_at IS NULL THEN 1 END) AS not_verified_count
+                  FROM users";
+    
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC);
+    }
+
+    public function getaperproduct(){
+        $productData=$this->dbfun->getDatanotenc('products','product_type = "premium" OR product_type = "gold"', '',  '','ASC',  0, 12);
+        if (isset($productData)){
+
+            return $productData;
+        }
+        else{
+            return ['Error'=>'No product found.'];
+        }
         
-    // }
+    }
+    public function TopLocations() {
+        try {
+            $stmt = $this->pdo->prepare("SELECT countries.name AS country_name, cities.name AS city_name FROM countries LEFT JOIN cities ON countries.id = cities.country_id");
+            $stmt->execute();
+            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+            return [
+                'status' => 'success',
+                'code' => 200,
+                'data' => $data
+            ];
+        } catch (PDOException $e) {
+            return [
+                'status' => 'error',
+                'code' => 500,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
     
     
+    
+    
+
+
 }
