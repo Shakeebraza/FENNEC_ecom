@@ -22,7 +22,7 @@ class Fun {
                     echo "No data found or an issue with the query.";
                     return [];
                 } else {
-                    echo "Data retrieved successfully: <br>";
+                    // echo "Data retrieved successfully: <br>";
                 }
     
                 foreach ($tabledata as &$row) {
@@ -361,6 +361,7 @@ class Fun {
     public function rememberTokenCheckByCookie($remember_token = NULL) {
         if (isset($remember_token) && !empty($remember_token)) {
             $userData = $this->dbfun->getDatanotenc('users', "remember_token = '$remember_token'");
+            
             if ($userData) {
           
                 if (isset($userData[0]['email_verified_at'])) {
@@ -567,6 +568,75 @@ class Fun {
         }
         return true; 
     }
+
+    public function TopLocations() {
+        try {
+            $stmt = $this->pdo->prepare("SELECT countries.name AS country_name, cities.name AS city_name FROM countries LEFT JOIN cities ON countries.id = cities.country_id");
+            $stmt->execute();
+            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
+            return [
+                'status' => 'success',
+                'code' => 200,
+                'data' => $data
+            ];
+        } catch (PDOException $e) {
+            return [
+                'status' => 'error',
+                'code' => 500,
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    function getSiteSettingValue($key) {
+        global $dbFunctions;
+
+        $query = "SELECT `value` FROM `site_settings` WHERE `key` = :key";
+        $stmt = $this->pdo->prepare($query);
+        
+        $stmt->bindParam(':key', $key);
+        
+
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+  
+        return $result ? $result['value'] : null; 
+    }
+    function getMenus() {
+       
+        $menuQuery = "SELECT * FROM menus WHERE is_enabled = 1";
+        $stmt = $this->pdo->prepare($menuQuery);
+        $stmt->execute();
+        
+
+        $menus = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+
+        $menuData = [];
+    
+        foreach ($menus as $menu) {
+            $menuId = $menu['id'];
+            
+
+            $itemQuery = "SELECT * FROM menu_items WHERE menu_id = :menu_id AND is_enable = 1";
+            $itemStmt = $this->pdo->prepare($itemQuery);
+            $itemStmt->bindParam(':menu_id', $menuId);
+            $itemStmt->execute();
+            
+
+            $items = $itemStmt->fetchAll(PDO::FETCH_ASSOC);
+            
+ 
+            $menuData[] = [
+                'menu' => $menu,
+                'items' => $items,
+            ];
+        }
+    
+        return $menuData;
+    }
     
 }

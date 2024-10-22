@@ -43,6 +43,13 @@ foreach ($catsData as $index => $cat) {
         'checkbox' => '<label class="au-checkbox"><input type="checkbox"><span class="au-checkmark"></span></label>',
         'name' => htmlspecialchars($cat['category_name']),
         'date' => htmlspecialchars($cat['created_at']),
+        'showhome' => '
+            <label class="switch switch-3d switch-success mr-3">
+                <input type="checkbox" class="switch-input show-home-toggle" data-id="' . $security->encrypt($cat['id']) . '" ' . ($cat['is_show'] == 1 ? 'checked' : '') . '>
+                <span class="switch-label"></span>
+                <span class="switch-handle"></span>
+            </label>
+        ',
         'status' => '<span class="status--' . $stats . '">' . $statsTest . '</span>',
         'actions' => '
             <div class="table-data-feature">
