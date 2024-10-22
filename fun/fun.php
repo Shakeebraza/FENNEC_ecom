@@ -544,6 +544,11 @@ class Fun {
         }
     }
     
+    // public function FeatureCat() {
+    //     $query = "SELECT category_image, category_name FROM categories WHERE is_enable = 1 ORDER BY sort_order ASC LIMIT 10";
+    //     $productData = $this->dbfun->executeQuery($query); // Use your database execution function
+    //     return $productData ?: ['Error' => 'No product found.'];
+    // }
     
     
     
