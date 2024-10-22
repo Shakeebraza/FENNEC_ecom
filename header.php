@@ -78,7 +78,7 @@
             </a>
             <a href="LoginRegister.php" class="btn custom-btn d-flex flex-column align-items-center">
               <i class="fa-solid fa-user mb-1 "></i>
-              <span class="new-btn">Login/Register</span>
+              <span class="new-btn">Login</span>
             </a>
           </div>
       </div>

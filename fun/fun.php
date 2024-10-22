@@ -78,7 +78,8 @@ class Fun {
                     'image' => $this->security->decrypt($record['image']),
                     'image2' => $this->security->decrypt($record['image2']),
                     'text' => $this->security->decrypt($record['text']),
-                    'longtext' => $this->security->decrypt($record['longtext'])
+                    'longtext' => $this->security->decrypt($record['longtext']),
+                    'link' => $this->security->decrypt($record['link'])
                 ];
             }
             return $formattedData;

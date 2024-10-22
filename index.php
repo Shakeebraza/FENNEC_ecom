@@ -4,6 +4,9 @@ include_once 'header.php';
 
 
 ?>
+<style>
+  
+</style>
 <!-- index content -->
 <div class="custom-slider-container">
 
@@ -89,41 +92,32 @@ include_once 'header.php';
           </div>
         </div>
       </div>
-
+      <?php
+              $box2 =$fun->getBox('box2');
+              $image2=$urlval.$box2[0]['image'];
+            
+        ?>
       <div class="container mt-4">
         <div class="banner">
           <div class="container">
             <div class="row align-items-center p">
               <div class="col-md-3 mb-3 mb-md-0 p-0">
                 <img
-                  src="https://www.Gumtree.com/assets/frontend/car-half.83dcfd1dda377997b02e49a2215477c0.png"
+                  src="<?= $image2 ?>"
                   alt="Blue car"
                   class="img-fluid" />
               </div>
               <div class="col-md-6 mb-3 mb-md-0">
-                <h3>Looking to sell your car?</h3>
-                <p>Reach millions of active car buyers on Fennec</p>
-                <div class="d-flex flex-wrap">
-                  <div class="me-3 mb-2">
-                    <span class="number-badge">1</span>
-                    Free
-                  </div>
-                  <div class="me-3 mb-2">
-                    <span class="number-badge">2</span>
-                    Quick
-                  </div>
-                  <div class="mb-2">
-                    <span class="number-badge">3</span>
-                    Easy
-                  </div>
-                </div>
+                <h3><?=  $box2[0]['heading'];?></h3>
+                <p><?=  $box2[0]['phara'];?></p>
+                <?=  $box2[0]['longtext'];?>
               </div>
               <div class="col-md-3">
-                <button class="btn btn-warning text-dark w-100 mb-2">
+                <!-- <button class="btn btn-warning text-dark w-100 mb-2">
                   <span class="eu-flag d-inline-block me-2"></span>
                   Enter reg
-                </button>
-                <button class="btn btn-success w-100">Sell now</button>
+                </button> -->
+                <a href="<?=  $box2[0]['link'];?>" class="btn btn-success w-100">Click now</a>
               </div>
             </div>
           </div>
@@ -391,9 +385,12 @@ include_once 'header.php';
 </div>
 <div class="container mt-4 mb-5">
   <span class="tp-lctn-mn">
-    <h5 class="text-center mb-5 tp-lct-icn"><b>Top Locations</b></h5>
+    <h5 class="text-center mb-5 tp-lct-icn" id="topLocationsToggle" style="cursor: pointer;">
+      <b>Top Locations</b>
+    </h5>
   </span>
-  <h6 class="text-center mb-2"><b>Top Cities</b></h6>
+  <div id="topLocationsContent" style="display: none;">
+  <!-- <h6 class="text-center mb-2"><b>Top Cities</b></h6> -->
   <?php
   $topLocations = $fun->TopLocations();
   if ($topLocations['status'] === 'success') {
@@ -435,11 +432,14 @@ include_once 'header.php';
     </div>
   <?php } ?>
 </div>
+</div>
 <?php
 include_once 'footer.php';
 
 ?>
+<script>
 
+</script>
 </body>
 
 </html>
