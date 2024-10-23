@@ -3,8 +3,10 @@ require_once('../../../global.php');
 session_start();
 header('Content-Type: application/json');
 
+// Initialize an array to store errors
 $errors = [];
 
+// Validate input fields
 if (empty($_POST['productName'])) {
     $errors['productName'] = 'Product name is required.';
 }
@@ -42,67 +44,96 @@ if (empty($_POST['discountPrice'])) {
     $errors['discountPrice'] = 'Discount price is required.';
 }
 
-
 if (!empty($errors)) {
     echo json_encode(['success' => false, 'errors' => $errors]);
     exit;
 }
 
 try {
-    $stmt = $pdo->prepare("
-        INSERT INTO products (
-            name, 
-            slug, 
-            image, 
-            description, 
-            brand, 
-            conditions, 
-            category_id, 
-            subcategory_id, 
-            price, 
-            discount_price,
-            country_id,
-            city_id,
-            user_id
-        ) VALUES (
-            :productName, 
-            :slug, 
-            :image, 
-            :description, 
-            :brand, 
-            :conditions, 
-            :category, 
-            :subcategory, 
-            :price, 
-            :discountPrice,
-            :country,
-            :city,
-            :user_id
-        )");
-
-    $imagePath = '../../../upload/' . basename($_FILES['image']['name']);
+    $imagePath = '../../../upload/product/' . basename($_FILES['image']['name']);
+    $imagePathSave = 'upload/product/' . basename($_FILES['image']['name']);
     if (!move_uploaded_file($_FILES['image']['tmp_name'], $imagePath)) {
         throw new Exception('Failed to upload image.');
     }
 
-    $stmt->bindParam(':productName', $_POST['productName']);
-    $stmt->bindParam(':slug', $_POST['slug']);
-    $stmt->bindParam(':image', $imagePath);
-    $stmt->bindParam(':description', $_POST['description']);
-    $stmt->bindParam(':brand', $_POST['brand']);
-    $stmt->bindParam(':conditions', $_POST['condition']);
-    $stmt->bindParam(':category', $_POST['category']);
-    $stmt->bindParam(':subcategory', $_POST['subcategory']);
-    $stmt->bindParam(':price', $_POST['price']);
-    $stmt->bindParam(':discountPrice', $_POST['discountPrice']);
-    $stmt->bindParam(':country', $_POST['country']);
-    $stmt->bindParam(':city', $_POST['city']);
-    $stmt->bindParam(':user_id', base64_decode($_SESSION['userid']));
+    $productData = [
+        'name' => $_POST['productName'],
+        'slug' => $_POST['slug'],
+        'image' => $imagePathSave,
+        'description' => $_POST['description'],
+        'brand' => $_POST['brand'],
+        'conditions' => $_POST['condition'],
+        'category_id' => $_POST['category'],
+        'subcategory_id' => $_POST['subcategory'],
+        'price' => $_POST['price'],
+        'discount_price' => $_POST['discountPrice'],
+        'country_id' => $_POST['country'],
+        'city_id' => $_POST['city'],
+        'user_id' => base64_decode($_SESSION['userid']),
+    ];
 
-    // Execute the statement
-    $stmt->execute();
+    $result = setData('products', $productData);
 
+    if (!$result['success']) {
+        echo json_encode($result);
+        exit;
+    }
+
+    // Get the last inserted product ID
+    $productId = $pdo->lastInsertId();
+
+    // Handle gallery images if uploaded
+    if (isset($_FILES['gallery'])) {
+        $galleryStmt = $pdo->prepare("
+            INSERT INTO product_images (product_id, image_path, created_at) 
+            VALUES (:product_id, :image_path, current_timestamp())");
+
+        foreach ($_FILES['gallery']['tmp_name'] as $key => $tmpName) {
+            if ($_FILES['gallery']['error'][$key] === UPLOAD_ERR_OK) {
+                $galleryImagePath = '../../../upload/productgallery/' . basename($_FILES['gallery']['name'][$key]);
+                $galleryImagePathSave = 'upload/productgallery/' . basename($_FILES['gallery']['name'][$key]);
+                if (move_uploaded_file($tmpName, $galleryImagePath)) {
+                    // Use bindValue instead of bindParam to avoid passing issues
+                    $galleryStmt->bindValue(':product_id', $productId);
+                    $galleryStmt->bindValue(':image_path', $galleryImagePathSave);
+                    $galleryStmt->execute();
+                }
+            }
+        }
+    }
+
+    // Return success message
     echo json_encode(['success' => true, 'message' => 'Product added successfully!']);
 } catch (Exception $e) {
     echo json_encode(['success' => false, 'message' => 'Error saving product: ' . $e->getMessage()]);
 }
+
+// Function to set data in the database
+function setData($tableName, $data) {
+    global $pdo; // Make sure to use the global PDO instance
+    $tableName = preg_replace('/[^a-zA-Z0-9_]/', '', $tableName);
+
+    $sanitizedData = [];
+    foreach ($data as $key => $value) {
+        $value = strip_tags($value);
+        $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+        $sanitizedData[$key] = $value;
+    }
+
+    try {
+        // Build the SQL statement
+        $columns = implode('`, `', array_keys($sanitizedData));
+        $placeholders = ':' . implode(', :', array_keys($sanitizedData));
+        $stmt = $pdo->prepare("INSERT INTO `$tableName` (`$columns`) VALUES ($placeholders)");
+
+        // Execute the statement
+        $stmt->execute($sanitizedData);
+        return ['success' => true, 'message' => 'Data saved successfully.'];
+    } catch (PDOException $e) {
+        if ($e->getCode() == 23000) {
+            return ['success' => false, 'message' => 'Duplicate entry error: The email or field you are trying to use already exists.'];
+        }
+        return ['success' => false, 'message' => 'Database error: ' . $e->getMessage()];
+    }
+}
+?>

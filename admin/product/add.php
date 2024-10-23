@@ -386,12 +386,20 @@ include_once('../footer.php');
     });
 
     function showSuccessAlert() {
-        alert('Product added successfully!');
-    }
+    const successAlert = document.getElementById('successAlert');
+    successAlert.style.display = 'block';
+    setTimeout(() => {
+        successAlert.style.display = 'none';
+    }, 3000); 
+}
 
-    function showErrorAlert() {
-        alert('An error occurred while processing your request. Please try again.');
-    }
+function showErrorAlert() {
+    const errorAlert = document.getElementById('errorAlert');
+    errorAlert.style.display = 'block';
+    setTimeout(() => {
+        errorAlert.style.display = 'none';
+    }, 3000);
+}
 });
 
     });
