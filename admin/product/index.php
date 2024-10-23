@@ -2,7 +2,7 @@
 require_once("../../global.php");
 include_once('../header.php');
 
-$getproduct = $dbFunctions->getData("products", "is_enable = 1", '', '', "DESC");
+// $getproduct = $dbFunctions->getData("products", "is_enable = 1", '', '', "DESC");
 
 include_once('style.php');
 ?>
@@ -129,20 +129,28 @@ $(document).ready(function() {
 
 function fetchProducts(page) {
     var product_name = $('input[name="product_name"]').val();
-    var min_price = $('input[name="min_price"]').val();
-    var max_price = $('input[name="max_price"]').val();
-    var category = $('select[name="category"]').val();
+var min_price = $('input[name="min_price"]').val();
+var max_price = $('input[name="max_price"]').val();
+var category = $('select[name="category"]').val();
+var subcategory = $('select[name="subcategory"]').val();
+var product_type = $('select[name="product_type"]').val();
+var country = $('select[name="country"]').val();
+var city = $('select[name="city"]').val();
 
     $.ajax({
         url: '<?php echo $urlval ?>admin/ajax/product/fetchpro.php',
         type: 'GET',
         data: {
             page: page,
-            limit: 6,
-            product_name: product_name,
-            min_price: min_price,
-            max_price: max_price,
-            category: category
+        limit: 6,
+        product_name: product_name,
+        min_price: min_price,
+        max_price: max_price,
+        category: category,
+        subcategory: subcategory,
+        product_type: product_type,
+        country: country,
+        city: city
         },
         dataType: 'json',
         success: function(data) {

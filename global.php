@@ -10,6 +10,7 @@ require_once 'classes/CsrfProtection.php';
 require_once 'classes/DatabaseFunctions.php';
 require_once 'fun/Fun.php';
 require_once 'fun/CategoryManager.php';
+require_once 'fun/ProductFun.php';
 require_once 'email/email.php';
 $urlval = "http://localhost/fennec/";
 
@@ -23,6 +24,7 @@ $CsrfProtection = new CsrfProtection();
 $dbFunctions = new DatabaseFunctions($db, $security);
 $fun = new Fun($db, $security, $dbFunctions,$urlval);
 $categoryManager = new CategoryManager($db, $security, $dbFunctions, $urlval);
+$productFun = new Productfun($db, $security, $dbFunctions, $urlval);
 
 
 
