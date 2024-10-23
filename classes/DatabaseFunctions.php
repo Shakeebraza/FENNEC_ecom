@@ -163,6 +163,7 @@ class DatabaseFunctions {
                     $params[":$key"] = $value;
                 }
             }
+
             $stmt->execute($params);
             return ['success' => true, 'message' => 'Data saved successfully.'];
     
@@ -215,6 +216,7 @@ class DatabaseFunctions {
                 }
             }
   
+
             $stmt->execute($params);
             return ['success' => true, 'message' => 'Data saved successfully.'];
     
@@ -225,10 +227,7 @@ class DatabaseFunctions {
             return ['success' => false, 'message' => 'Database error: ' . $e->getMessage()];
         }
     }
-    
-    
-    
-    
+
     function delData($tableName, $whereCondition) {
     
         try {

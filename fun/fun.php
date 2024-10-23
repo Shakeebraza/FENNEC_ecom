@@ -78,8 +78,12 @@ class Fun {
                     'image' => $this->security->decrypt($record['image']),
                     'image2' => $this->security->decrypt($record['image2']),
                     'text' => $this->security->decrypt($record['text']),
+
+                    'longtext' => $this->security->decrypt($record['longtext'])
+
                     'longtext' => $this->security->decrypt($record['longtext']),
                     'link' => $this->security->decrypt($record['link'])
+
                 ];
             }
             return $formattedData;
@@ -362,7 +366,10 @@ class Fun {
     public function rememberTokenCheckByCookie($remember_token = NULL) {
         if (isset($remember_token) && !empty($remember_token)) {
             $userData = $this->dbfun->getDatanotenc('users', "remember_token = '$remember_token'");
+
+
             
+
             if ($userData) {
           
                 if (isset($userData[0]['email_verified_at'])) {
@@ -496,7 +503,7 @@ class Fun {
             'gold' => 0
         ];
     
-  
+
         foreach ($productData as $data) {
             $counts[$data['product_type']] = (int)$data['count'];
         }
@@ -514,6 +521,20 @@ class Fun {
         $stmt->execute();
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
+
+
+    public function getaperproduct(){
+        $productData=$this->dbfun->getDatanotenc('products','product_type = "premium" OR product_type = "gold"', '',  '','ASC',  0, 12);
+        if (isset($productData)){
+
+            return $productData;
+        }
+        else{
+            return ['Error'=>'No product found.'];
+        }
+        
+    }
+
     public function generateSettingsForm() {
         $settings = $this->dbfun->getDatanotenc('site_settings', '', '', '', 'ASC', 0, 100);
         $formHtml = '<form method="POST" action="" enctype="multipart/form-data" style="max-width: 100%; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">';
@@ -570,6 +591,7 @@ class Fun {
         return true; 
     }
 
+
     public function TopLocations() {
         try {
             $stmt = $this->pdo->prepare("SELECT countries.name AS country_name, cities.name AS city_name FROM countries LEFT JOIN cities ON countries.id = cities.country_id");
@@ -589,6 +611,19 @@ class Fun {
             ];
         }
     }
+
+    
+    // public function FeatureCat() {
+    //     $query = "SELECT category_image, category_name FROM categories WHERE is_enable = 1 ORDER BY sort_order ASC LIMIT 10";
+    //     $productData = $this->dbfun->executeQuery($query); // Use your database execution function
+    //     return $productData ?: ['Error' => 'No product found.'];
+    // }
+    
+    
+    
+
+
+
 
     function getSiteSettingValue($key) {
         global $dbFunctions;
@@ -640,4 +675,5 @@ class Fun {
         return $menuData;
     }
     
+
 }

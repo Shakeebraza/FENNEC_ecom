@@ -32,6 +32,9 @@ color:#00494f;
 .location-select {
   width: 200px;
 }
+
+
+=======
 .custom-slider-container {
   width: 100%;
   position: relative;
@@ -175,6 +178,7 @@ color:#00494f;
     opacity: 1;
   }
 }
+
 .custom-select {
   border: 1px solid #ced4da;
   padding: 10px;

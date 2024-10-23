@@ -3,10 +3,28 @@ require_once("../../global.php");
 include_once('../header.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+
     $heading = $_POST['heading'] ?? '';
     $slug = $_POST['slug'] ?? '';
     $link = $_POST['link'] ?? '';
     $description = $_POST['description'] ?? '';
+
+    $text_area = $_POST['textaera'] ?? '';
+    $status = $_POST['status'] ?? '';
+
+    $addNewData = [
+        'name' => $heading,
+        'slug' => $slug,
+        'link' => $link,
+        'content' => $description,
+        'subcontent' => $text_area,
+        'is_enable' => $status,
+    ];
+
+
+    $updateResult = $dbFunctions->setData('pages', $addNewData); 
+
     $text_area = $_POST['textaera'] ?? ''; // Ensure correct spelling: 'text_area'
     $status = $_POST['status'] ?? '';
 
@@ -20,6 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ];
 
     $updateResult = $dbFunctions->setDataWithHtmlAllowed('pages', $addNewData);
+
 
     if ($updateResult['success']) {
         echo "<script>alert('Page added successfully.');</script>";

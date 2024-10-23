@@ -50,7 +50,9 @@ include_once('../header.php');
                                     <th>Category name</th>
                                     <th>date</th>
                                     <th>status</th>
+
                                     <th>Show Home</th>
+
                                     <th>Action</th>
                                 </tr>
                             </thead>
@@ -94,9 +96,11 @@ include_once('../footer.php');
                     "data": "status"
                 },
                 {
+
                     "data": "showhome"
                 },
                 {
+
                     "data": "actions"
                 }
             ],
@@ -128,6 +132,7 @@ include_once('../footer.php');
             }
         });
 
+
         $('#userTable').on('change', '.show-home-toggle', function() {
         var catId = $(this).data('id');
         var isChecked = $(this).is(':checked') ? 1 : 0;
@@ -152,6 +157,7 @@ include_once('../footer.php');
             }
         });
     });
+
     });
 </script>
 

@@ -4042,6 +4042,8 @@ section {
 }
 
 .recent-report {
+
+    padding-bottom: 65px;
     padding-bottom: 93px;
     margin-bottom: 60px;
 }

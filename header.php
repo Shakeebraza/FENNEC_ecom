@@ -1,3 +1,10 @@
+
+<?php
+              $logoData =$fun->getBox('box1');
+              $logo=$urlval.$logoData[0]['image'];
+?>
+
+
 <!DOCTYPE php>
 <php lang="en">
   <head>
@@ -14,7 +21,151 @@
     />
     <link rel="stylesheet" href="<?php echo $urlval?>custom/asset/styles.css" />
     <style>
-  
+
+      .custom-slider-container {
+  width: 100%;
+  position: relative;
+}
+
+.custom-slide {
+  width: 100%;
+  display: none;
+}
+
+.custom-slide-image {
+  width: 100%;
+  height: 70vh;
+  object-fit: cover;
+  filter: brightness(0.6);
+}
+
+.custom-slide-content {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 5;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+  text-align: center;
+  padding: 1rem;
+}
+
+.custom-slide-title {
+  width: 100%;
+  max-width: 50rem;
+  color: white;
+  font-size: 2rem;
+  font-weight: 500;
+  text-transform: capitalize;
+}
+
+.custom-slide-desc {
+  width: 100%;
+  max-width: 50rem;
+  color: lightgray;
+  font-size: 1rem;
+  font-weight: 300;
+}
+
+.custom-slide-btn {
+  color: black;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  font-size: 1.2rem;
+  font-weight: 500;
+  margin-top: 1rem;
+  border-radius: 0.5rem;
+  padding: 0.5rem 1rem;
+  text-transform: capitalize;
+  transition: ease 0.3s;
+}
+
+.custom-slide-number-container {
+  position: absolute;
+  bottom: 1rem;
+  left: 1rem;
+  z-index: 5;
+  font-size: 1.5rem;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  color: rgba(211, 211, 211, 0.788);
+  letter-spacing: 0.2rem;
+}
+
+.custom-slider-nav {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+.custom-slider-nav-btn {
+  cursor: pointer;
+  background-color: rgba(211, 211, 211, 0.226);
+  color: white;
+  font-size: 1.5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: ease 0.3s;
+}
+
+.custom-dot-container {
+  position: absolute;
+  bottom: 1rem;
+  left: 0;
+  z-index: 4;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.custom-dot {
+  cursor: pointer;
+  height: 1rem;
+  width: 1rem;
+  background-color: rgba(211, 211, 211, 0.226);
+  border-radius: 50%;
+  display: inline-block;
+  transition: ease 0.3s;
+}
+
+.custom-active,
+.custom-dot:hover {
+  background-color: white;
+}
+
+.custom-fade {
+  animation-name: custom-fade;
+  animation-duration: 1s;
+}
+
+@keyframes custom-fade {
+  from {
+    opacity: 0.8;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
 
     </style>
   </head>
@@ -22,18 +173,24 @@
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="container">
         <a class="navbar-brand d-flex align-items-center" href="index.php" style="text-decoration: none;">
+
         <?php
               $logoData =$fun->getBox('box1');
               $logo=$urlval.$logoData[0]['image'];
               $title=$logoData[0]['heading'];
               $phara=$logoData[0]['phara'];
         ?>
+
             <img
               src="<?php echo $logo ?>"
               alt="Fennec Logo"
               style="max-width: 100%; margin-right: 10px;"
             />
+
+            <span style="font-size: 1.7rem; font-weight: bold; color: inherit;">Fennec</span>
+
             <span style="font-size: 1.7rem; font-weight: bold; color: inherit;"><?= $title ?></span>
+
           </a>
         <button
           id="menuToggle"
@@ -78,7 +235,11 @@
             </a>
             <a href="LoginRegister.php" class="btn custom-btn d-flex flex-column align-items-center">
               <i class="fa-solid fa-user mb-1 "></i>
+
+              <span class="new-btn">Login/Register</span>
+
               <span class="new-btn">Login</span>
+
             </a>
           </div>
       </div>
@@ -100,6 +261,79 @@
       <a href="<?php echo $urlval?>">Login</a>
     </div>
     
+
+  <div class="nav-sub-menu-ct">
+    <div class="nav-menu-32323">
+      <div class="nav-menu-3344343">
+    <div class="nav-sub-menu-inn1">
+    <div class="nav-men-sub-ct-inn">
+      <ul>
+    <li class="car-vhcl-menu"><a href="<?php echo $urlval?>CarsVehicles.php">Cars & Vehicles</a></li>
+    <li class="for-sale-menu"><a href="<?php echo $urlval?>forsale.php">For Sale</a></li>
+    <li class="property21"><a href="<?php echo $urlval?>property.php">Property</a></li>
+    <li class="jobs21"><a href="<?php echo $urlval?>job.php">Jobs  </a></li>
+    <li class="Services21"><a href="<?php echo $urlval?>Services.php">Services  </a></li>
+    <li class="Community21"><a href="<?php echo $urlval?>Community.php">Community</a></li>
+    <li class="Pets21"><a href="<?php echo $urlval?>Pets.php">Pets</a></li>
+  </ul>
+    </div>
+  </div>
+  </div>
+  
+  
+  
+  
+  <!-- ................................................... nav bar sub menu 1........................................................................... -->
+    <div class="nav-snmn">
+      <div class="nav-main-dwdisnmn">
+      <div class="nav-snm-innnn">
+        <h2>Browse by</h2>
+        <div class="div-nv-sb-menu">
+        <ul>
+          <li><a class="" href="forsale.php">Cars</a></li>
+          <li>
+            <a class="" href="<?php echo $urlval?>">Motorbikes & Scooters</a>
+          </li>
+          <li><a class="" href="<?php echo $urlval?>">Vans</a></li>
+          <li>
+            <a class="" href="<?php echo $urlval?>">Campervans & Motorhomes</a>
+          </li>
+          <li><a class="" href="<?php echo $urlval?>">Caravans</a></li>
+          <li><a class="" href="<?php echo $urlval?>">Trucks</a></li>
+          </ul>
+          <ul>
+          <li><a class="" href="<?php echo $urlval?>">Plant & Tractors</a></li>
+          <li><a class="" href="<?php echo $urlval?>">Other Vehicles</a></li>
+          <li><a class="" href="<?php echo $urlval?>">Accessories</a></li>
+          <li><a class="" href="<?php echo $urlval?>">Parts</a></li>
+          <li><a class="" href="<?php echo $urlval?>">Wanted</a></li>
+        <ul>
+      </div>
+      </div>
+      <div class="div-main-sec2-sub">
+        <div class="div-main-sec2-sub-inner">
+        <div class="div-main-sec2-sub-inner5413541">
+        <h2>Discover more in our guides</h2>
+        <div class="div-main-sec2-submenu-2">
+      <ul>
+        <li><a href="<?php echo $urlval?>">Car Guides</a></li>
+        <li><a href="<?php echo $urlval?>">
+          Car Reviews</a></li>
+        <li><a href="<?php echo $urlval?>">Best Cars</a></li>
+        <li><a href="<?php echo $urlval?>">Car Advice  </a></li>
+        </ul>
+  </div>
+  </div>
+      <div class="div-img-right-submenu">
+        <img src="https://www.gumtree.com/assets/frontend/cars-guide.84c7d8c8754c04a88117e49a84535413.png " alt="">
+      </div>
+   
+  </div>
+  </div>
+  </div>
+    </div>
+  
+
     <div class="nav-sub-menu-ct">
       <div class="nav-menu-32323">
         <div class="nav-menu-3344343">
@@ -161,6 +395,7 @@
     ?>
   
   <!-- ................................................... nav bar sub menu 1........................................................................... -->
+
 
   <!-- ................................................... nav bar sub menu 2........................................................................... -->
   <div class="nav-snmn2">

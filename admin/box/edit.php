@@ -11,7 +11,10 @@ if (!isset($_GET['boxid'])) {
     exit;
 }
 
+$boxId = $security->decrypt($_GET['boxid']);
+
 $boxId = base64_decode($_GET['boxid']);
+
 $box = $dbFunctions->getDataById('box', $boxId); 
 
 if (!$box) {
@@ -31,7 +34,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $text_field = $_POST['text_field'] ?? '';
     $text_area = $_POST['text_area'] ?? '';
     $status = $_POST['status'] ?? '';
+
+
+    // Initialize image variables
+
     $link = $_POST['link'] ?? '';
+
 
     $image1 = null;
     $image2 = null;
@@ -49,7 +57,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'phara' => $description,
         'text' => $text_field,
         'longtext' => $text_area,
+
         'link' => $link,
+
         'is_enable' => $status,
     ];
 
@@ -107,6 +117,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <input type="text" id="heading" name="heading" class="form-control"
                                         value="<?= htmlspecialchars($security->decrypt($box['heading'])) ?>" required>
                                 </div>
+
                                 <?php if ($permission[0]['link'] == 1): ?>
                                     <div class="form-group">
                                         <label for="description">Link</label>
@@ -114,6 +125,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         value="<?= htmlspecialchars($security->decrypt($box['link'])) ?>" required>
                                     </div>
                                 <?php endif; ?>
+
 
                                 <?php if ($permission[0]['phara'] == 1): ?>
                                     <div class="form-group">

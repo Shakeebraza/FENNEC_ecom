@@ -50,6 +50,7 @@ include_once 'header.php';
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
                   </div>
+
                   <!-- <div class="view-option icon-grid-4" data-cols="4" title="Four column grid">
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
@@ -63,6 +64,7 @@ include_once 'header.php';
                                 <span class="icon-bar"></span>
                                 <span class="icon-bar"></span>
                             </div> -->
+
                 </div>
               </div>
     
