@@ -2,8 +2,10 @@
 require_once("../../global.php");
 include_once('../header.php');
 
-// $getproduct = $dbFunctions->getData("products", "is_enable = 1", '', '', "DESC");
-
+$categories = $dbFunctions->getDatanotenc('categories', 'is_enable = 1');
+//$subcategories = $dbFunctions->getDatanotenc('subcategories', 'is_enable = 1');
+$countries = $dbFunctions->getDatanotenc('countries');
+//$cities = $dbFunctions->getDatanotenc('cities');
 include_once('style.php');
 ?>
 
@@ -21,58 +23,68 @@ include_once('style.php');
                     <form method="GET" action="" class="mb-4 custom-form">
                         <div class="row g-3">
                             <div class="col-md-3">
-                                <input type="text" name="product_name" class="form-control" placeholder="Search by Product Name" value="<?php echo isset($_GET['product_name']) ? $_GET['product_name'] : ''; ?>">
+                                <input type="text" name="product_name" class="form-control" placeholder="Search by Product Name" value="">
                             </div>
 
                             <div class="col-md-2">
-                                <input type="number" name="min_price" class="form-control" placeholder="Min Price" value="<?php echo isset($_GET['min_price']) ? $_GET['min_price'] : ''; ?>">
+                                <input type="number" name="min_price" class="form-control" placeholder="Min Price" value="">
                             </div>
                             <div class="col-md-2">
-                                <input type="number" name="max_price" class="form-control" placeholder="Max Price" value="<?php echo isset($_GET['max_price']) ? $_GET['max_price'] : ''; ?>">
+                                <input type="number" name="max_price" class="form-control" placeholder="Max Price" value="">
                             </div>
 
                             <div class="col-md-2">
-                                <select name="category" class="form-select">
+                                <select id ="category" name="category" class="form-select">
                                     <option value="">All Categories</option>
-                                    <option value="electronics" <?php if (isset($_GET['category']) && $_GET['category'] == 'electronics') echo 'selected'; ?>>Electronics</option>
-                                    <option value="fashion" <?php if (isset($_GET['category']) && $_GET['category'] == 'fashion') echo 'selected'; ?>>Fashion</option>
-                                    <!-- Add more categories as needed -->
+                                    <?php
+                                    if(isset($categories)){
+                                    foreach ($categories as $category) {
+                                        echo '
+                                    <option value="'.$category['id'].'">'.$category['category_name'].'</option>
+                                        
+                                        ';
+                                    }
+                                    }
+                                    ?>
+
                                 </select>
                             </div>
 
                             <div class="col-md-2">
-                                <select name="subcategory" class="form-select">
-                                    <option value="">All Subcategories</option>
-                                    <option value="mobiles" <?php if (isset($_GET['subcategory']) && $_GET['subcategory'] == 'mobiles') echo 'selected'; ?>>Mobiles</option>
-                                    <option value="laptops" <?php if (isset($_GET['subcategory']) && $_GET['subcategory'] == 'laptops') echo 'selected'; ?>>Laptops</option>
-                                    <!-- Add more subcategories as needed -->
+                                <select id ="subcategory" name="subcategory" class="form-select">
+                                    <option value="">All Subcategory</option>
                                 </select>
                             </div>
 
                             <div class="col-md-2">
                                 <select name="product_type" class="form-select">
                                     <option value="">All Product Types</option>
-                                    <option value="standard" <?php if (isset($_GET['product_type']) && $_GET['product_type'] == 'standard') echo 'selected'; ?>>Standard</option>
-                                    <option value="premium" <?php if (isset($_GET['product_type']) && $_GET['product_type'] == 'premium') echo 'selected'; ?>>Premium</option>
-                                    <option value="gold" <?php if (isset($_GET['product_type']) && $_GET['product_type'] == 'gold') echo 'selected'; ?>>Gold</option>
+                                    <option value="standard" >Standard</option>
+                                    <option value="premium">Premium</option>
+                                    <option value="gold">Gold</option>
                                 </select>
                             </div>
 
                             <div class="col-md-2">
-                                <select name="country" class="form-select">
+                                <select id="country" name="country" class="form-select">
                                     <option value="">All Countries</option>
-                                    <option value="usa" <?php if (isset($_GET['country']) && $_GET['country'] == 'usa') echo 'selected'; ?>>USA</option>
-                                    <option value="canada" <?php if (isset($_GET['country']) && $_GET['country'] == 'canada') echo 'selected'; ?>>Canada</option>
+                                    <?php
+                                    if(isset($countries)){
+                                        foreach ($countries as $country) {
+                                            echo '
+                                    <option value="'.$country['id'].'">'.$country['name'].'</option>
+                                        
+                                        ';
+                                        }
+                                    }
+                                    ?>
                                   
                                 </select>
                             </div>
 
                             <div class="col-md-2">
-                                <select name="city" class="form-select">
+                                <select id="city" name="city" class="form-select">
                                     <option value="">All Cities</option>
-                                    <option value="new_york" <?php if (isset($_GET['city']) && $_GET['city'] == 'new_york') echo 'selected'; ?>>New York</option>
-                                    <option value="toronto" <?php if (isset($_GET['city']) && $_GET['city'] == 'toronto') echo 'selected'; ?>>Toronto</option>
-                                 
                                 </select>
                             </div>
 
@@ -315,7 +327,49 @@ function setupPagination(totalProducts, currentPage) {
 
     $('.pagination').html(paginationHTML);
 }
+$('#country').on('change', function() {
+    var countryId = $(this).val();
 
+    if (countryId) {
+        $.ajax({
+            url: '<?php echo $urlval ?>admin/ajax/product/get_cities.php',
+            type: 'POST',
+            data: {
+                country_id: countryId
+            },
+            success: function(data) {
+                $('#city').html(data);
+            },
+            error: function() {
+                alert('Error fetching cities. Please try again.');
+            }
+        });
+    } else {
+        $('#city').html('<option value="" disabled selected>Select a city</option>');
+    }
+});
+
+$('#category').on('change', function() {
+    var catId = $(this).val();
+
+    if (catId) {
+        $.ajax({
+            url: '<?php echo $urlval ?>admin/ajax/product/get_subcat.php',
+            type: 'POST',
+            data: {
+                catId: catId
+            },
+            success: function(data) {
+                $('#subcategory').html(data);
+            },
+            error: function() {
+                alert('Error fetching cities. Please try again.');
+            }
+        });
+    } else {
+        $('#subcategory').html('<option value="" disabled selected>Select a city</option>');
+    }
+});
 </script>
 
 </body>

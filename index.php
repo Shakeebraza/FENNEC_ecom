@@ -123,228 +123,47 @@ include_once 'header.php';
           </div>
         </div>
         <div class="row mt-5">
+  <?php
+  // Fetch products
+  $productFind = $productFun->getProductsWithDetails(1, 16, []);
+
+  // Check if products are available
+  if (!empty($productFind)) {
+      foreach ($productFind['products'] as $product) {
+          ?>
           <div class="col-md-3 mb-4">
-            <div class="product-card position-relative">
-              <div
-                class="badge bg-success position-absolute top-0 start-0 m-2">
-                SPOTLIGHT
+              <div class="product-card position-relative">
+                  
+                      <div class="badge bg-success position-absolute top-0 start-0 m-2">
+                      <?=$product['product_type']?>
+                      </div>
+                  
+                  <img
+                      src="<?php echo $product['image']; ?>" 
+                      alt="<?php echo htmlspecialchars($product['name']); ?>" 
+                      class="product-image w-100" />
+                  <i class="fas fa-heart heart-icon"></i>
+                  <div class="p-3">
+                      <h5><?php echo htmlspecialchars($product['name']); ?></h5> 
+                      <p class="price">$<?php echo htmlspecialchars($product['price']); ?></p> 
+                      <p class="location">
+                          <i class="fas fa-map-marker-alt"></i> <?php echo htmlspecialchars($product['country']); ?> | <?php echo htmlspecialchars($product['city']); ?>
+                      </p>
+                      <p class="date">
+                          <i class="far fa-clock"></i> <?php echo htmlspecialchars($product['date']); ?>
+                      </p>
+                  </div>
               </div>
-              <img
-                src="https://imagedelivery.net/ePR8PyKf84wPHx7_RYmEag/389a5e8d-4fa4-4120-446a-415a63518f00/86"
-                alt="Royale Drive 4 Mobility Scooter"
-                class="product-image w-100" />
-              <i class="fas fa-heart heart-icon"></i>
-              <div class="p-3">
-                <h5>Garage door</h5>
-                <p class="price">£2,300</p>
-                <p class="location">
-                  <i class="fas fa-map-marker-alt"></i> Location
-                </p>
-                <p class="date"><i class="far fa-clock"></i> Date</p>
-              </div>
-            </div>
           </div>
-          <div class="col-md-3 mb-4">
-            <div class="product-card position-relative">
-              <img
-                src="https://imagedelivery.net/ePR8PyKf84wPHx7_RYmEag/d4b1e589-c333-4a4d-a1ee-9356ccb7c300/86"
-                alt="Garage door"
-                class="product-image w-100" />
-              <i class="fas fa-heart heart-icon"></i>
-              <div class="p-3">
-                <h5>Garage door</h5>
-                <p class="price">£50</p>
-                <p class="location">
-                  <i class="fas fa-map-marker-alt"></i> Crookston
-                </p>
-                <p class="date"><i class="far fa-clock"></i> Date</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="product-card position-relative">
-              <img
-                src="https://imagedelivery.net/ePR8PyKf84wPHx7_RYmEag/e2da4df3-5010-4dbe-c7de-9c825fddf300/86"
-                alt="AUDI SQ5 EURO 6"
-                class="product-image w-100" />
-              <i class="fas fa-heart heart-icon"></i>
-              <div class="p-3">
-                <h5>Garage door</h5>
-                <p class="price">£17,000</p>
-                <p class="location">
-                  <i class="fas fa-map-marker-alt"></i> Leicester
-                </p>
-                <p class="date"><i class="far fa-clock"></i> Date</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="product-card position-relative">
-              <img
-                src="https://imagedelivery.net/ePR8PyKf84wPHx7_RYmEag/a5c3a035-21f7-4267-b974-fc05ca04b600/86"
-                alt="Bespoke solid oak wine/display cabinet"
-                class="product-image w-100" />
-              <i class="fas fa-heart heart-icon"></i>
-              <div class="p-3">
-                <h5>Garage door</h5>
-                <p class="price">£200</p>
-                <p class="location">
-                  <i class="fas fa-map-marker-alt"></i> Location
-                </p>
-                <p class="date"><i class="far fa-clock"></i> Date</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-3 mb-4">
-            <div class="product-card position-relative">
-              <div
-                class="badge bg-success position-absolute top-0 start-0 m-2">
-                SPOTLIGHT
-              </div>
-              <img
-                src="https://imagedelivery.net/ePR8PyKf84wPHx7_RYmEag/389a5e8d-4fa4-4120-446a-415a63518f00/86"
-                alt="Royale Drive 4 Mobility Scooter"
-                class="product-image w-100" />
-              <i class="fas fa-heart heart-icon"></i>
-              <div class="p-3">
-                <h5>Garage door</h5>
-                <p class="price">£2,300</p>
-                <p class="location">
-                  <i class="fas fa-map-marker-alt"></i> Location
-                </p>
-                <p class="date"><i class="far fa-clock"></i> Date</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="product-card position-relative">
-              <img
-                src="https://imagedelivery.net/ePR8PyKf84wPHx7_RYmEag/d4b1e589-c333-4a4d-a1ee-9356ccb7c300/86"
-                alt="Garage door"
-                class="product-image w-100" />
-              <i class="fas fa-heart heart-icon"></i>
-              <div class="p-3">
-                <h5>Garage door</h5>
-                <p class="price">£50</p>
-                <p class="location">
-                  <i class="fas fa-map-marker-alt"></i> Crookston
-                </p>
-                <p class="date"><i class="far fa-clock"></i> Date</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="product-card position-relative">
-              <img
-                src="https://imagedelivery.net/ePR8PyKf84wPHx7_RYmEag/e2da4df3-5010-4dbe-c7de-9c825fddf300/86"
-                alt="AUDI SQ5 EURO 6"
-                class="product-image w-100" />
-              <i class="fas fa-heart heart-icon"></i>
-              <div class="p-3">
-                <h5>Garage door</h5>
-                <p class="price">£17,000</p>
-                <p class="location">
-                  <i class="fas fa-map-marker-alt"></i> Leicester
-                </p>
-                <p class="date"><i class="far fa-clock"></i> Date</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="product-card position-relative">
-              <img
-                src="https://imagedelivery.net/ePR8PyKf84wPHx7_RYmEag/a5c3a035-21f7-4267-b974-fc05ca04b600/86"
-                alt="Bespoke solid oak wine/display cabinet"
-                class="product-image w-100" />
-              <i class="fas fa-heart heart-icon"></i>
-              <div class="p-3">
-                <h5>Garage door</h5>
-                <p class="price">£200</p>
-                <p class="location">
-                  <i class="fas fa-map-marker-alt"></i> Location
-                </p>
-                <p class="date"><i class="far fa-clock"></i> Date</p>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row">
-          <div class="col-md-3 mb-4">
-            <div class="product-card position-relative">
-              <div
-                class="badge bg-success position-absolute top-0 start-0 m-2">
-                SPOTLIGHT
-              </div>
-              <img
-                src="https://imagedelivery.net/ePR8PyKf84wPHx7_RYmEag/389a5e8d-4fa4-4120-446a-415a63518f00/86"
-                alt="Royale Drive 4 Mobility Scooter"
-                class="product-image w-100" />
-              <i class="fas fa-heart heart-icon"></i>
-              <div class="p-3">
-                <h5>Garage door</h5>
-                <p class="price">£2,300</p>
-                <p class="location">
-                  <i class="fas fa-map-marker-alt"></i> Location
-                </p>
-                <p class="date"><i class="far fa-clock"></i> Date</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="product-card position-relative">
-              <img
-                src="https://imagedelivery.net/ePR8PyKf84wPHx7_RYmEag/d4b1e589-c333-4a4d-a1ee-9356ccb7c300/86"
-                alt="Garage door"
-                class="product-image w-100" />
-              <i class="fas fa-heart heart-icon"></i>
-              <div class="p-3">
-                <h5>Garage door</h5>
-                <p class="price">£50</p>
-                <p class="location">
-                  <i class="fas fa-map-marker-alt"></i> Crookston
-                </p>
-                <p class="date"><i class="far fa-clock"></i> Date</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="product-card position-relative">
-              <img
-                src="https://imagedelivery.net/ePR8PyKf84wPHx7_RYmEag/e2da4df3-5010-4dbe-c7de-9c825fddf300/86"
-                alt="AUDI SQ5 EURO 6"
-                class="product-image w-100" />
-              <i class="fas fa-heart heart-icon"></i>
-              <div class="p-3">
-                <h5>Garage door</h5>
-                <p class="price">£17,000</p>
-                <p class="location">
-                  <i class="fas fa-map-marker-alt"></i> Leicester
-                </p>
-                <p class="date"><i class="far fa-clock"></i> Date</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-md-3 mb-4">
-            <div class="product-card position-relative">
-              <img
-                src="https://imagedelivery.net/ePR8PyKf84wPHx7_RYmEag/a5c3a035-21f7-4267-b974-fc05ca04b600/86"
-                alt="Bespoke solid oak wine/display cabinet"
-                class="product-image w-100" />
-              <i class="fas fa-heart heart-icon"></i>
-              <div class="p-3">
-                <h5>Garage door</h5>
-                <p class="price">£200</p>
-                <p class="location">
-                  <i class="fas fa-map-marker-alt"></i> Location
-                </p>
-                <p class="date"><i class="far fa-clock"></i> Date</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+          <?php
+      }
+  } else {
+      echo '<p>No products found.</p>';
+  }
+  ?>
+</div>
+</div>
+
       <div class="modal" style="display: none">
         <div class="modal-dialog">
           <div class="modal-content">

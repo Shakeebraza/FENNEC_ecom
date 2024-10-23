@@ -1,4 +1,5 @@
-    <div class="container-fluid">
+<nav>
+<div class="container-fluid">
         <a class="navbar-brand" href="#">
             <img src="https://via.placeholder.com/40" alt="Cool Admin Logo" width="40" height="40">
             <span>Fennec</span>
@@ -61,6 +62,9 @@
                             </li>
                             <li>
                                 <a href="<?php echo $urlval?>admin/subcategories/index.php">Add sub-Categories</a>
+                            </li>
+                            <li>
+                                <a href="<?php echo $urlval?>admin/product/index.php">All product</a>
                             </li>
                         </ul>
                     </li>

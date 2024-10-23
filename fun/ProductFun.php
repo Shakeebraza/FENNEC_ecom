@@ -22,6 +22,7 @@ Class Productfun{
                 p.description AS product_description,
                 p.image AS product_image,
                 p.price AS product_price,
+                p.date AS productdate,
                 p.product_type AS product_type,
                 p.discount_price AS product_discount_price,
                 c.category_name AS category_name,
@@ -56,11 +57,11 @@ Class Productfun{
             $params[':max_price'] = $filters['max_price'];
         }
         if (!empty($filters['category'])) {
-            $sql .= " AND c.category_name = :category";
+            $sql .= " AND p.category_id = :category";
             $params[':category'] = $filters['category'];
         }
         if (!empty($filters['subcategory'])) {
-            $sql .= " AND s.subcategory_name = :subcategory";
+            $sql .= " AND p.subcategory_id = :subcategory";
             $params[':subcategory'] = $filters['subcategory'];
         }
         if (!empty($filters['product_type'])) {
@@ -68,11 +69,11 @@ Class Productfun{
             $params[':product_type'] = $filters['product_type'];
         }
         if (!empty($filters['country'])) {
-            $sql .= " AND co.name = :country";
+            $sql .= " AND p.country_id = :country";
             $params[':country'] = $filters['country'];
         }
         if (!empty($filters['city'])) {
-            $sql .= " AND ci.name = :city";
+            $sql .= " AND p.city_id = :city";
             $params[':city'] = $filters['city'];
         }
     
@@ -98,7 +99,7 @@ Class Productfun{
             'products' => [],
             'total' => $total
         ];
-    
+
         if ($getproduct) {
             foreach ($getproduct as $pro) {
                 $image = $this->urlval . $pro['product_image'];
@@ -115,6 +116,7 @@ Class Productfun{
                     'subcategory' => $pro['subcategory_name'],
                     'city' => $pro['city_name'],
                     'country' => $pro['country_name'],
+                    'date' => $pro['productdate'],
                 ];
             }
         }
