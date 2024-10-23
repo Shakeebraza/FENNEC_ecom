@@ -11,7 +11,7 @@ require_once 'classes/DatabaseFunctions.php';
 require_once 'fun/Fun.php';
 require_once 'fun/CategoryManager.php';
 require_once 'email/email.php';
-$urlval = "http://localhost/fennec/";
+$urlval = "http://localhost/fennce/";
 
 
 

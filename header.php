@@ -100,79 +100,68 @@
       <a href="<?php echo $urlval?>">Login</a>
     </div>
     
-  <div class="nav-sub-menu-ct">
-    <div class="nav-menu-32323">
-      <div class="nav-menu-3344343">
-    <div class="nav-sub-menu-inn1">
-    <div class="nav-men-sub-ct-inn">
-      <ul>
-        <?php
-        $findCate = $categoryManager->getAllCategoriesHeaderMenu();
-        if ($findCate['status'] == 'success') {
+    <div class="nav-sub-menu-ct">
+      <div class="nav-menu-32323">
+        <div class="nav-menu-3344343">
+      <div class="nav-sub-menu-inn1">
+      <div class="nav-men-sub-ct-inn">
+        <ul>
+          <?php
+          $findCate = $categoryManager->getAllCategoriesHeaderMenu();
+          if ($findCate['status'] == 'success') {
+              foreach ($findCate['data'] as $category) {
+          
+                  echo '<li class="' . htmlspecialchars($category['slug']) . ' "><a href="' . $urlval . $category['slug'] . '">' . htmlspecialchars($category['category_name']) . '</a></li>';
+              }
+          }
+          ?>
+    </ul>
+      </div>
+    </div>
+    </div>
+    
+    
+    <?php
+          if ($findCate['status'] == 'success') {
             foreach ($findCate['data'] as $category) {
-         
-                echo '<li class="' . htmlspecialchars($category['slug']) . '"><a href="' . $urlval . $category['slug'] . '">' . htmlspecialchars($category['category_name']) . '</a></li>';
+        
+
+              echo '
+              <div id="'.htmlspecialchars($category['slug']).'" style="display:none;">
+              <div class="nav-main-dwdisnmn">
+              <div class="nav-snm-innnn">
+              <h2>Browse by</h2>
+              <div class="div-nv-sb-menu">
+              <ul>';
+              
+              $duncatdata = $categoryManager->getAllSubCategoriesHeaderMenu($category['id']);
+              foreach ($duncatdata['data'] as $val) {
+                echo'
+                  <li><a class="" href="'.htmlspecialchars($category['slug']).'">'.$val['subcategory_name'].'</a></li>';
+              }
+                  echo '
+                <ul>
+              </div>
+              </div>
+
+              <div class="div-img-right-submenu">
+                <img src="https://www.gumtree.com/assets/frontend/cars-guide.84c7d8c8754c04a88117e49a84535413.png " alt="">
+              </div>
+          
+          </div>
+          </div>
+          </div>
+            </div>
+          
+                
+                ';
             }
         }
-        ?>
-  </ul>
-    </div>
-  </div>
-  </div>
-  
-  
-  
+    
+    ?>
   
   <!-- ................................................... nav bar sub menu 1........................................................................... -->
-    <div class="nav-snmn">
-      <div class="nav-main-dwdisnmn">
-      <div class="nav-snm-innnn">
-        <h2>Browse by</h2>
-        <div class="div-nv-sb-menu">
-        <ul>
-          <li><a class="" href="forsale.php">Cars</a></li>
-          <li>
-            <a class="" href="<?php echo $urlval?>">Motorbikes & Scooters</a>
-          </li>
-          <li><a class="" href="<?php echo $urlval?>">Vans</a></li>
-          <li>
-            <a class="" href="<?php echo $urlval?>">Campervans & Motorhomes</a>
-          </li>
-          <li><a class="" href="<?php echo $urlval?>">Caravans</a></li>
-          <li><a class="" href="<?php echo $urlval?>">Trucks</a></li>
-          </ul>
-          <ul>
-          <li><a class="" href="<?php echo $urlval?>">Plant & Tractors</a></li>
-          <li><a class="" href="<?php echo $urlval?>">Other Vehicles</a></li>
-          <li><a class="" href="<?php echo $urlval?>">Accessories</a></li>
-          <li><a class="" href="<?php echo $urlval?>">Parts</a></li>
-          <li><a class="" href="<?php echo $urlval?>">Wanted</a></li>
-        <ul>
-      </div>
-      </div>
-      <div class="div-main-sec2-sub">
-        <div class="div-main-sec2-sub-inner">
-        <div class="div-main-sec2-sub-inner5413541">
-        <h2>Discover more in our guides</h2>
-        <div class="div-main-sec2-submenu-2">
-      <ul>
-        <li><a href="<?php echo $urlval?>">Car Guides</a></li>
-        <li><a href="<?php echo $urlval?>">
-          Car Reviews</a></li>
-        <li><a href="<?php echo $urlval?>">Best Cars</a></li>
-        <li><a href="<?php echo $urlval?>">Car Advice  </a></li>
-        </ul>
-  </div>
-  </div>
-      <div class="div-img-right-submenu">
-        <img src="https://www.gumtree.com/assets/frontend/cars-guide.84c7d8c8754c04a88117e49a84535413.png " alt="">
-      </div>
-   
-  </div>
-  </div>
-  </div>
-    </div>
-  
+
   <!-- ................................................... nav bar sub menu 2........................................................................... -->
   <div class="nav-snmn2">
     <div class="nav-main-dwdisnmn">

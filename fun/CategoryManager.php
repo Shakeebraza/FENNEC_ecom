@@ -31,6 +31,26 @@ class CategoryManager{
         }
 
     }
+    public function getAllSubCategoriesHeaderMenu($id)
+    {
+       
+       $CatDataReturn = $this->dbfun->getDatanotenc('subcategories',"is_enable = 1 AND category_id	= '$id'",'','sort_order','ASC',0,8);
+        if ($CatDataReturn) {
+            return [
+                'status' => 'success',
+                'message' => 'Categories retrieved successfully.',
+                'data' => $CatDataReturn
+            ];
+        } 
+        else {
+            return [
+                'status' => 'error',
+                'message' => 'No categories found for the header menu.',
+                'data' => []
+            ];
+        }
+
+    }
 
 
 }
