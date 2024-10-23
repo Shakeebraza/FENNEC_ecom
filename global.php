@@ -1,20 +1,49 @@
 <?php
-// <<<<<<< Updated upstream
+
 // =======
 error_reporting(error_level: E_ALL);
 ini_set('display_errors', 1);
 
 // >>>>>>> Stashed changes
+
+error_reporting(E_ALL);
+ini_set('display_errors', 1);
+
+// link file
+
 require_once 'dbcon/Database.php';
 require_once 'classes/User.php';
 require_once 'classes/Security.php';
 require_once 'classes/CsrfProtection.php';
 require_once 'classes/DatabaseFunctions.php';
+
 // <<<<<<< Updated upstream
 
-$db = new Database(); // This will establish the database connection
-$security = new Security('fennec'); // Initialize Security class
-$dbFunctions = new DatabaseFunctions($db, $security); // Pass the Database object and Security object
+require_once 'fun/Fun.php';
+require_once 'fun/CategoryManager.php';
+require_once 'email/email.php';
+$urlval = "http://localhost/fennce/";
+
+
+
+// classes and object
+$db = new Database();
+$pdo = $db->getConnection();
+$security = new Security('fennec');
+$CsrfProtection = new CsrfProtection(); 
+$dbFunctions = new DatabaseFunctions($db, $security);
+$fun = new Fun($db, $security, $dbFunctions,$urlval);
+$categoryManager = new CategoryManager($db, $security, $dbFunctions, $urlval);
+
+
+
+
+
+
+// using global
+$currentDate = date('Y-m-d'); 
+$currentTime = date('H:i:s');
+$currentDateTime = date('Y-m-d H:i:s'); 
 
 // =======
 require_once 'fun/Fun.php';

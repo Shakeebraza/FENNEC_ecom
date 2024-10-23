@@ -1,4 +1,8 @@
+
 <?php 
+
+<bod?php 
+
 require_once 'global.php';
 include_once 'header.php';
 ?>

@@ -4,10 +4,12 @@ include_once('../header.php');
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+
     $heading = $_POST['heading'] ?? '';
     $slug = $_POST['slug'] ?? '';
     $link = $_POST['link'] ?? '';
     $description = $_POST['description'] ?? '';
+
     $text_area = $_POST['textaera'] ?? '';
     $status = $_POST['status'] ?? '';
 
@@ -23,12 +25,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $updateResult = $dbFunctions->setData('pages', $addNewData); 
 
+    $text_area = $_POST['textaera'] ?? ''; // Ensure correct spelling: 'text_area'
+    $status = $_POST['status'] ?? '';
+
+    $addNewData = [
+        'name' => htmlspecialchars($heading, ENT_QUOTES, 'UTF-8'), // Sanitize heading
+        'slug' => htmlspecialchars($slug, ENT_QUOTES, 'UTF-8'), // Sanitize slug
+        'link' => htmlspecialchars($link, ENT_QUOTES, 'UTF-8'), // Sanitize link
+        'content' => htmlspecialchars($description, ENT_QUOTES, 'UTF-8'), // Sanitize description
+        'subcontent' => $text_area, // Allow HTML in this field
+        'is_enable' => $status,
+    ];
+
+    $updateResult = $dbFunctions->setDataWithHtmlAllowed('pages', $addNewData);
+
+
     if ($updateResult['success']) {
         echo "<script>alert('Page added successfully.');</script>";
     } else {
         echo "<script>alert('Error adding page: {$updateResult['message']}');</script>";
     }
 }
+
 
 
 

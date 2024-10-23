@@ -1,7 +1,9 @@
+
 <?php
               $logoData =$fun->getBox('box1');
               $logo=$urlval.$logoData[0]['image'];
 ?>
+
 
 <!DOCTYPE php>
 <php lang="en">
@@ -19,6 +21,7 @@
     />
     <link rel="stylesheet" href="<?php echo $urlval?>custom/asset/styles.css" />
     <style>
+
       .custom-slider-container {
   width: 100%;
   position: relative;
@@ -163,18 +166,31 @@
   }
 }
 
+
     </style>
   </head>
   <body>
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="container">
         <a class="navbar-brand d-flex align-items-center" href="index.php" style="text-decoration: none;">
+
+        <?php
+              $logoData =$fun->getBox('box1');
+              $logo=$urlval.$logoData[0]['image'];
+              $title=$logoData[0]['heading'];
+              $phara=$logoData[0]['phara'];
+        ?>
+
             <img
               src="<?php echo $logo ?>"
               alt="Fennec Logo"
               style="max-width: 100%; margin-right: 10px;"
             />
+
             <span style="font-size: 1.7rem; font-weight: bold; color: inherit;">Fennec</span>
+
+            <span style="font-size: 1.7rem; font-weight: bold; color: inherit;"><?= $title ?></span>
+
           </a>
         <button
           id="menuToggle"
@@ -219,7 +235,11 @@
             </a>
             <a href="LoginRegister.php" class="btn custom-btn d-flex flex-column align-items-center">
               <i class="fa-solid fa-user mb-1 "></i>
+
               <span class="new-btn">Login/Register</span>
+
+              <span class="new-btn">Login</span>
+
             </a>
           </div>
       </div>
@@ -241,6 +261,7 @@
       <a href="<?php echo $urlval?>">Login</a>
     </div>
     
+
   <div class="nav-sub-menu-ct">
     <div class="nav-menu-32323">
       <div class="nav-menu-3344343">
@@ -312,6 +333,70 @@
   </div>
     </div>
   
+
+    <div class="nav-sub-menu-ct">
+      <div class="nav-menu-32323">
+        <div class="nav-menu-3344343">
+      <div class="nav-sub-menu-inn1">
+      <div class="nav-men-sub-ct-inn">
+        <ul>
+          <?php
+          $findCate = $categoryManager->getAllCategoriesHeaderMenu();
+          if ($findCate['status'] == 'success') {
+              foreach ($findCate['data'] as $category) {
+          
+                  echo '<li class="' . htmlspecialchars($category['slug']) . ' "><a href="' . $urlval . $category['slug'] . '">' . htmlspecialchars($category['category_name']) . '</a></li>';
+              }
+          }
+          ?>
+    </ul>
+      </div>
+    </div>
+    </div>
+    
+    
+    <?php
+          if ($findCate['status'] == 'success') {
+            foreach ($findCate['data'] as $category) {
+        
+
+              echo '
+              <div id="'.htmlspecialchars($category['slug']).'" style="display:none;">
+              <div class="nav-main-dwdisnmn">
+              <div class="nav-snm-innnn">
+              <h2>Browse by</h2>
+              <div class="div-nv-sb-menu">
+              <ul>';
+              
+              $duncatdata = $categoryManager->getAllSubCategoriesHeaderMenu($category['id']);
+              foreach ($duncatdata['data'] as $val) {
+                echo'
+                  <li><a class="" href="'.htmlspecialchars($category['slug']).'">'.$val['subcategory_name'].'</a></li>';
+              }
+                  echo '
+                <ul>
+              </div>
+              </div>
+
+              <div class="div-img-right-submenu">
+                <img src="https://www.gumtree.com/assets/frontend/cars-guide.84c7d8c8754c04a88117e49a84535413.png " alt="">
+              </div>
+          
+          </div>
+          </div>
+          </div>
+            </div>
+          
+                
+                ';
+            }
+        }
+    
+    ?>
+  
+  <!-- ................................................... nav bar sub menu 1........................................................................... -->
+
+
   <!-- ................................................... nav bar sub menu 2........................................................................... -->
   <div class="nav-snmn2">
     <div class="nav-main-dwdisnmn">

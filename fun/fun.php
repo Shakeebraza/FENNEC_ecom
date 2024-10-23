@@ -78,7 +78,12 @@ class Fun {
                     'image' => $this->security->decrypt($record['image']),
                     'image2' => $this->security->decrypt($record['image2']),
                     'text' => $this->security->decrypt($record['text']),
+
                     'longtext' => $this->security->decrypt($record['longtext'])
+
+                    'longtext' => $this->security->decrypt($record['longtext']),
+                    'link' => $this->security->decrypt($record['link'])
+
                 ];
             }
             return $formattedData;
@@ -361,6 +366,10 @@ class Fun {
     public function rememberTokenCheckByCookie($remember_token = NULL) {
         if (isset($remember_token) && !empty($remember_token)) {
             $userData = $this->dbfun->getDatanotenc('users', "remember_token = '$remember_token'");
+
+
+            
+
             if ($userData) {
           
                 if (isset($userData[0]['email_verified_at'])) {
@@ -494,7 +503,7 @@ class Fun {
             'gold' => 0
         ];
     
-        // Sum the counts based on product type
+
         foreach ($productData as $data) {
             $counts[$data['product_type']] = (int)$data['count'];
         }
@@ -513,6 +522,7 @@ class Fun {
         return $stmt->fetch(PDO::FETCH_ASSOC);
     }
 
+
     public function getaperproduct(){
         $productData=$this->dbfun->getDatanotenc('products','product_type = "premium" OR product_type = "gold"', '',  '','ASC',  0, 12);
         if (isset($productData)){
@@ -524,6 +534,64 @@ class Fun {
         }
         
     }
+
+    public function generateSettingsForm() {
+        $settings = $this->dbfun->getDatanotenc('site_settings', '', '', '', 'ASC', 0, 100);
+        $formHtml = '<form method="POST" action="" enctype="multipart/form-data" style="max-width: 100%; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 5px; background-color: #f9f9f9;">';
+    
+        foreach ($settings as $setting) {
+            $key = htmlspecialchars($setting['key']);
+            $value = htmlspecialchars($setting['value']);  // Encode only when displaying data
+            $inputType = htmlspecialchars($setting['input_type']);
+            
+            $label = ucwords(str_replace('_', ' ', $key));
+    
+            $formHtml .= "<div style='margin-bottom: 15px;'>";
+            $formHtml .= "<label for='{$key}' style='display: block; margin-bottom: 5px; font-weight: bold; color: #333;'>{$label}</label>";
+    
+            switch ($inputType) {
+                case 'text':
+                    $formHtml .= "<input type='text' id='{$key}' name='{$key}' value='{$value}' required style='width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;'>";
+                    break;
+    
+                case 'url':
+                    $formHtml .= "<input type='url' id='{$key}' name='{$key}' value='{$value}' required style='width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;'>";
+                    break;
+    
+                case 'image':
+                    $formHtml .= "<input type='file' id='{$key}' name='{$key}' value='".$this->urlval . $value."' required placeholder='Image URL' style='width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;'>";
+                    $formHtml .= "<img src='".$this->urlval . $value."' alt='{$key}' style='width: 100px; height: auto; margin-top: 5px;'><br>";
+                    $formHtml .= "<small style='color: #555;'>Upload a new image URL above if needed.</small>";
+                    break;
+    
+                default:
+                    $formHtml .= "<input type='text' id='{$key}' name='{$key}' value='{$value}' required style='width: 100%; padding: 8px; border: 1px solid #ccc; border-radius: 4px;'>";
+                    break;
+            }
+    
+            $formHtml .= "</div>";
+        }
+    
+        $formHtml .= '<div>
+                        <button type="submit" style="background-color: #4CAF50; color: white; padding: 10px 15px; border: none; border-radius: 4px; cursor: pointer;">Save Settings</button>
+                      </div>';
+        $formHtml .= '</form>';
+    
+        return $formHtml;
+    }
+    
+    public function updateDatasiteseeting($table, $dataArray) {
+        foreach ($dataArray as $key => $value) {
+            $sql = "UPDATE {$table} SET `value` = :value WHERE `key` = :key";
+            $stmt = $this->pdo->prepare($sql);
+            $stmt->bindParam(':key', $key);
+            $stmt->bindParam(':value', $value);
+            $stmt->execute();
+        }
+        return true; 
+    }
+
+
     public function TopLocations() {
         try {
             $stmt = $this->pdo->prepare("SELECT countries.name AS country_name, cities.name AS city_name FROM countries LEFT JOIN cities ON countries.id = cities.country_id");
@@ -543,6 +611,7 @@ class Fun {
             ];
         }
     }
+
     
     // public function FeatureCat() {
     //     $query = "SELECT category_image, category_name FROM categories WHERE is_enable = 1 ORDER BY sort_order ASC LIMIT 10";
@@ -553,5 +622,58 @@ class Fun {
     
     
 
+
+
+
+    function getSiteSettingValue($key) {
+        global $dbFunctions;
+
+        $query = "SELECT `value` FROM `site_settings` WHERE `key` = :key";
+        $stmt = $this->pdo->prepare($query);
+        
+        $stmt->bindParam(':key', $key);
+        
+
+        $stmt->execute();
+
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        
+  
+        return $result ? $result['value'] : null; 
+    }
+    function getMenus() {
+       
+        $menuQuery = "SELECT * FROM menus WHERE is_enabled = 1";
+        $stmt = $this->pdo->prepare($menuQuery);
+        $stmt->execute();
+        
+
+        $menus = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+
+        $menuData = [];
+    
+        foreach ($menus as $menu) {
+            $menuId = $menu['id'];
+            
+
+            $itemQuery = "SELECT * FROM menu_items WHERE menu_id = :menu_id AND is_enable = 1";
+            $itemStmt = $this->pdo->prepare($itemQuery);
+            $itemStmt->bindParam(':menu_id', $menuId);
+            $itemStmt->execute();
+            
+
+            $items = $itemStmt->fetchAll(PDO::FETCH_ASSOC);
+            
+ 
+            $menuData[] = [
+                'menu' => $menu,
+                'items' => $items,
+            ];
+        }
+    
+        return $menuData;
+    }
+    
 
 }

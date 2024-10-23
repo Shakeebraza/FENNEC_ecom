@@ -29,16 +29,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $status = $_POST['status'] ?? '';
 
     $addNewData = [
+
         'name' => $heading,
         'slug' => $slug,
         'link' => $link,
         'content' => $description,
+
+        'name' => htmlspecialchars($heading, ENT_QUOTES, 'UTF-8'), 
+        'slug' => htmlspecialchars($slug, ENT_QUOTES, 'UTF-8'),
+        'link' => htmlspecialchars($link, ENT_QUOTES, 'UTF-8'),
+        'content' => htmlspecialchars($description, ENT_QUOTES, 'UTF-8'), 
+
         'subcontent' => $text_area,
         'is_enable' => $status,
     ];
 
 
+
     $updateResult = $dbFunctions->setData('pages', $addNewData,['id' => $pageid]); 
+
+    $updateResult = $dbFunctions->setDataWithHtmlAllowed('pages', $addNewData,['id' => $pageid]); 
+
 
     if ($updateResult['success']) {
         echo "<script>alert('Page added successfully.');</script>";

@@ -37,6 +37,7 @@ foreach ($boxData as $index => $box) {
         'actions' => '
     <div class="table-data-feature">
         <a href="'.$urlval.'admin/box/edit.php?boxid='.$security->encrypt($box['id']).'" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
+        <a href="'.$urlval.'admin/box/edit.php?boxid='.base64_encode($box['id']).'" class="item" data-toggle="tooltip" data-placement="top" title="Edit">
             <i class="zmdi zmdi-edit"></i>
         </a>
         <button class="item btn-danger" data-id="' . $security->encrypt($box['id']) . '" data-toggle="tooltip" data-placement="top" title="Delete">
