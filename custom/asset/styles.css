@@ -1470,6 +1470,7 @@ padding: 90px 20px;
 background-color: #f1f1f1;
 position: fixed;
 top: 0px;
+z-index: 100;
 }
 .remenu-innnn ul{
 padding: 5px 0px;

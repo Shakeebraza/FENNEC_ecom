@@ -11,6 +11,7 @@
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="<?php echo $urlval ?>custom/asset/styles.css" />
     <style>
 
@@ -41,37 +42,37 @@
           <span class="navbar-toggler-icon"></span>
         </button>
         <form id="searchForm" class="d-flex mx-lg-auto my-lg-0 flex-column flex-lg-row w-100 justify-content-center custom-form">
-    <div class="input-group w-50 me-lg-1 mb-2 mb-lg-0 custom-form">
-        <span class="input-group-text bg-white border-0 rounded-0">
-            <i class="fa-solid fa-magnifying-glass"></i>
-        </span>
-        <input
-            id="searchInput"
-            class="form-control p-2 rounded-0 search-input"
-            type="search"
-            placeholder="Search Fennec"
-            aria-label="Search" />
-    </div>
-    <div class="input-group w-25 mb-2 mb-lg-0 custom-form-location">
-        <span class="input-group-text rounded-0 bg-light border-0">
-            <i class="fa-solid fa-location-dot me-2"></i>
-        </span>
-        <select class="form-select rounded-0 location-select custom-select">
-            <option value="" selected>Select a country</option>
-            <?php
-            $countries = $dbFunctions->getData('countries');
-            foreach ($countries as $cont) {
+          <div class="input-group w-50 me-lg-1 mb-2 mb-lg-0 custom-form">
+            <span class="input-group-text bg-white border-0 rounded-0">
+              <i class="fa-solid fa-magnifying-glass"></i>
+            </span>
+            <input
+              id="searchInput"
+              class="form-control p-2 rounded-0 search-input"
+              type="search"
+              placeholder="Search Fennec"
+              aria-label="Search" />
+          </div>
+          <div class="input-group w-25 mb-2 mb-lg-0 custom-form-location">
+            <span class="input-group-text rounded-0 bg-light border-0">
+              <i class="fa-solid fa-location-dot me-2"></i>
+            </span>
+            <select class="form-select rounded-0 location-select custom-select">
+              <option value="" selected>Select a country</option>
+              <?php
+              $countries = $dbFunctions->getData('countries');
+              foreach ($countries as $cont) {
                 echo '<option value="' . $security->decrypt($cont['id']) . '">' . $security->decrypt($cont['name']) . '</option>';
-            }
-            ?>
-        </select>
-    </div>
-    <button class="btn btn-success rounded-0" type="submit">
-        <i class="fa-solid fa-magnifying-glass fa-magnifying-glass2"></i>
-    </button>
-</form>
+              }
+              ?>
+            </select>
+          </div>
+          <button class="btn btn-success rounded-0" type="submit">
+            <i class="fa-solid fa-magnifying-glass fa-magnifying-glass2"></i>
+          </button>
+        </form>
 
-    
+
 
 
         <div class="d-flex custom-loginRegister">
@@ -169,52 +170,43 @@
             <div class="nav-sub-menu-res-inn1">
               <div class="nav-men-sub-res-ct-inn">
                 <ul>
-                  <li class="car-vhcl-menu-res">Cars & Vehicles</li>
-                  <li class="for-sale-menu-res">For Sale</li>
-                  <li class="property21-res">Property</li>
-                  <li class="jobs21-res">Jobs</li>
-                  <li class="Services21-res">Services</li>
-                  <li class="Community21-res">Community</li>
-                  <li class="Pets21-res">Pets</li>
+                  <?php
+                  $findCate = $categoryManager->getAllCategoriesHeaderMenu();
+                  if ($findCate['status'] == 'success') {
+                    foreach ($findCate['data'] as $category) {
+                      echo '
+               <li class="car-vhcl-menu-res" data-id="' . htmlspecialchars($category['id']) . '">' . htmlspecialchars($category['category_name']) . '</li>';
+                    }
+                  }
+                  ?>
                 </ul>
               </div>
             </div>
           </div>
 
           <div class="remenu-sub">
-            <div class="remenu-main-dw" style="z-index: 99999999;">
-              <div class="remenu-innnn" style="z-index: 99999999;">
-                <div class="div-sub-321">
-                  <img class="crs-end" src="./asset/delete-button.png" alt="">
-                  <h3> Cars & Vehicles</h3>
-                </div>
-                <h2>Browse by</h2>
-                <ul>
-                  <li><a href="<?php echo $urlval ?>">Business & Office</a></li>
-                  <li><a href="<?php echo $urlval ?>">Childcare</a></li>
-                  <li><a href="<?php echo $urlval ?>">Clothing</a></li>
-                  <li><a href="<?php echo $urlval ?>">Computers & Telecoms</a></li>
-                  <li><a href="<?php echo $urlval ?>">Entertainment</a></li>
-                  <li><a href="<?php echo $urlval ?>">Finance & Legal</a></li>
-                  <li><a href="<?php echo $urlval ?>">Food & Drink</a></li>
-                  <li><a href="<?php echo $urlval ?>">Goods Suppliers & Retailers</a></li>
-                  <li><a href="<?php echo $urlval ?>">Health & Beauty</a></li>
-                  <li><a href="<?php echo $urlval ?>">Motoring</a></li>
-                </ul>
-
-                <ul>
-                  <li><a href="<?php echo $urlval ?>">Business & Office</a></li>
-                  <li><a href="<?php echo $urlval ?>">Childcare</a></li>
-                  <li><a href="<?php echo $urlval ?>">Clothing</a></li>
-                  <li><a href="<?php echo $urlval ?>">Computers & Telecoms</a></li>
-                  <li><a href="<?php echo $urlval ?>">Entertainment</a></li>
-                  <li><a href="<?php echo $urlval ?>">Finance & Legal</a></li>
-                  <li><a href="<?php echo $urlval ?>">Food & Drink</a></li>
-                  <li><a href="<?php echo $urlval ?>">Goods Suppliers & Retailers</a></li>
-                  <li><a href="<?php echo $urlval ?>">Health & Beauty</a></li>
-                  <li><a href="<?php echo $urlval ?>">Motoring</a></li>
-                </ul>
-              </div>
-            </div>
+            <?php
+            if ($findCate['status'] == 'success') {
+              foreach ($findCate['data'] as $category) {
+                echo '
+                  <div class="remenu-main-dw" data-id="' . htmlspecialchars($category['id']) . '" style="display:none;">
+                      <div class="remenu-innnn">
+                          <div class="div-sub-321">
+                              <img class="crs-end" src="' . $urlval . 'custom/asset/delete-button.png" alt="">
+                              <h3>' . htmlspecialchars($category['category_name']) . '</h3>
+                          </div>
+                          <h2>Browse by</h2>
+                          <ul>';
+                          $duncatdata = $categoryManager->getAllSubCategoriesHeaderMenu($category['id']);
+                          foreach ($duncatdata['data'] as $val) {
+                            echo '<li><a href="' . htmlspecialchars($val['slug']) . '">' . htmlspecialchars($val['subcategory_name']) . '</a></li>';
+                          }
+                          echo '
+                          </ul>
+                      </div>
+                  </div>';
+              }
+            }
+            ?>
           </div>
         </div>
