@@ -123,6 +123,19 @@ Class Productfun{
     
         return $response;
     }
+    public function searchData($table, $query) {
+        $sql = "SELECT * FROM $table 
+                WHERE name LIKE :query 
+                OR brand LIKE :query 
+                OR description LIKE :query 
+                LIMIT 10";
+
+        $stmt = $this->pdo->prepare($sql);
+        $searchTerm = '%' . $query . '%';
+        $stmt->bindParam(':query', $searchTerm);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
 }
 
 ?>

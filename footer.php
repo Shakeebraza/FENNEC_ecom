@@ -59,8 +59,37 @@
 
 
 
+<script src="<?php echo $urlval?>admin/asset/vendor/jquery-3.2.1.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="<?php echo $urlval?>custom/js/index.js"></script>
 <script src="<?php echo $urlval?>custom/js/header.js"></script>
 <script src="<?php echo $urlval?>custom/js/forsale.js"></script>
 <script src="<?php echo $urlval?>custom/js/script.js"></script>
+
+<script>
+$(document).ready(function() {
+    $('#searchInput').on('input', function() {
+        let query = $(this).val();
+        if (query.length > 0) {
+            $.ajax({
+                url: '<?= $urlval?>ajax/search.php',
+                type: 'GET',
+                data: { q: query },
+                success: function(data) {
+                    $('#searchResults').html(data).show(); 
+                }
+            });
+        } else {
+            $('#searchResults').hide();
+        }
+    });
+
+    // Hide the search results when clicking outside
+    $(document).on('click', function(event) {
+        if (!$(event.target).closest('#searchForm').length) {
+            $('#searchResults').hide();
+        }
+    });
+});
+
+</script>
