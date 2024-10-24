@@ -99,7 +99,7 @@ include_once 'header.php';
         ?>
       <div class="container mt-4">
         <div class="banner">
-          <div class="container">
+          <div class="container" style="box-shadow: 4px 3px 6px #A4A4A485;">
             <div class="row align-items-center p">
               <div class="col-md-3 mb-3 mb-md-0 p-0">
                 <img

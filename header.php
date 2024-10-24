@@ -13,40 +13,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link rel="stylesheet" href="<?php echo $urlval ?>custom/asset/styles.css" />
     <style>
-      .searchResults {
-        position: absolute;
-          top: 7%;
-          left: -252px;
-          right: 2px;
-          background-color: white;
-          border: 1px solid #ddd;
-          border-top-width: 1px;
-          border-top-style: solid;
-          border-top-color: rgb(221, 221, 221);
-          border-top: none;
-          border-radius: 0 0 4px 4px;
-          z-index: 10;
-          display: none;
-          margin: auto;
-            margin-top: auto;
-          margin-top: auto;
-          width: 26%;
-      }
 
-      .suggestion-item {
-          padding: 10px;
-          cursor: pointer;
-          transition: background-color 0.2s;
-      }
-
-      .suggestion-item:hover {
-          background-color: #f0f2f5;
-      }
-
-      .no-results {
-          padding: 10px;
-          color: #999; 
-      } 
     </style>
   </head>
 
