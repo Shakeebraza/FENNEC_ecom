@@ -79,7 +79,7 @@ include_once('style.php');
                        
                             <div class="col-md-2">
                                 <button type="submit" class="btn btn-warning custom-button">Filter</button>
-                                <a href="http://localhost/fennec/admin/product/add.php" class="btn btn-success custom-button">Add</a>
+                                <a href="http://localhost/fennce/admin/product/add.php" class="btn btn-success custom-button">Add</a>
                             </div>
                         </div>
                     </form>
