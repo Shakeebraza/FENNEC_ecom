@@ -1,7 +1,7 @@
 <nav>
 <div class="container-fluid">
         <a class="navbar-brand" href="#">
-            <img src="https://via.placeholder.com/40" alt="Cool Admin Logo" width="40" height="40">
+            <img src="<?= $urlval?>/custom/asset/Capture-removebg-preview.png" alt="Cool Admin Logo" width="40" height="40">
             <span>Fennec</span>
         </a>
         <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#coolAdminOffcanvas" aria-controls="coolAdminOffcanvas" aria-expanded="false" aria-label="Toggle navigation">

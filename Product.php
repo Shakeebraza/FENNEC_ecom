@@ -58,30 +58,44 @@ include_once 'header.php';
                   id="product-grid"
                   class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4"
                 >
-                  <!-- Product Card 1 -->
-                   <a href="<?php echo $urlval?>detail.php">
-                  <div class="col">
-                    <div class="product-card">
-                      <img
-                        src="https://imagedelivery.net/ePR8PyKf84wPHx7_RYmEag/4b9160a8-9109-4cdc-860d-0f1ddbca6700/86"
-                        class="card-img-top"
-                        alt="Classic Maroon Kameez Shalwar"
-                      />
-                      <div class="discount-badge">-25%</div>
-                      <div class="card-body">
-                        <div class="p-3">
-                          <h5 class="card-title">Cleaner | Full-Time & Part-Time Cleaning Jobs | Immediate Start</h5>
-                          <p class="card-text">
-                            Romford, London <br />Self Employed | Recruitment Housekeep</p>
-                            <p class="text-muted">Manchester</p>
-                            <span class="product-price">£330</span>
-                            <span class="product-time">Just now</span>
+                <?php
+                
+$productFind = $productFun->getProductsWithDetails(1, 16, []);
+$products = $productFind['products'];
+foreach($products as $proval){
+    echo '
+    <a href="'.$urlval.'detail.php?slug='.$proval['slug'].'">
+        <div class="col">
+            <div class="product-card">
+                <img
+                    src="'.$proval['image'].'"
+                    class="card-img-top"
+                    alt="'.$proval['name'].'"
+                />
+                <div class="heart-icon">
+                    <i class="fas fa-heart"></i>
+                </div>
+                <div class="card-body">
+                    <div class="p-3">
+                        <h5 class="card-title">'.$proval['name'].'</h5>
+                        <p class="card-text">
+                            '.$proval['description'].'</p>
+                        <p class="text-muted">'.$proval['country'].' | '.$proval['city'].'</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span class="product-price">$'.$proval['price'].'</span>
+                            <span class="product-time text-muted small" style="font-size: 12px;">'.$proval['date'].'</span>
                         </div>
-                        <button class="btn quick-add-btn">Quick Add</button>
-                      </div>
                     </div>
-                  </div>
-                </a>
+                    <button class="btn quick-add-btn">Quick Add</button>
+                </div>
+            </div>
+        </div>
+    </a>
+    ';
+}
+?>
+                  <!-- Product Card 1 -->
+                  
                   <!-- Product Card 2 -->
                    <a href="<?php echo $urlval?>detail.php">
                   <div class="col">

@@ -14,6 +14,10 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="<?php echo $urlval ?>custom/asset/styles.css" />
     <style>
+      /* .productPrice{
+        display: flex;
+        justify-content: space-between;
+      } */
 
     </style>
   </head>
@@ -76,7 +80,7 @@
 
 
         <div class="d-flex custom-loginRegister">
-          <a href="LoginRegister.php" class="btn custom-btn me-2 mb-lg-0 d-flex flex-column align-items-center">
+          <a href="<?= $urlval?>Product.php" class="btn custom-btn me-2 mb-lg-0 d-flex flex-column align-items-center">
             <i class="fa-solid fa-dollar-sign mb-1"></i>
             <span class="new-btn">Sell</span>
           </a>

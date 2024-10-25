@@ -790,7 +790,7 @@ footer {
 
   .custom-form {
     width: 100% !important;
-    margin: 0 auto !important;
+    /* margin: 0 auto !important; */
   }
 
   .custom-form-location {
@@ -820,7 +820,7 @@ footer {
   }
 
   span.input-group-text.rounded-0.bg-light.border-0 {
-    height: 46px;
+    height: 40px;
   }
 
   .sidebar {
