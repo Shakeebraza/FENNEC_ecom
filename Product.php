@@ -1,22 +1,59 @@
 <?php
 require_once 'global.php';
 include_once 'header.php';
+
+
+if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+    $location = $_GET['location'] ?? null;
+    $min_price = $_GET['min_price'] ?? null;
+    $max_price = $_GET['max_price'] ?? null;
+    $subcategories = $_GET['subcategory'] ?? null;
+
+    $filterConditions = [];
+
+    if (!is_null($location)) {
+        $filterConditions['city'] = $location;
+    }
+
+    if ($min_price > 0) {
+        $filterConditions['min_price'] = (float)$min_price;
+    }
+
+    if ($max_price < PHP_INT_MAX) {
+        $filterConditions['max_price'] = (float)$max_price; 
+    }
+
+    if (!empty($subcategories)) {
+        $filterConditions['subcategories'] = $subcategories; 
+    }
+}
+
 ?>
+<style>
+    .btn-sell-car:hover {
+        background-color: white;
+        color: #00494F;
+        border: 1px solid #00494F;
+    }
+    .custom-category {
+    cursor: pointer;
+    padding: 10px;
+}
+
+.subcategory-dropdown {
+    margin-top: 5px;
+    padding-left: 15px;
+    background-color: #f5f5f5;
+    border-left: 2px solid #ccc;
+}
+
+.subcategory-item {
+    padding: 5px;
+}
+</style>
 <div class="container mt-4 mb-5">
     <div class="row">
         <div class="col-12 d-flex justify-content-between mb-4">
-            <!-- <div>
-                <h1 class="jobhead">43,212 ads Job ads</h1>
-                <button class="btn btn-sell-car mt-2">Save search alert</button>
-            </div> -->
-            <!-- <div class="d-flex align-items-end">
-                <select class="form-select" style="width: auto;">
-                    <option>Most recent first</option>
-                    <option>Price: Low to high</option>
-                    <option>Price: High to low</option>
-                    <option>Price: Nearest first</option>
-                </select>
-            </div> -->
         </div>
     </div>
     <div class="row">
@@ -56,530 +93,163 @@ include_once 'header.php';
                     class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                     <?php
 
-                    $productFind = $productFun->getProductsWithDetails(1, 16, []);
-                    $products = $productFind['products'];
-                    foreach ($products as $proval) {
-                        echo '
-    <a href="' . $urlval . 'detail.php?slug=' . $proval['slug'] . '">
-        <div class="col">
-            <div class="product-card">
-                <img
-                    src="' . $proval['image'] . '"
-                    class="card-img-top"
-                    alt="' . $proval['name'] . '"
-                />
-                <div class="heart-icon">
-                    <i class="fas fa-heart"></i>
-                </div>
-                <div class="card-body">
-                    <div class="p-3">
-                        <h5 class="card-title">' . $proval['name'] . '</h5>
-                        <p class="card-text">
-                            ' . $proval['description'] . '</p>
-                        <p class="text-muted">' . $proval['country'] . ' | ' . $proval['city'] . '</p>
-                        <div class="d-flex justify-content-between ">
-                            <span class="product-price" style="color: red;">$' . $proval['price'] . '</span>
-                            <span class="product-time small" style="font-size: 12px;">' . $proval['date'] . '</span>
+                        $productFind = $productFun->getProductsWithDetails(1, 16, $filterConditions);
+                        $products = $productFind['products'];
+                        if(!empty($products)){
+                        foreach ($products as $proval) {
+                            $description = $proval['description'];
+                            $namePro = $proval['name'];
+
+                            $Wordsh = explode(" ", $namePro);
+                            $name = count($Wordsh) > 3 ? implode(" ", array_slice($Wordsh, 0, 3)) . '...' : $namePro;
+
+                            $words = explode(" ", $description);
+                            $description = count($words) > 3 ? implode(" ", array_slice($words, 0, 3)) . '...' : $description;
+
+                            echo '
+                                <a href="' . $urlval . 'detail.php?slug=' . $proval['slug'] . '">
+                                    <div class="col">
+                                        <div class="product-card">
+                                            <img
+                                                src="' . $proval['image'] . '"
+                                                class="card-img-top"
+                                                alt="' . $name . '"
+                                            />
+                                            <div class="heart-icon">
+                                                <i class="fas fa-heart"></i>
+                                            </div>
+                                            <div class="card-body">
+                                                <div class="p-3">
+                                                    <h5 class="card-title">' . $name . '</h5>
+                                                    <p class="card-text">' . $description . '</p>
+                                                    <p class="text-muted">' . $proval['country'] . ' | ' . $proval['city'] . '</p>
+                                                    <div class="d-flex justify-content-between">
+                                                        <span class="product-price" style="color: red;">$' . $proval['price'] . '</span>
+                                                        <span class="product-time small" style="font-size: 12px;">' . $proval['date'] . '</span>
+                                                    </div>
+                                                </div>
+                                            
+                                                <button class="_91e21052 e07f63ca af478541 btn quick-add-btn" type="submit" style="padding: 5px 10px; font-size: 0.8em;">
+                                                    <svg viewBox="0 0 24 24" class="b4840212 _545e587d" style="width: 14px; height: 14px; vertical-align: middle;">
+                                                        <path fill-rule="evenodd" d="M7 18h6a7 7 0 0 0 0-14h-2a7 7 0 0 0-7 7v8.5l2.6-1.3.4-.1zm4-16h2a9 9 0 0 1 0 18H7.2l-3.8 2L2 21V11c0-5 4-9 9-9zm-4 9a1 1 0 1 1 2 0 1 1 0 0 1-2 0zm5-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm3 1a1 1 0 1 1 2 0 1 1 0 0 1-2 0z" clip-rule="evenodd"></path>
+                                                    </svg>
+                                                    <span class="_30de236c af478541 b7af14b4" style="font-size: 0.8em;">Chat</span>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </a>';
+                        }
+                        }else{
+                            echo '
+                            <div class="noproductfound"style="display: flex;justify-content: center;align-content: center;margin: auto;color: #00494f;gap: 31px;text-align: center;font-weight: bold;">
+                            <p>No find a single product</p>
                         </div>
-                    </div>
-                    <button class="btn quick-add-btn">Quick Add</button>
-                </div>
-            </div>
-        </div>
-    </a>
-    ';
-                    }
-                    ?>
+                            ';
+                        }
+                        ?>
+
+
 
                 </div>
             </div>
         </div>
         <div class="col-md-3 left-side">
-            <div class="bg-light p-4 rounded">
+        <div class="bg-light p-4 rounded">
+            <form id="filterForm" method="GET" action=""> <!-- Change the action to your filter processing page -->
                 <div class="mb-4">
                     <h5>Location</h5>
                     <div class="input-group mb-3">
                         <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
-                        <input type="text" class="form-control" placeholder="United Kingdom">
-                    </div>
-                    <div class="d-flex justify-content-between align-items-center mb-3">
-                        <select name="Miles" id="Miles" class="form-select w-75 custom-select">
-                            <option value="select">Miles</option>
-                            <option value="5">5 miles</option>
-                            <option value="10">10 miles</option>
+                        <select id="country-city-select" name="location" class="form-control">
+                            <option value="">Select Country | City</option>
+                            <?php
+                            $countryCityPairs = $productFun->getCountryCityPairs();
+                            foreach ($countryCityPairs as $pair) {
+                                echo '<option value="' . $pair['city_id'] . '" 
+                                            data-country-id="' . $pair['country_id'] . '" 
+                                            data-city-id="' . $pair['city_id'] . '">
+                                            ' . $pair['country_name'] . ' | ' . $pair['city_name'] . '
+                                    </option>';
+                            }
+                            ?>
                         </select>
-                        <button class="btn btn-sell-car ms-3 w-50 custom-button">Update</button>
                     </div>
+
+                    <button type="submit" class="btn btn-sell-car ms-3 w-50 custom-button">Update</button>
                 </div>
+
                 <div class="">
                     <h5>Category</h5>
                     <div class="ms-3">
                         <div class="custom-category">
                             <p>All Categories</p>
                         </div>
-                        <div class="custom-category">
-                            <p>Jobs</p>
-                        </div>
-                        <div class="custom-category">
-                            <p>Teaching & Education <span class="text-muted">(5637)</span></p>
-                        </div>
-                        <div class="custom-category">
-                            <p>Transport & Logistics <span class="text-muted">(4516)</span></p>
-                        </div>
-                        <div class="custom-category">
-                            <p>Manufacturing & Industrial <span class="text-muted">(4270)</span></p>
-                        </div>
-                        <div class="custom-category">
-                            <p>Retail & FMCG <span class="text-muted">(3147)</span></p>
-                        </div>
-                        <div class="custom-category">
-                            <p>Engineering <span class="text-muted">(3070)</span></p>
-                        </div>
-                    </div>
-                    <div class="more-categories" id="moreCategories" style="display: none;">
-                        <div class="ms-3 mt-2">
-                            <div class="custom-category">
-                                <p>Sales <span class="text-muted">(2911)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Agriculture & Farming <span class="text-muted">(2371)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Financial Services <span class="text-muted">(2365)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Customer Service & Call Centre <span class="text-muted">(2231)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Healthcare & Medical <span class="text-muted">(1772)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Accountancy <span class="text-muted">(1562)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Construction & Property <span class="text-muted">(1454)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Housekeeping & Cleaning <span class="text-muted">(1309)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Admin, Secretarial & PA <span class="text-muted">(1181)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Recruitment <span class="text-muted">(805)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>HR <span class="text-muted">(743)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Security <span class="text-muted">(720)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Hospitality & Catering <span class="text-muted">(656)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Social & Care Work <span class="text-muted">(595)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Legal <span class="text-muted">(491)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Marketing, Advertising & PR <span class="text-muted">(468)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Driving & Automotive <span class="text-muted">(450)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Media, Digital & Creative <span class="text-muted">(196)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Childcare <span class="text-muted">(173)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Health & Beauty <span class="text-muted">(162)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Leisure & Tourism <span class="text-muted">(133)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Computing & IT <span class="text-muted">(83)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Gardening <span class="text-muted">(53)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Charity <span class="text-muted">(29)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Performing Arts <span class="text-muted">(24)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Animals <span class="text-muted">(14)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Arts & Heritage <span class="text-muted">(13)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Purchasing & Procurement <span class="text-muted">(7)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Scientific & Research <span class="text-muted">(6)</span></p>
-                            </div>
-                            <div class="custom-category">
-                                <p>Sport, Fitness & Leisure <span class="text-muted">(5)</span></p>
-                            </div>
-                        </div>
-                    </div>
-                    <a href="<?php echo $urlval ?>" class="show pt-1" id="toggleCategories">Show 30 more</a>
-                    <hr>
-                    <div class="mb-4">
-                        <h5>Contract type</h5>
-                        <div class="ms-3">
-                            <div class="custom-category">
-                                <label>
-                                    <input type="radio" name="contractType" value="any">
-                                    Any <span class="text-muted">(23,762)</span>
-                                </label>
-                            </div>
-                            <div class="custom-category">
-                                <label>
-                                    <input type="radio" name="contractType" value="cashInHand">
-                                    Cash in Hand <span class="text-muted">(2,055)</span>
-                                </label>
-                            </div>
-                            <div class="custom-category">
-                                <label>
-                                    <input type="radio" name="contractType" value="contract">
-                                    Contract <span class="text-muted">(2,396)</span>
-                                </label>
-                            </div>
-                            <div class="more-contract-types" id="moreContractTypes" style="display: none;">
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="contractType" value="freelance">
-                                        Freelance <span class="text-muted">(1,032)</span>
-                                    </label>
-                                </div>
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="contractType" value="temporary">
-                                        Temporary <span class="text-muted">(678)</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="<?php echo $urlval ?>" class="show pt-1" id="toggleContractTypes">Show 2 more</a>
-                    </div>
-                    <hr>
-                    <div class="mb-4">
-                        <h5>Recruiter Type</h5>
-                        <div class="ms-3">
-                            <div class="custom-category">
-                                <label>
-                                    <input type="radio" name="recruiterType" value="any">
-                                    Any <span class="text-muted">(40,542)</span>
-                                </label>
-                            </div>
-                            <div class="custom-category">
-                                <label>
-                                    <input type="radio" name="recruiterType" value="directEmployer">
-                                    Direct Employer <span class="text-muted">(38,450)</span>
-                                </label>
-                            </div>
-                            <div class="custom-category">
-                                <label>
-                                    <input type="radio" name="recruiterType" value="recruiter">
-                                    Recruiter <span class="text-muted">(2,092)</span>
-                                </label>
-                            </div>
-                            <div class="more-recruiter-types" id="moreRecruiterTypes" style="display: none;">
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="recruiterType" value="directEmployer">
-                                        Direct Employer <span class="text-muted">(38,450)</span>
-                                    </label>
-                                </div>
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="recruiterType" value="directEmployer">
-                                        Direct Employer <span class="text-muted">(38,450)</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="<?php echo $urlval ?>" class="show pt-1" id="toggleRecruiterTypes">Show more</a>
-                    </div>
-                    <hr>
-                    <div class="mb-4">
-                        <h5>Job Type</h5>
-                        <div class="ms-3">
-                            <div class="custom-category">
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="jobType" value="any">
-                                        Any <span class="text-muted">(42,000)</span>
-                                    </label>
-                                </div>
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="jobType" value="fullTime">
-                                        Full Time <span class="text-muted">(37,451)</span>
-                                    </label>
-                                </div>
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="jobType" value="evening">
-                                        Evening <span class="text-muted">(9)</span>
-                                    </label>
-                                </div>
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="jobType" value="morning">
-                                        Morning <span class="text-muted">(12)</span>
-                                    </label>
-                                </div>
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="jobType" value="nights">
-                                        Nights <span class="text-muted">(7)</span>
-                                    </label>
-                                </div>
-                                <label>
-                                    <input type="radio" name="jobType" value="partTime">
-                                    Part Time <span class="text-muted">(4,468)</span>
-                                </label>
-                            </div>
-                            <div class="more-job-types" id="moreJobTypes" style="display: none;">
+                        <?php
+                        $findCate = $productFun->getAllcatandSubcat();
 
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="jobType" value="saturdayJob">
-                                        Saturday job <span class="text-muted">(3)</span>
-                                    </label>
-                                </div>
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="jobType" value="sundayJob">
-                                        Sunday job <span class="text-muted">(2)</span>
-                                    </label>
-                                </div>
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="jobType" value="termTime">
-                                        Term Time <span class="text-muted">(6)</span>
-                                    </label>
-                                </div>
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="jobType" value="weekends">
-                                        Weekends <span class="text-muted">(42)</span>
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <a href="<?php echo $urlval ?>" class="show pt-1" id="toggleJobTypes">Show more</a>
+                        if ($findCate['status'] == 'success') {
+                            foreach ($findCate['data'] as $index => $category) {
+                                echo '
+                                    <div class="custom-category" onclick="toggleSubcategory(' . $index . ')">
+                                        <p>' . $category['category_name'] . '</p>
+                                        <div id="subcategory-' . $index . '" class="subcategory-dropdown" style="display: none;">';
+                                        
+                                if (!empty($category['subcategories'])) {
+                                    foreach ($category['subcategories'] as $subcategory) {
+                                        echo '<p class="subcategory-item">
+                                                <input type="checkbox" name="subcategory[]" value="' . $subcategory['id'] . '">' . 
+                                                $subcategory['subcategory_name'] . 
+                                            '</p>';
+                                    }
+                                } else {
+                                    echo '<p class="subcategory-item">No subcategories</p>';
+                                }
+
+                                echo '  </div>
+                                    </div>';
+                            }
+                        }
+                        ?>
                     </div>
+                    
                     <hr>
-                    <div class="mb-4">
-                        <h5>Job Level</h5>
-                        <div class="ms-3">
-                            <div class="custom-category">
-                                <label>
-                                    <input type="radio" name="jobLevel" value="any">
-                                    Any <span class="text-muted">(2,766)</span>
-                                </label>
-                            </div>
-                            <div class="custom-category">
-                                <label>
-                                    <input type="radio" name="jobLevel" value="apprenticeship">
-                                    Apprenticeship <span class="text-muted">(46)</span>
-                                </label>
-                            </div>
-                            <div class="custom-category">
-                                <label>
-                                    <input type="radio" name="jobLevel" value="experienced">
-                                    Experienced <span class="text-muted">(2,506)</span>
-                                </label>
-                            </div>
-                            <div class="custom-category">
-                                <label>
-                                    <input type="radio" name="jobLevel" value="graduate">
-                                    Graduate <span class="text-muted">(179)</span>
-                                </label>
-                            </div>
-                            <div class="custom-category">
-                                <label>
-                                    <input type="radio" name="jobLevel" value="internship">
-                                    Internship <span class="text-muted">(7)</span>
-                                </label>
-                            </div>
-                            <div class="custom-category">
-                                <label>
-                                    <input type="radio" name="jobLevel" value="management">
-                                    Management <span class="text-muted">(28)</span>
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class="mb-4">
-                        <h5>Language</h5>
-                        <div class="ms-3">
-                            <div class="custom-category">
-                                <label>
-                                    <input type="radio" name="language" value="any">
-                                    Any <span class="text-muted">(4,483)</span>
-                                </label>
-                            </div>
-                            <div class="custom-category">
-                                <label>
-                                    <input type="radio" name="language" value="arabic">
-                                    Arabic <span class="text-muted">(5)</span>
-                                </label>
-                            </div>
-                            <div class="custom-category">
-                                <label>
-                                    <input type="radio" name="language" value="filipino">
-                                    Filipino <span class="text-muted">(3)</span>
-                                </label>
-                            </div>
-                            <div class="custom-category">
-                                <label>
-                                    <input type="radio" name="language" value="english">
-                                    English <span class="text-muted">(4,405)</span>
-                                </label>
-                            </div>
-                            <div class="custom-category">
-                                <label>
-                                    <input type="radio" name="language" value="french">
-                                    French <span class="text-muted">(14)</span>
-                                </label>
-                            </div>
-                            <div class="custom-category">
-                                <label>
-                                    <input type="radio" name="language" value="german">
-                                    German <span class="text-muted">(1)</span>
-                                </label>
-                            </div>
-                            <div class="more-languages" id="moreLanguages" style="display: none;">
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="language" value="greek">
-                                        Greek <span class="text-muted">(3)</span>
-                                    </label>
-                                </div>
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="language" value="hindi">
-                                        Hindi <span class="text-muted">(3)</span>
-                                    </label>
-                                </div>
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="language" value="italian">
-                                        Italian <span class="text-muted">(3)</span>
-                                    </label>
-                                </div>
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="language" value="mandarin">
-                                        Mandarin <span class="text-muted">(2)</span>
-                                    </label>
-                                </div>
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="language" value="polish">
-                                        Polish <span class="text-muted">(9)</span>
-                                    </label>
-                                </div>
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="language" value="portuguese">
-                                        Portuguese <span class="text-muted">(1)</span>
-                                    </label>
-                                </div>
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="language" value="punjabi">
-                                        Punjabi <span class="text-muted">(2)</span>
-                                    </label>
-                                </div>
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="language" value="romanian">
-                                        Romanian <span class="text-muted">(1)</span>
-                                    </label>
-                                </div>
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="language" value="russian">
-                                        Russian <span class="text-muted">(4)</span>
-                                    </label>
-                                </div>
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="language" value="spanish">
-                                        Spanish <span class="text-muted">(14)</span>
-                                    </label>
-                                </div>
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="language" value="thai">
-                                        Thai <span class="text-muted">(3)</span>
-                                    </label>
-                                </div>
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="language" value="turkish">
-                                        Turkish <span class="text-muted">(1)</span>
-                                    </label>
-                                </div>
-                                <div class="custom-category">
-                                    <label>
-                                        <input type="radio" name="language" value="urdu">
-                                        Urdu <span class="text-muted">(9)</span>
-                                    </label>
-                                </div>
-                            </div>
-                            <a href="<?php echo $urlval ?>" class="show pt-1 " id="toggleLanguages">Show more</a>
-                        </div>
-                    </div>
-                    <hr>
-                    <div class=" mt-5">
+                    <div class="mt-5">
                         <div class="card" style="max-width: 300px;">
                             <div class="card-body">
-                                <h5 class="card-title mb-3">Salary</h5>
+                                <h5 class="card-title mb-3">Price Range</h5>
                                 <div class="mb-3">
-                                    <select class="form-select">
-                                        <option selected>No min</option>
-                                        <option value="30000">$30,000</option>
-                                        <option value="50000">$50,000</option>
-                                        <option value="70000">$70,000</option>
-                                        <option value="100000">$100,000</option>
-                                    </select>
+                                    <label for="minPrice" class="form-label">Minimum Price:</label>
+                                    <input type="number" name="min_price" class="form-control" id="minPrice" placeholder="Enter minimum price" min="0" step="1000">
                                 </div>
                                 <div class="mb-3">
-                                    <select class="form-select">
-                                        <option selected>No max</option>
-                                        <option value="50000">$50,000</option>
-                                        <option value="70000">$70,000</option>
-                                        <option value="100000">$100,000</option>
-                                        <option value="150000">$150,000</option>
-                                    </select>
+                                    <label for="maxPrice" class="form-label">Maximum Price:</label>
+                                    <input type="number" name="max_price" class="form-control" id="maxPrice" placeholder="Enter maximum price" min="0" step="1000">
                                 </div>
-                                <button class="btn btn-sell-car w-100">Update</button>
+                                <button type="submit" class="btn btn-sell-car w-100">Update</button>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
+</div>
+
     </div>
 </div>
 <?php
 include_once 'footer.php';
 ?>
-
+<script>
+    function toggleSubcategory(index) {
+    const subcategoryDiv = document.getElementById('subcategory-' + index);
+    if (subcategoryDiv.style.display === 'none') {
+        subcategoryDiv.style.display = 'block';
+    } else {
+        subcategoryDiv.style.display = 'none';
+    }
+}
+</script>
 </body>
 
 </html>

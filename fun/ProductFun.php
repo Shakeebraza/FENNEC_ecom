@@ -136,6 +136,55 @@ Class Productfun{
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    function getCountryCityPairs() {
+        $query = "
+        SELECT countries.id AS country_id, countries.name AS country_name, 
+               cities.id AS city_id, cities.name AS city_name 
+        FROM countries
+        INNER JOIN cities ON countries.id = cities.country_id
+        ORDER BY countries.name, cities.name";
+        $stmt = $this->pdo->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    function getAllcatandSubcat() {
+        
+        try {
+            // Query to get categories
+            $categoriesQuery = $this->pdo->prepare("SELECT * FROM categories WHERE is_show = 1 AND is_enable =1");
+            $categoriesQuery->execute();
+            $categories = $categoriesQuery->fetchAll(PDO::FETCH_ASSOC);
+    
+            // Initialize the result array
+            $result = [
+                'status' => 'success',
+                'data' => []
+            ];
+    
+            // Fetch each category's subcategories
+            foreach ($categories as $category) {
+                // Query to get subcategories for the current category
+                $subcategoriesQuery = $this->pdo->prepare("SELECT * FROM subcategories WHERE category_id = :category_id");
+                $subcategoriesQuery->bindParam(':category_id', $category['id'], PDO::PARAM_INT);
+                $subcategoriesQuery->execute();
+                $subcategories = $subcategoriesQuery->fetchAll(PDO::FETCH_ASSOC);
+    
+                // Append the subcategories to the current category
+                $result['data'][] = [
+                    'category_name' => $category['category_name'],
+                    'subcategories' => $subcategories
+                ];
+            }
+            
+            return $result;
+        } catch (PDOException $e) {
+            return [
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ];
+        }
+    }
 }
 
 ?>

@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE php>
 <php lang="en">
 
@@ -80,8 +83,15 @@
 
 
         <div class="d-flex custom-loginRegister">
-          <a href="<?= $urlval?>Product.php" class="btn custom-btn me-2 mb-lg-0 d-flex flex-column align-items-center">
-            <i class="fa-solid fa-dollar-sign mb-1"></i>
+          <a href="<?php
+          if(isset($_SESSION['userid'])){
+            echo $urlval.'Post.php';
+          }else{
+            echo $urlval.'Product.php';
+
+          }
+          ?>" class="btn custom-btn me-2 mb-lg-0 d-flex flex-column align-items-center">
+            <i class="fa-solid fa-dollar-sign mb-1 fa-plus-circle"></i>
             <span class="new-btn">Sell</span>
           </a>
           <a href="LoginRegister.php" class="btn custom-btn d-flex flex-column align-items-center">
