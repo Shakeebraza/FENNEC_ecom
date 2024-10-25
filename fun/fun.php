@@ -80,8 +80,6 @@ class Fun {
                     'text' => $this->security->decrypt($record['text']),
 
                     'longtext' => $this->security->decrypt($record['longtext']),
-
-                    'longtext' => $this->security->decrypt($record['longtext']),
                     'link' => $this->security->decrypt($record['link'])
 
                 ];
