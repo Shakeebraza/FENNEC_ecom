@@ -1,5 +1,11 @@
 <?php
 require_once 'global.php';
+session_start();
+
+if(!isset($_SESSION['userid'])){
+    header('Location: index.php');
+    exit();
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -161,7 +167,7 @@ require_once 'global.php';
                                     Upload Gallery Images
                                 </label>
                                 <div id="imagePreview" class="image-preview"></div>
-                                <div class="text-danger" id="galleryError"></div> <!-- Error message -->
+                                <div class="text-danger" id="galleryError"></div> 
                             </div>
 
                 <div class="mb-3">
