@@ -16,6 +16,7 @@ session_start();
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="<?php echo $urlval ?>custom/asset/styles.css" />
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <style>
       /* .productPrice{
         display: flex;
@@ -128,7 +129,7 @@ session_start();
                 if ($findCate['status'] == 'success') {
                   foreach ($findCate['data'] as $category) {
 
-                    echo '<li class="' . htmlspecialchars($category['slug']) . ' "><a href="' . $urlval . $category['slug'] . '">' . htmlspecialchars($category['category_name']) . '</a></li>';
+                    echo '<li class="' . htmlspecialchars($category['slug']) . ' "><a href="' . $urlval.'category.php?slug=' . $category['slug'] . '">' . htmlspecialchars($category['category_name']) . '</a></li>';
                   }
                 }
                 ?>

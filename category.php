@@ -3,11 +3,13 @@ require_once 'global.php';
 include_once 'header.php';
 
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $location = $_GET['location'] ?? null;
     $min_price = $_GET['min_price'] ?? null;
     $max_price = $_GET['max_price'] ?? null;
     $subcategories = $_GET['subcategory'] ?? null;
+    $slug = $_GET['slug'] ?? null;
 
     $filterConditions = [];
 
@@ -23,8 +25,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $filterConditions['max_price'] = (float)$max_price; 
     }
 
-    if (!empty($subcategories)) {
-        $filterConditions['subcategory'] = $subcategories; 
+    if (!empty($slug)) {
+        $slugId = $dbFunctions->getDatanotenc('categories', "slug ='$slug'");
+        $filterConditions['category'] = $slugId[0]['id'];
+        // var_dump();
+        // exit();
+        
     }
 }
 
@@ -193,6 +199,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         <div class="col-md-3 left-side">
         <div class="bg-light p-4 rounded">
             <form id="filterForm" method="GET" action="">
+                <input type="hidden" name="slug" value="<?php echo $_GET['slug']?>">
                 <div class="mb-4">
                     <h5>Location</h5>
                     <div class="input-group mb-3">
@@ -216,11 +223,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 </div>
 
                 <div class="">
-                    <h5>Category</h5>
+                    <h5>Sub Category</h5>
                     <div class="ms-3">
                        
                     <?php
-                    $findCate = $productFun->getAllcatandSubcat();
+                    $findCate = $productFun->getAllcatandSubcat($slugId[0]['id']);
 
                     if ($findCate['status'] == 'success') {
                         foreach ($findCate['data'] as $index => $category) {

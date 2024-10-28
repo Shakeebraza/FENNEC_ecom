@@ -48,6 +48,10 @@ Class Productfun{
             $sql .= " AND p.name LIKE :product_name";
             $params[':product_name'] = '%' . $filters['product_name'] . '%';
         }
+        if (!empty($filters['slug'])) {
+            $sql .= " AND p.slug LIKE :slug";
+            $params[':slug'] = '%' . $filters['slug'] . '%';
+        }
         if (!empty($filters['min_price'])) {
             $sql .= " AND p.price >= :min_price";
             $params[':min_price'] = $filters['min_price'];
@@ -148,29 +152,32 @@ Class Productfun{
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    function getAllcatandSubcat() {
-        
+    function getAllcatandSubcat($categoryId = null) {
         try {
-            // Query to get categories
-            $categoriesQuery = $this->pdo->prepare("SELECT * FROM categories WHERE is_show = 1 AND is_enable =1");
+            $categoriesQueryStr = "SELECT * FROM categories WHERE is_show = 1 AND is_enable = 1";
+            
+            if ($categoryId !== null) {
+                $categoriesQueryStr .= " AND id = :category_id";
+            }
+            
+            $categoriesQuery = $this->pdo->prepare($categoriesQueryStr);
+            if ($categoryId !== null) {
+                $categoriesQuery->bindParam(':category_id', $categoryId, PDO::PARAM_INT);
+            }
+            
             $categoriesQuery->execute();
             $categories = $categoriesQuery->fetchAll(PDO::FETCH_ASSOC);
-    
-            // Initialize the result array
             $result = [
                 'status' => 'success',
                 'data' => []
             ];
-    
-            // Fetch each category's subcategories
+            
             foreach ($categories as $category) {
-                // Query to get subcategories for the current category
                 $subcategoriesQuery = $this->pdo->prepare("SELECT * FROM subcategories WHERE category_id = :category_id");
                 $subcategoriesQuery->bindParam(':category_id', $category['id'], PDO::PARAM_INT);
                 $subcategoriesQuery->execute();
                 $subcategories = $subcategoriesQuery->fetchAll(PDO::FETCH_ASSOC);
-    
-                // Append the subcategories to the current category
+                
                 $result['data'][] = [
                     'category_name' => $category['category_name'],
                     'subcategories' => $subcategories
@@ -185,6 +192,52 @@ Class Productfun{
             ];
         }
     }
+
+    public function getProductDetailsBySlug($slug) {
+        $sql = "
+            SELECT 
+                p.id AS product_id,
+                p.name AS product_name,
+                p.description AS product_description,
+                p.price,
+                p.discount_price,
+                p.brand,
+                c.category_name,
+                s.subcategory_name,
+                pi.image_path AS image_path  -- Fetch image paths
+            FROM 
+                products p
+            LEFT JOIN 
+                categories c ON p.category_id = c.id
+            LEFT JOIN 
+                subcategories s ON p.subcategory_id = s.id
+            LEFT JOIN 
+                product_images pi ON p.id = pi.product_id
+            WHERE 
+                p.slug = :slug
+        ";
+    
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':slug', $slug);
+        $stmt->execute();
+    
+        $productDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        if ($productDetails) {
+            $firstProduct = $productDetails[0];
+            $images = array_column($productDetails, 'image_path'); 
+            
+            $result = [
+                'product' => $firstProduct,
+                'gallery_images' => $images
+            ];
+    
+            return $result; 
+        }
+    
+        return null; 
+    }
+    
 }
 
 ?>
