@@ -19,7 +19,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     header('Location: index.php');
     exit();
 }
-var_dump($productData['product']);
+// var_dump($productData['product']);
 
 ?>
 <div class="container mt-4">
