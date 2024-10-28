@@ -193,18 +193,21 @@ Class Productfun{
         }
     }
 
-    public function getProductDetailsBySlug($slug) {
+    public function getProductDetailsBySlug($slug, $userId = null) {
         $sql = "
             SELECT 
                 p.id AS product_id,
                 p.name AS product_name,
                 p.description AS product_description,
                 p.price,
+                p.user_id,
                 p.discount_price,
                 p.brand,
                 c.category_name,
+                c.slug as catslug,
                 s.subcategory_name,
-                pi.image_path AS image_path  -- Fetch image paths
+                pi.image_path AS image_path,  -- Fetch image paths
+                CASE WHEN f.user_id IS NOT NULL THEN 1 ELSE 0 END AS is_favorited  -- Check if favorited
             FROM 
                 products p
             LEFT JOIN 
@@ -213,12 +216,15 @@ Class Productfun{
                 subcategories s ON p.subcategory_id = s.id
             LEFT JOIN 
                 product_images pi ON p.id = pi.product_id
+            LEFT JOIN 
+                favorites f ON p.id = f.product_id AND f.user_id = :user_id  -- Join with favorites for current user
             WHERE 
                 p.slug = :slug
         ";
-    
+        
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':slug', $slug);
+        $stmt->bindParam(':user_id', $userId);
         $stmt->execute();
     
         $productDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -229,7 +235,8 @@ Class Productfun{
             
             $result = [
                 'product' => $firstProduct,
-                'gallery_images' => $images
+                'gallery_images' => $images,
+                'is_favorited' => $firstProduct['is_favorited']
             ];
     
             return $result; 
@@ -237,6 +244,25 @@ Class Productfun{
     
         return null; 
     }
+    
+    public function toggleFavorite($productId, $userId) {
+        // Check if product is already favorited
+        $stmt = $this->pdo->prepare("SELECT * FROM favorites WHERE product_id = ? AND user_id = ?");
+        $stmt->execute([$productId, $userId]);
+        
+        if ($stmt->rowCount() > 0) {
+            // If already favorited, remove it
+            $stmt = $this->pdo->prepare("DELETE FROM favorites WHERE product_id = ? AND user_id = ?");
+            $stmt->execute([$productId, $userId]);
+            return false; // Not favorited anymore
+        } else {
+            // If not favorited, add it
+            $stmt = $this->pdo->prepare("INSERT INTO favorites (product_id, user_id) VALUES (?, ?)");
+            $stmt->execute([$productId, $userId]);
+            return true; // Now favorited
+        }
+    }
+    
     
 }
 

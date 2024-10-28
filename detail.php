@@ -5,25 +5,40 @@ include_once 'header.php';
 if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $slug = $_GET['slug'] ?? null;
     if (!empty($slug)) {
-        $productData = $productFun->getProductDetailsBySlug($slug);
-        // var_dump($productData['product']);
+        $userId = isset($_SESSION['userid']) ? base64_decode($_SESSION['userid']) : NULL;
+        $productData = $productFun->getProductDetailsBySlug($slug, $userId);
         if (empty($productData)) {
-            header('Location:index.php');
+            header('Location: index.php');
             exit();
         }
+    } else {
+        header('Location: index.php');
+        exit();
     }
 } else {
-    header('Location:index.php');
+    header('Location: index.php');
     exit();
 }
+var_dump($productData['product']);
+
 ?>
 <div class="container mt-4">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
-            <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item"><a href="#">For Sale</a></li>
-            <li class="breadcrumb-item"><a href="#">Home & Garden</a></li>
-            <li class="breadcrumb-item" aria-current="page"><?php echo htmlspecialchars($productData['product']['category'] ?? 'Other Household Goods'); ?></li>
+            <li class="breadcrumb-item"><a href="<?= $urlval ?>">Home</a></li>
+
+            <li class="breadcrumb-item" aria-current="page">
+                <a href="<?= $urlval ?>category.php?slug=<?= urlencode($productData['product']['catslug'] ?? 'Not Found'); ?>">
+                    <?php echo htmlspecialchars($productData['product']['category_name'] ?? 'Not Found'); ?>
+                </a>
+            </li>
+
+            <?php if (!empty($productData['product']['subcategory_name'])): ?>
+                <li class="breadcrumb-item" aria-current="page">
+                    <?php echo htmlspecialchars($productData['product']['subcategory_name']); ?>
+
+                </li>
+            <?php endif; ?>
         </ol>
     </nav>
 
@@ -40,17 +55,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         foreach ($productData['gallery_images'] as $row) {
                             echo '
                                 <div class="swiper-slide">
-                                    <img src="' . $urlval . $row. '" class="card-img-top" alt="Not found Image" style="width: 100%; height: 80%; object-fit: cover; border-radius: 12px;">
+                                    <img src="' . $urlval . $row . '" class="card-img-top" alt="Not found Image" style="width: 100%; height: 80%; object-fit: cover;border-radius: 12px;">
                                 </div>
                             ';
                         }
                         ?>
                     </div>
-                    <!-- Pagination dots -->
                     <div class="swiper-pagination" style="bottom: 10px;"></div>
                 </div>
                 <div class="card-body">
-                    <h5 class="card-title" style="font-size: 1.5em; color: #333;"><?=$productData['product']['product_name']?></h5>
+                    <h5 class="card-title" style="font-size: 1.5em; color: #333;"><?= htmlspecialchars($productData['product']['product_name'] ?? 'Product Name'); ?></h5>
                     <p class="card-text" style="color: #555; line-height: 1.5;"><?php echo htmlspecialchars($productData['product']['product_description'] ?? 'No description available.'); ?></p>
                 </div>
             </div>
@@ -61,16 +75,42 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 <div class="card-body">
                     <h5 class="card-title">Seller Information</h5>
                     <p class="card-text">
-                        <i class="fas fa-user"></i> <?php echo htmlspecialchars($productData['seller_name'] ?? 'Unknown'); ?><br>
+                        <i class="fas fa-user"></i> <?php
+                        $usid=$productData['product']['user_id'];
+                            $datauserid = $dbFunctions->getDatanotenc('users',"id='$usid'");
+                            echo $datauserid[0]['username'];
+                                                    ?><br>
                         <small class="text-muted">Posting for under a month</small>
                     </p>
                     <p class="card-text">
                         <i class="fas fa-check-circle text-success"></i> Email address verified
                     </p>
                     <button class="btn btn-success w-100 mb-2">Email</button>
-                    <button class="btn buttonss w-100 mb-2"id="favorite-button" data-product-id="<?php echo $productData['id']; ?>">
-                        <i class="far fa-heart"></i> Favourite
-                    </button>
+                    <?php
+                    if ($productData['is_favorited'] == 1): ?>
+                        <button class="btn buttonss w-100 mb-2" data-productid="<?php echo $productData['product']['product_id']; ?>" id="favorite-button">
+                            <i class="<?php echo $productData['is_favorited'] ? 'fas' : 'far'; ?> fa-heart"></i>
+                            <?php echo $productData['is_favorited'] ? 'Favorited' : 'Favourite'; ?>
+                        </button>
+                    <?php else:
+                        if (isset($_SESSION['userid'])) {
+                            echo '
+                        <button class="btn buttonss w-100 mb-2" data-productid="' . $productData['product']['product_id'] . '" id="favorite-button">
+                            <i class="far fa-heart"></i> Favourite
+                        </button>
+                            
+                            ';
+                        } else {
+                            echo '
+                                <a class="btn buttonss w-100 mb-2" href="' . $urlval . 'LoginRegister.php">
+                                    <i class="far fa-heart"></i> Favourite
+                                </a>
+                            
+                            ';
+                        }
+                    ?>
+
+                    <?php endif; ?>
                     <button class="btn buttonss w-100">
                         <i class="fas fa-flag"></i> Report
                     </button>
@@ -90,7 +130,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         </div>
     </div>
 
-    <div class="container mt-5 ">
+    <div class="container mt-5">
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="card">
@@ -123,7 +163,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     <div class="swiper-container" style="margin-bottom: 40px; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);">
         <div class="swiper-wrapper">
             <?php
-            // Assuming you have a list of related products
             foreach ($relatedProducts as $relatedProduct) {
                 echo '
                 <div class="swiper-slide" style="background: #eaeaea; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
@@ -135,7 +174,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             }
             ?>
         </div>
-        <!-- Add Pagination -->
         <div class="swiper-pagination" style="bottom: 10px;"></div>
     </div>
 </div>
@@ -144,7 +182,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 include_once 'footer.php';
 ?>
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
+    document.addEventListener('DOMContentLoaded', function() {
         const mainSwiper = new Swiper('.swiper-container2', {
             loop: true,
             pagination: {
@@ -156,52 +194,52 @@ include_once 'footer.php';
                 disableOnInteraction: false,
             },
         });
-    });
 
-    // Initialize the "You may also like" swiper
-    const relatedProductsSwiper = new Swiper('.swiper-container', {
-        slidesPerView: 4,
-        spaceBetween: 10,
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-        breakpoints: {
-            1024: { slidesPerView: 3 },
-            600: { slidesPerView: 2 },
-            480: { slidesPerView: 1 }
-        }
-    });
+        const relatedProductsSwiper = new Swiper('.swiper-container', {
+            slidesPerView: 4,
+            spaceBetween: 10,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            breakpoints: {
+                1024: {
+                    slidesPerView: 3
+                },
+                600: {
+                    slidesPerView: 2
+                },
+                480: {
+                    slidesPerView: 1
+                }
+            }
+        });
 
-
-    document.addEventListener('DOMContentLoaded', function () {
         const favoriteButton = document.getElementById('favorite-button');
 
-        favoriteButton.addEventListener('click', function () {
-            const productId = this.getAttribute('data-product-id');
+        favoriteButton.addEventListener('click', function() {
+            const productId = this.getAttribute('data-productid');
 
-            // Send an AJAX request to the server
-            fetch('<?= $urlval?>admin/favorite.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ id: productId }),
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    // Change the button appearance if favorite
-                    if (data.isFavorited) {
-                        favoriteButton.innerHTML = '<i class="fas fa-heart"></i> Favorited';
+            fetch('<?= $urlval ?>ajax/favorite.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        id: productId
+                    }),
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        favoriteButton.innerHTML = data.isFavorited ?
+                            '<i class="fas fa-heart"></i> Favorited' :
+                            '<i class="far fa-heart"></i> Favourite';
                     } else {
-                        favoriteButton.innerHTML = '<i class="far fa-heart"></i> Favourite';
+                        alert('Error: ' + data.message);
                     }
-                } else {
-                    alert('Error: ' + data.message);
-                }
-            })
-            .catch(error => console.error('Error:', error));
+                })
+                .catch(error => console.error('Error:', error));
         });
     });
 </script>
