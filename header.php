@@ -27,6 +27,11 @@ session_start();
   </head>
 
   <body>
+  <!-- <?php
+//   session_start();
+// var_dump($_SESSION['username']);
+// exit();
+?> -->
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="container">
         <a class="navbar-brand d-flex align-items-center" href="index.php" style="text-decoration: none;">
