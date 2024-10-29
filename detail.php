@@ -42,8 +42,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         </ol>
     </nav>
 
-    <h1 class="mb-2"><?php echo htmlspecialchars($productData['product']['title'] ?? 'Product Title'); ?></h1>
-    <p class="text-muted mb-2"><?php echo htmlspecialchars($productData['product']['location'] ?? 'Location'); ?></p>
+    <h1 class="mb-2"><?php echo htmlspecialchars($productData['product']['product_name'] ?? 'Product Title'); ?></h1>
+    <p class="text-muted mb-2"><?php echo htmlspecialchars($productData['location'] ?? 'Location'); ?></p>
     <h2 class="mb-4">£<?php echo htmlspecialchars($productData['product']['price'] ?? '0.00'); ?></h2>
 
     <div class="row">
@@ -163,9 +163,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     <div class="swiper-container" style="margin-bottom: 40px; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);">
         <div class="swiper-wrapper">
             <?php
+            $relatedProducts=$productFun->getRelatedProducts($productData['product']['category_id'] ,$productData['product']['product_id'] );
             foreach ($relatedProducts as $relatedProduct) {
                 echo '
-                <div class="swiper-slide" style="background: #eaeaea; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
+                <div class="swiper-slide" style="background: #eaeaea; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;max-height: 50%;">
                     <img src="' . htmlspecialchars($urlval . $relatedProduct['image']) . '" alt="' . htmlspecialchars($relatedProduct['title']) . '" style="border-radius: 12px; width: 100%; height: auto; transition: transform 0.3s;">
                     <h5 style="margin-top: 10px; font-size: 1.2em; color: #333;">' . htmlspecialchars($relatedProduct['title']) . '</h5>
                     <p style="font-weight: bold; color: #28a745; font-size: 1.1em; margin-top: 5px;">£' . htmlspecialchars($relatedProduct['price']) . '</p>

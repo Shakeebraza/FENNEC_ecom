@@ -201,13 +201,18 @@ Class Productfun{
                 p.description AS product_description,
                 p.price,
                 p.user_id,
+                p.category_id,
                 p.discount_price,
+                p.country_id,
+                p.city_id,
                 p.brand,
                 c.category_name,
-                c.slug as catslug,
+                c.slug AS catslug,
                 s.subcategory_name,
-                pi.image_path AS image_path,  -- Fetch image paths
-                CASE WHEN f.user_id IS NOT NULL THEN 1 ELSE 0 END AS is_favorited  -- Check if favorited
+                cou.name AS con_name,
+                city.name AS city_name,
+                pi.image_path AS image_path,
+                CASE WHEN f.user_id IS NOT NULL THEN 1 ELSE 0 END AS is_favorited
             FROM 
                 products p
             LEFT JOIN 
@@ -217,50 +222,77 @@ Class Productfun{
             LEFT JOIN 
                 product_images pi ON p.id = pi.product_id
             LEFT JOIN 
-                favorites f ON p.id = f.product_id AND f.user_id = :user_id  -- Join with favorites for current user
+                favorites f ON p.id = f.product_id " . ($userId ? "AND f.user_id = :user_id" : "") . "
+            LEFT JOIN 
+                countries cou ON cou.id = p.country_id
+            LEFT JOIN 
+                cities city ON city.id = p.city_id
             WHERE 
                 p.slug = :slug
         ";
-        
+    
         $stmt = $this->pdo->prepare($sql);
         $stmt->bindParam(':slug', $slug);
-        $stmt->bindParam(':user_id', $userId);
-        $stmt->execute();
     
+        if ($userId) {
+            $stmt->bindParam(':user_id', $userId);
+        }
+    
+        $stmt->execute();
         $productDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
         if ($productDetails) {
             $firstProduct = $productDetails[0];
-            $images = array_column($productDetails, 'image_path'); 
+            $images = array_column($productDetails, 'image_path');
             
-            $result = [
+            return [
                 'product' => $firstProduct,
                 'gallery_images' => $images,
-                'is_favorited' => $firstProduct['is_favorited']
+                'is_favorited' => $firstProduct['is_favorited'],
+                'location' => $firstProduct['con_name'] . ' | ' . $firstProduct['city_name']
             ];
-    
-            return $result; 
         }
     
-        return null; 
+        return null;
     }
     
+    
     public function toggleFavorite($productId, $userId) {
-        // Check if product is already favorited
         $stmt = $this->pdo->prepare("SELECT * FROM favorites WHERE product_id = ? AND user_id = ?");
         $stmt->execute([$productId, $userId]);
         
         if ($stmt->rowCount() > 0) {
-            // If already favorited, remove it
             $stmt = $this->pdo->prepare("DELETE FROM favorites WHERE product_id = ? AND user_id = ?");
             $stmt->execute([$productId, $userId]);
-            return false; // Not favorited anymore
+            return false; 
         } else {
-            // If not favorited, add it
             $stmt = $this->pdo->prepare("INSERT INTO favorites (product_id, user_id) VALUES (?, ?)");
             $stmt->execute([$productId, $userId]);
-            return true; // Now favorited
+            return true;
         }
+    }
+    public function getRelatedProducts($categoryId, $productId, $limit = 5) {
+        $sql = "
+            SELECT 
+                p.id AS product_id,
+                p.name AS title,
+                p.price,
+                p.image AS image
+            FROM 
+                products p
+            WHERE 
+                p.category_id = :categoryId
+                AND p.id != :productId
+            LIMIT :limit
+        ";
+    
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':categoryId', $categoryId, PDO::PARAM_INT);
+        $stmt->bindParam(':productId', $productId, PDO::PARAM_INT);
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->execute();
+    
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
     

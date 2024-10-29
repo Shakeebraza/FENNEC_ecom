@@ -18,10 +18,13 @@ session_start();
     <link rel="stylesheet" href="<?php echo $urlval ?>custom/asset/styles.css" />
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <style>
-      /* .productPrice{
-        display: flex;
-        justify-content: space-between;
-      } */
+#dropdownMenuButton {
+  border: none;
+  margin-top: 8px;
+}
+.btn.btn-outline-light.me-2 {
+  border: none;
+}
 
     </style>
   </head>
@@ -95,10 +98,44 @@ session_start();
             <i class="fa-solid fa-dollar-sign mb-1 fa-plus-circle"></i>
             <span class="new-btn">Sell</span>
           </a>
-          <a href="LoginRegister.php" class="btn custom-btn d-flex flex-column align-items-center">
+          <?php
+          if(isset($_SESSION['userid'])){
+            echo '
+                      <div class="d-flex">
+                    <button class="btn btn-outline-light me-2">
+                        <i class="fas fa-envelope"></i> Messages
+                    </button>
+                    <div class="dropdown">
+                        <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                            <i class="fas fa-bars"></i> Menu
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                            <li><a class="dropdown-item" href="#">Manage my Ads</a></li>
+                            <li><a class="dropdown-item" href="#">Messages</a></li>
+                            <li><a class="dropdown-item" href="#">Favourites</a></li>
+                            <li><a class="dropdown-item" href="#">My Alerts</a></li>
+                            <li><a class="dropdown-item" href="#">My Details</a></li>
+                            <li><a class="dropdown-item" href="#">Manage my Job Ads</a></li>
+                            <li><a class="dropdown-item" href="#">Help & Contact</a></li>
+                            <li><hr class="dropdown-divider"></li>
+                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                        </ul>
+                    </div>
+                </div>
+            ';
+          }else{
+           echo '
+                     <a href="LoginRegister.php" class="btn custom-btn d-flex flex-column align-items-center">
             <i class="fa-solid fa-user mb-1 "></i>
             <span class="new-btn">Login</span>
           </a>
+           ';
+
+          }
+          ?>
+          
+
+
         </div>
       </div>
     </nav>
