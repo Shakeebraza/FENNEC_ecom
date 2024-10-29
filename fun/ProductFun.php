@@ -295,7 +295,82 @@ Class Productfun{
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
     
+    function getUserFavorites($userId) {
+     
+        $query = "
+            SELECT p.id, p.name, p.slug, p.description, p.image, p.price
+            FROM favorites f
+            INNER JOIN products p ON f.product_id = p.id
+            WHERE f.user_id = :user_id
+            ORDER BY f.created_at DESC
+        ";
     
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+    
+        $favorites = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        $count = count($favorites);
+        return [
+            'count' => $count,
+            'favorites' => $favorites
+        ];
+    }
+
+    function getProductsForUser($userId) {
+        if($userId){
+        $query = "
+            SELECT id, name, slug, description, image, price, created_at
+            FROM products
+            WHERE user_id = :user_id AND is_enable = 1 AND status = 'active'
+            ORDER BY created_at DESC
+        ";
+    
+        $stmt = $this->pdo->prepare($query);
+        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+        $stmt->execute();
+    
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        if (!empty($products)) {
+            $this->displayProducts($products);
+        } else {
+            throw new Exception("No products found for user with ID: " . htmlspecialchars($userId));
+        }
+    }else{
+        return "No products found for user with ID:";
+    }
+    }
+    
+    function displayProducts($products) {
+    
+        foreach ($products as $product) {
+            echo '
+                <div class="col-md-4 mb-4">
+                  <div class="card product-card">
+                    <img
+                      src="' . htmlspecialchars($product['image']) . '"
+                      class="card-img-top"
+                      alt="' . htmlspecialchars($product['name']) . '"
+                    />
+                    <div class="card-body">
+                      <h5 class="card-title">' . htmlspecialchars($product['name']) . '</h5>
+                      <p class="card-text">' . htmlspecialchars($product['description']) . '</p>
+                      <p class="card-text"><strong>Price:</strong> $' . number_format($product['price'], 2) . '</p>
+                      <p class="card-text">
+                        <small class="text-muted">Listed ' . $this->dbfun->time_ago($product['created_at']) . '</small>
+                      </p>
+                      <div class="d-flex justify-content-between">
+                        <button class="btn btn-button btn-sm">Edit</button>
+                       <button class="btn btn-button btn-sm btn-delete" data-product-id="' . $this->security->encrypt($product['id']). '">Delete</button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            ';
+        }
+    }
 }
 
 ?>

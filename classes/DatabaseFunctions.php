@@ -352,6 +352,40 @@ class DatabaseFunctions {
     
         return $categoryTree;
     }
+    function time_ago($datetime, $full = false) {
+        if (!$datetime) {
+            return 'Invalid date';
+        }
+        $timezone = new DateTimeZone('Asia/Karachi');
+    
+        $now = new DateTime('now', $timezone);
+        $ago = new DateTime($datetime, $timezone);
+    
+        if ($ago > $now) {
+            return 'This product will be available in the future';
+        }
+    
+        $diff = $now->diff($ago);
+    
+        if ($diff->y > 0) {
+            return $diff->y . ' year' . ($diff->y > 1 ? 's' : '') . ' ago';
+        }
+        if ($diff->m > 0) {
+            return $diff->m . ' month' . ($diff->m > 1 ? 's' : '') . ' ago';
+        }
+        if ($diff->d > 0) {
+            return $diff->d . ' day' . ($diff->d > 1 ? 's' : '') . ' ago';
+        }
+        if ($diff->h > 0) {
+            return $diff->h . ' hour' . ($diff->h > 1 ? 's' : '') . ' ago';
+        }
+        if ($diff->i > 0) {
+            return $diff->i . ' minute' . ($diff->i > 1 ? 's' : '') . ' ago';
+        }
+        return 'just now';
+    }
+    
+    
     
 }
 ?>

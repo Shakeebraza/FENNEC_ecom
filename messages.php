@@ -1,6 +1,16 @@
 <?php
 require_once 'global.php';
 include_once 'header.php';
+$setSession = $fun->isSessionSet();
+
+if ($setSession == false) {
+    $redirectUrl = $urlval . 'index.php'; 
+    echo '
+    <script>
+        window.location.href = "' . $redirectUrl . '";
+    </script>'; 
+    exit();
+}
 ?>
     <div class="container mt-4 pb-5">
       <ul class="nav nav-tabs justify-content-between" id="myTab" role="tablist">
@@ -307,69 +317,9 @@ include_once 'header.php';
         <div class="tab-pane fade" id="view-products" role="tabpanel">
           <h3 class="mb-4">My Products</h3>
           <div class="row">
-            <div class="col-md-4 mb-4">
-              <div class="card product-card">
-                <img
-                  src="https://imagedelivery.net/ePR8PyKf84wPHx7_RYmEag/4b9160a8-9109-4cdc-860d-0f1ddbca6700/86"
-                  class="card-img-top"
-                  alt="Product 1"
-                />
-                <div class="card-body">
-                  <h5 class="card-title">Product 1</h5>
-                  <p class="card-text">Short description of Product 1</p>
-                  <p class="card-text"><strong>Price:</strong> $19.99</p>
-                  <p class="card-text">
-                    <small class="text-muted">Listed 3 days ago</small>
-                  </p>
-                  <div class="d-flex justify-content-between">
-                    <button class="btn btn-button btn-sm">Edit</button>
-                    <button class="btn btn-button btn-sm">Delete</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4 mb-4">
-              <div class="card product-card">
-                <img
-                  src="https://imagedelivery.net/ePR8PyKf84wPHx7_RYmEag/4b9160a8-9109-4cdc-860d-0f1ddbca6700/86"
-                  class="card-img-top"
-                  alt="Product 2"
-                />
-                <div class="card-body">
-                  <h5 class="card-title">Product 2</h5>
-                  <p class="card-text">Short description of Product 2</p>
-                  <p class="card-text"><strong>Price:</strong> $24.99</p>
-                  <p class="card-text">
-                    <small class="text-muted">Listed 5 days ago</small>
-                  </p>
-                  <div class="d-flex justify-content-between">
-                    <button class="btn btn-button btn-sm">Edit</button>
-                    <button class="btn btn-button btn-sm">Delete</button>
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-4 mb-4">
-              <div class="card product-card">
-                <img
-                  src="https://imagedelivery.net/ePR8PyKf84wPHx7_RYmEag/4b9160a8-9109-4cdc-860d-0f1ddbca6700/86"
-                  class="card-img-top"
-                  alt="Product 3"
-                />
-                <div class="card-body">
-                  <h5 class="card-title">Product 3</h5>
-                  <p class="card-text">Short description of Product 3</p>
-                  <p class="card-text"><strong>Price:</strong> $14.99</p>
-                  <p class="card-text">
-                    <small class="text-muted">Listed 1 week ago</small>
-                  </p>
-                  <div class="d-flex justify-content-between">
-                    <button class="btn btn-button btn-sm">Edit</button>
-                    <button class="btn btn-button btn-sm">Delete</button>
-                  </div>
-                </div>
-              </div>
-            </div>
+            <?php
+            $productFun->getProductsForUser(base64_decode($_SESSION['userid']));
+            ?>
           </div>
         </div>
         <div class="tab-pane fade" id="messages" role="tabpanel">
@@ -446,92 +396,28 @@ include_once 'header.php';
           </div>
         </div>
         <div class="tab-pane fade" id="favourite" role="tabpanel">
-          <h3 class="mb-4">Hi junaid, you have 3 saved ads</h3>
+          <h3 class="mb-4">Hi <?php echo $_SESSION['username']?>, you have <?php $isFavorit =$productFun->getUserFavorites(base64_decode($_SESSION['userid']));
+          echo $isFavorit['count'];
+          ?> saved ads</h3>
           <div class="row">
-            <div class="col-md-6 col-lg-4 mb-4">
-              <div class="favourite-item position-relative">
-                <img
-                  src="https://imagedelivery.net/ePR8PyKf84wPHx7_RYmEag/4b9160a8-9109-4cdc-860d-0f1ddbca6700/86"
-                  alt="Room for rent"
-                  class="img-fluid"
-                />
-                <i class="fas fa-heart heart-icon"></i>
-                <div class="p-3">
-                  <h5 class="mb-1">Room for rent</h5>
-                  <p class="mb-2">Restalrig, Edinburgh</p>
-                  <p class="mb-2 small">
-                    Looking for a flatmate to share a cozy 2-bedroom apartment.
-                    The available room features a single bed with an extra
-                    mattress underneath, a spacious desk, a huge wardrobe, and a
-                    bookshelf. Rent is £600 plus bills. You'll be sharing the
-                    space w...
-                  </p>
-                  <p class="mb-1 small">
-                    <strong>Date available:</strong> 14 Oct 2024 | Flat
-                  </p>
-                  <p class="mb-0">
-                    <strong>£600pm</strong>
-                    <small class="text-muted float-end">11 days ago</small>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-lg-4 mb-4">
-              <div class="favourite-item position-relative">
-                <img
-                  src="https://imagedelivery.net/ePR8PyKf84wPHx7_RYmEag/4b9160a8-9109-4cdc-860d-0f1ddbca6700/86"
-                  alt="Room for rent"
-                  class="img-fluid"
-                />
-                <i class="fas fa-heart heart-icon"></i>
-                <div class="p-3">
-                  <h5 class="mb-1">Room for rent</h5>
-                  <p class="mb-2">Restalrig, Edinburgh</p>
-                  <p class="mb-2 small">
-                    Looking for a flatmate to share a cozy 2-bedroom apartment.
-                    The available room features a single bed with an extra
-                    mattress underneath, a spacious desk, a huge wardrobe, and a
-                    bookshelf. Rent is £600 plus bills. You'll be sharing the
-                    space w...
-                  </p>
-                  <p class="mb-1 small">
-                    <strong>Date available:</strong> 14 Oct 2024 | Flat
-                  </p>
-                  <p class="mb-0">
-                    <strong>£600pm</strong>
-                    <small class="text-muted float-end">11 days ago</small>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-md-6 col-lg-4 mb-4">
-              <div class="favourite-item position-relative">
-                <img
-                  src="https://imagedelivery.net/ePR8PyKf84wPHx7_RYmEag/4b9160a8-9109-4cdc-860d-0f1ddbca6700/86"
-                  alt="Room for rent"
-                  class="img-fluid"
-                />
-                <i class="fas fa-heart heart-icon"></i>
-                <div class="p-3">
-                  <h5 class="mb-1">Room for rent</h5>
-                  <p class="mb-2">Restalrig, Edinburgh</p>
-                  <p class="mb-2 small">
-                    Looking for a flatmate to share a cozy 2-bedroom apartment.
-                    The available room features a single bed with an extra
-                    mattress underneath, a spacious desk, a huge wardrobe, and a
-                    bookshelf. Rent is £600 plus bills. You'll be sharing the
-                    space w...
-                  </p>
-                  <p class="mb-1 small">
-                    <strong>Date available:</strong> 14 Oct 2024 | Flat
-                  </p>
-                  <p class="mb-0">
-                    <strong>£600pm</strong>
-                    <small class="text-muted float-end">11 days ago</small>
-                  </p>
-                </div>
-              </div>
-            </div>
+            <?php
+            foreach ($isFavorit['favorites'] as $favorite) {
+              echo '
+              <div class="col-md-6 col-lg-4 mb-4">
+                  <div class="favourite-item position-relative">
+                      <img src="' . htmlspecialchars($favorite['image']) . '" alt="' . htmlspecialchars($favorite['name']) . '" class="img-fluid" />
+                      <i class="fas fa-heart heart-icon"></i>
+                      <div class="p-3">
+                          <h5 class="mb-1">' . htmlspecialchars($favorite['name']) . '</h5>
+                          <p class="mb-2">' . htmlspecialchars($favorite['description']) . '</p>
+                          <p class="mb-0">
+                              <strong>£' . number_format($favorite['price'], 2) . '</strong>
+                          </p>
+                      </div>
+                  </div>
+              </div>';
+            }
+            ?>
           </div>
         </div>
         <div class="tab-pane fade" id="details" role="tabpanel">
@@ -651,6 +537,31 @@ include_once 'header.php';
     <?php
     include_once 'footer.php';
     ?>
-    <script src="/js/messages.js"></script>
+    <script src="<?= $urlval?>custom/js/messages.js"></script>
+    <script>
+      $(document).ready(function() {
+          $('.btn-delete').on('click', function() {
+              const productId = $(this).data('product-id');
+              if (confirm('Are you sure you want to delete this product?')) {
+                  $.ajax({
+                      url: '<?= $urlval?>ajax/delete_product.php',
+                      method: 'POST',
+                      data: { id: productId },
+                      success: function(response) {
+                          if (response.success) {
+                              alert('Product deleted successfully!');
+                              location.reload();
+                          } else {
+                              alert('Error deleting product: ' + response.message);
+                          }
+                      },
+                      error: function() {
+                          alert('An error occurred while deleting the product.');
+                      }
+                  });
+              }
+          });
+      });
+    </script>
     </body>
     </html>
