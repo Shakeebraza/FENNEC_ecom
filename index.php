@@ -131,13 +131,14 @@ include_once 'header.php';
   if (!empty($productFind)) {
       foreach ($productFind['products'] as $product) {
           ?>
+          
           <div class="col-md-3 mb-4">
               <div class="product-card position-relative">
                   
                       <div class="badge bg-success position-absolute top-0 start-0 m-2">
                       <?=$product['product_type']?>
                       </div>
-                  
+                      <a href="<?= $urlval?>detail.php?slug=<?= $product['slug']?>">
                   <img
                       src="<?php echo $product['image']; ?>" 
                       alt="<?php echo htmlspecialchars($product['name']); ?>" 
@@ -153,8 +154,10 @@ include_once 'header.php';
                           <i class="far fa-clock"></i> <?php echo htmlspecialchars($product['date']); ?>
                       </p>
                   </div>
+                  </a>
               </div>
           </div>
+     
           <?php
       }
   } else {

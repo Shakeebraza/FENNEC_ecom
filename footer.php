@@ -60,6 +60,8 @@
 
 
 <script src="<?php echo $urlval?>admin/asset/vendor/jquery-3.2.1.min.js"></script>
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+<script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="<?php echo $urlval?>custom/js/index.js"></script>
 <script src="<?php echo $urlval?>custom/js/header.js"></script>

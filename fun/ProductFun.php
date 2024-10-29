@@ -48,6 +48,10 @@ Class Productfun{
             $sql .= " AND p.name LIKE :product_name";
             $params[':product_name'] = '%' . $filters['product_name'] . '%';
         }
+        if (!empty($filters['slug'])) {
+            $sql .= " AND p.slug LIKE :slug";
+            $params[':slug'] = '%' . $filters['slug'] . '%';
+        }
         if (!empty($filters['min_price'])) {
             $sql .= " AND p.price >= :min_price";
             $params[':min_price'] = $filters['min_price'];
@@ -136,6 +140,130 @@ Class Productfun{
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+
+    function getCountryCityPairs() {
+        $query = "
+        SELECT countries.id AS country_id, countries.name AS country_name, 
+               cities.id AS city_id, cities.name AS city_name 
+        FROM countries
+        INNER JOIN cities ON countries.id = cities.country_id
+        ORDER BY countries.name, cities.name";
+        $stmt = $this->pdo->query($query);
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    function getAllcatandSubcat($categoryId = null) {
+        try {
+            $categoriesQueryStr = "SELECT * FROM categories WHERE is_show = 1 AND is_enable = 1";
+            
+            if ($categoryId !== null) {
+                $categoriesQueryStr .= " AND id = :category_id";
+            }
+            
+            $categoriesQuery = $this->pdo->prepare($categoriesQueryStr);
+            if ($categoryId !== null) {
+                $categoriesQuery->bindParam(':category_id', $categoryId, PDO::PARAM_INT);
+            }
+            
+            $categoriesQuery->execute();
+            $categories = $categoriesQuery->fetchAll(PDO::FETCH_ASSOC);
+            $result = [
+                'status' => 'success',
+                'data' => []
+            ];
+            
+            foreach ($categories as $category) {
+                $subcategoriesQuery = $this->pdo->prepare("SELECT * FROM subcategories WHERE category_id = :category_id");
+                $subcategoriesQuery->bindParam(':category_id', $category['id'], PDO::PARAM_INT);
+                $subcategoriesQuery->execute();
+                $subcategories = $subcategoriesQuery->fetchAll(PDO::FETCH_ASSOC);
+                
+                $result['data'][] = [
+                    'category_name' => $category['category_name'],
+                    'subcategories' => $subcategories
+                ];
+            }
+            
+            return $result;
+        } catch (PDOException $e) {
+            return [
+                'status' => 'error',
+                'message' => $e->getMessage()
+            ];
+        }
+    }
+
+    public function getProductDetailsBySlug($slug, $userId = null) {
+        $sql = "
+            SELECT 
+                p.id AS product_id,
+                p.name AS product_name,
+                p.description AS product_description,
+                p.price,
+                p.user_id,
+                p.discount_price,
+                p.brand,
+                c.category_name,
+                c.slug as catslug,
+                s.subcategory_name,
+                pi.image_path AS image_path,  -- Fetch image paths
+                CASE WHEN f.user_id IS NOT NULL THEN 1 ELSE 0 END AS is_favorited  -- Check if favorited
+            FROM 
+                products p
+            LEFT JOIN 
+                categories c ON p.category_id = c.id
+            LEFT JOIN 
+                subcategories s ON p.subcategory_id = s.id
+            LEFT JOIN 
+                product_images pi ON p.id = pi.product_id
+            LEFT JOIN 
+                favorites f ON p.id = f.product_id AND f.user_id = :user_id  -- Join with favorites for current user
+            WHERE 
+                p.slug = :slug
+        ";
+        
+        $stmt = $this->pdo->prepare($sql);
+        $stmt->bindParam(':slug', $slug);
+        $stmt->bindParam(':user_id', $userId);
+        $stmt->execute();
+    
+        $productDetails = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+        if ($productDetails) {
+            $firstProduct = $productDetails[0];
+            $images = array_column($productDetails, 'image_path'); 
+            
+            $result = [
+                'product' => $firstProduct,
+                'gallery_images' => $images,
+                'is_favorited' => $firstProduct['is_favorited']
+            ];
+    
+            return $result; 
+        }
+    
+        return null; 
+    }
+    
+    public function toggleFavorite($productId, $userId) {
+        // Check if product is already favorited
+        $stmt = $this->pdo->prepare("SELECT * FROM favorites WHERE product_id = ? AND user_id = ?");
+        $stmt->execute([$productId, $userId]);
+        
+        if ($stmt->rowCount() > 0) {
+            // If already favorited, remove it
+            $stmt = $this->pdo->prepare("DELETE FROM favorites WHERE product_id = ? AND user_id = ?");
+            $stmt->execute([$productId, $userId]);
+            return false; // Not favorited anymore
+        } else {
+            // If not favorited, add it
+            $stmt = $this->pdo->prepare("INSERT INTO favorites (product_id, user_id) VALUES (?, ?)");
+            $stmt->execute([$productId, $userId]);
+            return true; // Now favorited
+        }
+    }
+    
+    
 }
 
 ?>

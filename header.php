@@ -1,3 +1,6 @@
+<?php
+session_start();
+?>
 <!DOCTYPE php>
 <php lang="en">
 
@@ -13,6 +16,7 @@
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="<?php echo $urlval ?>custom/asset/styles.css" />
+    <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
     <style>
       /* .productPrice{
         display: flex;
@@ -85,8 +89,15 @@
 
 
         <div class="d-flex custom-loginRegister">
-          <a href="<?= $urlval?>Product.php" class="btn custom-btn me-2 mb-lg-0 d-flex flex-column align-items-center">
-            <i class="fa-solid fa-dollar-sign mb-1"></i>
+          <a href="<?php
+          if(isset($_SESSION['userid'])){
+            echo $urlval.'Post.php';
+          }else{
+            echo $urlval.'Product.php';
+
+          }
+          ?>" class="btn custom-btn me-2 mb-lg-0 d-flex flex-column align-items-center">
+            <i class="fa-solid fa-dollar-sign mb-1 fa-plus-circle"></i>
             <span class="new-btn">Sell</span>
           </a>
           <a href="LoginRegister.php" class="btn custom-btn d-flex flex-column align-items-center">
@@ -123,7 +134,7 @@
                 if ($findCate['status'] == 'success') {
                   foreach ($findCate['data'] as $category) {
 
-                    echo '<li class="' . htmlspecialchars($category['slug']) . ' "><a href="' . $urlval . $category['slug'] . '">' . htmlspecialchars($category['category_name']) . '</a></li>';
+                    echo '<li class="' . htmlspecialchars($category['slug']) . ' "><a href="' . $urlval.'category.php?slug=' . $category['slug'] . '">' . htmlspecialchars($category['category_name']) . '</a></li>';
                   }
                 }
                 ?>
