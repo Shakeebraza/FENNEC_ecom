@@ -6,6 +6,7 @@ if(!isset($_SESSION['userid'])){
     header('Location: index.php');
     exit();
 }
+$countries = $dbFunctions->getData('countries');
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -140,76 +141,77 @@ if(!isset($_SESSION['userid'])){
 
         <div id="step3" class="hidden">
             <h2 class="text-center mb-4">Post Your Ad Details</h2>
-            <form>
+            <form id="productForm" enctype="multipart/form-data">
                 <div class="mb-3">
                     <label class="form-label">Category</label>
                     <input type="text" class="form-control" id="finalCategory" name="finalCategory" readonly>
-                    <input type="hidden" id="finalCategoryId" name="finalCategoryId"> <!-- Hidden field for Category ID -->
+                    <input type="hidden" id="finalCategoryId" name="category"> 
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Subcategory</label>
                     <input type="text" class="form-control" id="finalSubcategory" name="finalSubcategory" readonly>
-                    <input type="hidden" id="finalSubcategoryId" name="finalSubcategoryId"> <!-- Hidden field for Subcategory ID -->
+                    <input type="hidden" id="finalSubcategoryId" name="subcategory">
                 </div>
-
                 <div class="mb-3">
-                    <label for="imageUpload" class="form-label">Upload Image</label>
-                    <input type="file" class="form-control" id="imageUpload" required>
+                    <label for="imageUpload" class="form-label">Upload Image<span style="color: red;">*</span></label>
+                    <input type="file" class="form-control" id="imageUpload" name="image" required>
                 </div>
-
-                <!-- <div class="mb-3">
-                    <label for="galleryUpload" class="form-label">Upload Gallery</label>
-                    <input type="file" class="form-control" id="galleryUpload" multiple>
-                </div> -->
                 <div class="form-group mb-3" style="padding: 20px;border: 2px solid #28a745;border-radius: 10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);background-color: #f9f9f9;">
-                                <label for="gallery" class="custom-file-upload">
-                                    <input type="file" id="gallery" name="gallery[]" accept="image/*" multiple>
-                                    Upload Gallery Images
-                                </label>
-                                <div id="imagePreview" class="image-preview"></div>
-                                <div class="text-danger" id="galleryError"></div> 
-                            </div>
-
-                <div class="mb-3">
-                    <label for="brand" class="form-label">Brand</label>
-                    <input type="text" class="form-control" id="brand">
+                    <label for="gallery" class="custom-file-upload">Upload Gallery Images</label>
+                    <input type="file" id="gallery" name="gallery[]" accept="image/*" multiple>
+                    <div id="imagePreview" class="image-preview"></div>
+                    <div class="text-danger" id="galleryError"></div> 
                 </div>
-
                 <div class="mb-3">
-                    <label for="adTitle" class="form-label">Ad Title*</label>
-                    <input type="text" class="form-control" id="adTitle" required>
+                    <label for="brand" class="form-label">Brand<span style="color: red;">*</span></label>
+                    <input type="text" class="form-control" id="brand" name="brand" required>
                 </div>
-
+                <div class="col-md-12 mb-3">
+                                    <label for="condition" class="form-label">Condition <span style="color: red;">*</span></label>
+                                    <select id="condition" name="condition" class="form-select" required>
+                                        <option value="" disabled selected>Select condition</option>
+                                        <option value="new">New</option>
+                                        <option value="used">Used</option>
+                                    </select>
+                                    <div class="text-danger" id="conditionError"></div> <!-- Error message -->
+                                </div>
                 <div class="mb-3">
-                    <label for="description" class="form-label">Description</label>
-                    <textarea class="form-control" id="description" rows="3" required></textarea>
+                    <label for="adTitle" class="form-label">Ad Title<span style="color: red;">*</span></label>
+                    <input type="text" class="form-control" id="adTitle" name="productName" required>
                 </div>
-
                 <div class="mb-3">
-                    <label for="country" class="form-label">Country</label>
-                    <input type="text" class="form-control" id="country">
+                    <label for="description" class="form-label">Description<span style="color: red;">*</span></label>
+                    <textarea class="form-control" id="description" name="description" rows="3" required></textarea>
                 </div>
-
+                <div class="mb-3">
+                    <label for="country" class="form-label">Country<span style="color: red;">*</span></label>
+                    <select class="form-select" id="country" name="country" required>
+                        <option value="" disabled>Select Country</option>
+                        <?php foreach($countries as $val): ?>
+                            <option value="<?= $security->decrypt($val['id']) ?>"><?= $security->decrypt($val['name']) ?></option>
+                        <?php endforeach; ?>
+                    </select>
+                </div>
                 <div class="mb-3">
                     <label for="city" class="form-label">City</label>
-                    <input type="text" class="form-control" id="city">
+                    <select class="form-select" id="city" name="city" required>
+                        <option value="" disabled>Select City</option>
+                    </select>
                 </div>
-
                 <div class="mb-3">
-                    <label for="price" class="form-label">Price</label>
-                    <input type="number" class="form-control" id="price" required>
+                    <label for="price" class="form-label">Price<span style="color: red;">*</span></label>
+                    <input type="number" class="form-control" id="price" name="price" required>
                 </div>
-
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" required>
+                    <input type="email" class="form-control" id="email" name="email" value="<?= $_SESSION['email']?>" required>
                 </div>
                 <div class="btn-main-div" style="display: flex;justify-content: space-between;">
                     <button type="submit" class="btn btn-primary">Post Ad</button>
-                    <button type="button" class="btn btn-secondary"style="margin-top: 0px;" onclick="goBackToSubcategory()">Back</button>
-
+                    <button type="button" class="btn btn-secondary" onclick="goBackToSubcategory()">Back</button>
                 </div>
             </form>
+
         </div>
     </div>
 
@@ -221,7 +223,7 @@ if(!isset($_SESSION['userid'])){
         document.getElementById('step2').classList.remove('hidden');
         document.getElementById('selectedCategory').innerText = categoryName;
         document.getElementById('finalCategory').value = categoryName;
-        document.getElementById('finalCategoryId').value = categoryId; // Store the category ID
+        document.getElementById('finalCategoryId').value = categoryId;
 
         const subcategoryOptions = document.getElementById('subcategoryOptions');
         subcategoryOptions.innerHTML = '';
@@ -321,6 +323,65 @@ if(!isset($_SESSION['userid'])){
         }
     });
 
+    $(document).ready(function() {
+    // Fetch cities based on country selection
+    $('#country').on('change', function() {
+        var countryId = $(this).val();
+        if (countryId) {
+            $.ajax({
+                url: '<?php echo $urlval ?>admin/ajax/product/get_cities.php',
+                type: 'POST',
+                data: { country_id: countryId },
+                success: function(data) {
+                    $('#city').html(data);
+                },
+                error: function() {
+                    alert('Error fetching cities. Please try again.');
+                }
+            });
+        } else {
+            $('#city').html('<option value="" disabled>Select City</option>');
+        }
+    });
+
+    // Handle form submission
+    $('#productForm').on('submit', function(e) {
+        e.preventDefault(); 
+        let formData = new FormData(this);
+
+        $.ajax({
+            url: '<?= $urlval ?>ajax/addproduct.php',
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function(response) {
+                if (response.success) {
+                    showSuccessAlert();
+                } else if (response.errors) {
+                    handleErrors(response.errors);
+                }
+            },
+            error: function() {
+                showErrorAlert();
+            }
+        });
+    });
+
+    function showSuccessAlert() {
+        alert('Ad posted successfully!');
+    }
+
+    function showErrorAlert() {
+        alert('There was an error posting your ad. Please try again.');
+    }
+
+    function handleErrors(errors) {
+        for (let key in errors) {
+            $(`#${key}Error`).text(errors[key]);
+        }
+    }
+});
     </script>
 
 </body>

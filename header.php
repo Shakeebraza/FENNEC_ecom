@@ -107,23 +107,21 @@ session_start();
           if(isset($_SESSION['userid'])){
             echo '
                       <div class="d-flex">
-                    <button class="btn btn-outline-light me-2">
+                    <a class="btn btn-outline-light me-2" href="'.$urlval.'messages.php">
                         <i class="fas fa-envelope"></i> Messages
-                    </button>
+                    </a>
                     <div class="dropdown">
                         <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-bars"></i> Menu
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="#">Manage my Ads</a></li>
-                            <li><a class="dropdown-item" href="#">Messages</a></li>
-                            <li><a class="dropdown-item" href="#">Favourites</a></li>
-                            <li><a class="dropdown-item" href="#">My Alerts</a></li>
-                            <li><a class="dropdown-item" href="#">My Details</a></li>
-                            <li><a class="dropdown-item" href="#">Manage my Job Ads</a></li>
+                            <li><a class="dropdown-item" href="'.$urlval.'messages.php#upload-tab">Manage my Ads</a></li>
+                            <li><a class="dropdown-item" href="'.$urlval.'messages.php#messages-tab">Messages</a></li>
+                            <li><a class="dropdown-item" href="'.$urlval.'messages.php#favourite-tab">Favourites</a></li>
+                            <li><a class="dropdown-item" href="'.$urlval.'messages.php#details-tab">My Details</a></li>
+                            <li><a class="dropdown-item" href="'.$urlval.'messages.php#view-products-tab">View my Job Ads</a></li>
                             <li><a class="dropdown-item" href="#">Help & Contact</a></li>
-                            <li><hr class="dropdown-divider"></li>
-                            <li><a class="dropdown-item" href="#">Logout</a></li>
+                            <li><a class="dropdown-item" href="'.$urlval.'logout.php">Logout</a></li>
                         </ul>
                     </div>
                 </div>
