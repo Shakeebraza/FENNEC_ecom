@@ -11,6 +11,8 @@ if ($setSession == false) {
     </script>'; 
     exit();
 }
+$userid = intval(base64_decode($_SESSION['userid'])) ?? 0; 
+$userData = $dbFunctions->getDatanotenc('user_detail', "userid = '$userid'");
 ?>
     <div class="container mt-4 pb-5">
       <ul class="nav nav-tabs justify-content-between" id="myTab" role="tablist">
@@ -406,7 +408,9 @@ if ($setSession == false) {
               <div class="col-md-6 col-lg-4 mb-4">
                   <div class="favourite-item position-relative">
                       <img src="' . htmlspecialchars($favorite['image']) . '" alt="' . htmlspecialchars($favorite['name']) . '" class="img-fluid" />
+                      <a data-productid="'.$favorite['id'].'" id="favorite-button">
                       <i class="fas fa-heart heart-icon"></i>
+                      </a>
                       <div class="p-3">
                           <h5 class="mb-1">' . htmlspecialchars($favorite['name']) . '</h5>
                           <p class="mb-2">' . htmlspecialchars($favorite['description']) . '</p>
@@ -433,7 +437,7 @@ if ($setSession == false) {
                         type="text"
                         class="form-control"
                         id="fullName"
-                        value="junaid awan"
+                        value="<?php echo $_SESSION['username']?>"
                         readonly
                       />
                     </div>
@@ -445,43 +449,43 @@ if ($setSession == false) {
                         type="email"
                         class="form-control"
                         id="email"
-                        value="junaidawan19953@gmail.com"
+                        value="<?php echo $_SESSION['email']?>"
                         readonly
                       />
                     </div>
                     <div class="mb-3">
-                      <button
+                      <!-- <button
                         type="button"
                         class="btn btn-outline-primary"
                         id="viewProfileBtn"
                       >
                         View Profile
-                      </button>
+                      </button> -->
                     </div>
                     <h4 class="mt-4 mb-3">Contact Details</h4>
                     <div class="row mb-3">
                       <div class="col">
-                        <label for="firstName" class="form-label"
-                          >First Name</label
+                        <label for="country" class="form-label"
+                          >Country</label
                         >
                         <input
                           type="text"
                           class="form-control"
-                          id="firstName"
-                          value="junaid"
-                          readonly
+                          id="country"
+                          value="<?php echo $userData[0]['country'] ?? ''?>"
+                       
                         />
                       </div>
                       <div class="col">
-                        <label for="lastName" class="form-label"
+                        <label for="city" class="form-label"
                           >Last Name</label
                         >
                         <input
                           type="text"
                           class="form-control"
-                          id="lastName"
-                          value="awan"
-                          readonly
+                          id="city"
+                          value="<?php echo $userData[0]['city'] ?? '' ?>"
+                       
                         />
                       </div>
                     </div>
@@ -494,8 +498,16 @@ if ($setSession == false) {
                         class="form-control"
                         id="contactNumber"
                         placeholder="Add contact number"
-                        readonly
+                        value="<?php echo $userData[0]['number'] ?? '' ?>"
                       />
+                      </div>
+                      <div class="mb-3">
+                      <label for="contactNumber" class="form-label"
+                        >Address</label
+                      >
+                      <textarea class="form-control" name="" id="" rows="10" cols="50">
+                      <?php echo $userData[0]['address'] ?? '' ?>
+                      </textarea>
                     </div>
                     <div class="mb-3">
                       <button
@@ -561,6 +573,33 @@ if ($setSession == false) {
                   });
               }
           });
+      });
+
+      const favoriteButton = document.getElementById('favorite-button');
+
+      favoriteButton.addEventListener('click', function() {
+          const productId = this.getAttribute('data-productid');
+
+          fetch('<?= $urlval ?>ajax/favorite.php', {
+                  method: 'POST',
+                  headers: {
+                      'Content-Type': 'application/json',
+                  },
+                  body: JSON.stringify({
+                      id: productId
+                  }),
+              })
+              .then(response => response.json())
+              .then(data => {
+                  if (data.success) {
+                      favoriteButton.innerHTML = data.isFavorited ?
+                          '<i class="fas fa-heart heart-icon"></i>' :
+                          '<i class="far fa-heart heart-icon" style="color=#000"></i>';
+                  } else {
+                      alert('Error: ' + data.message);
+                  }
+              })
+              .catch(error => console.error('Error:', error));
       });
     </script>
     </body>
