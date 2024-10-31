@@ -1,5 +1,6 @@
 <?php
 require_once("../global.php");
+// working on login with google
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'] ?? '';
