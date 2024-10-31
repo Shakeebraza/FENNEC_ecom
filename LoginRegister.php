@@ -1,6 +1,7 @@
 <?php
 require_once 'global.php';
 include_once 'header.php';
+include_once 'google-login.php';
 ?>
 <div
   class="container-fluid bg-light min-vh-100 d-flex justify-content-center align-items-center">
@@ -48,10 +49,10 @@ include_once 'header.php';
               
               <form id="loginForm" data-url="<?php echo $urlval ?>ajax/login.php">
                 <div class="mb-3 text-center">
-                  <button class="btn btn-outline-dark w-100">
+                <a class="btn btn-outline-dark w-100" href="<?php echo $client->createAuthUrl(); ?>">
                     <img src="https://www.google.com/favicon.ico" alt="Google icon" class="me-2" style="width: 20px; height: 20px" />
                     Sign in with Google
-                  </button>
+                </a>
                 </div>
                 <div class="mb-3 text-center">
                   <button class="btn btn-primary w-100">
