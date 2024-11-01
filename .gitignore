@@ -1,4 +1,4 @@
 .idea/
 /upload/
 global.php
-./dbcon/Database.php
+dbcon/Database.php
