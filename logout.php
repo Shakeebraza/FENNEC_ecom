@@ -14,10 +14,10 @@ require_once("global.php");
             setcookie("remember_token", "", time() - 3600, "/");
         }
 
-        header('Location: index.php');
+        header('Location: LoginRegister.php');
         exit();
     } else {
-        header('Location: index.php');
+        header('Location: LoginRegisters.php');
         exit();
     }
 ?>
