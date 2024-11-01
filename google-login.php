@@ -5,7 +5,7 @@ require_once 'vendor/autoload.php';
 $client = new Google_Client();
 $client->setClientId('1041048529391-45g6g78c40m7d1lrqgusviptkptrr8jk.apps.googleusercontent.com');
 $client->setClientSecret('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'); 
-$client->setRedirectUri('http://localhost/fennec/google-login.php');
+$client->setRedirectUri('https://fennec.phpnode.net/google-login.php');
 $client->addScope('email');
 $client->addScope('profile');
 
