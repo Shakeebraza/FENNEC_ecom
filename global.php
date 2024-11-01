@@ -3,15 +3,15 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // link file
-require_once 'dbcon/Database.php';
-require_once 'classes/User.php';
-require_once 'classes/Security.php';
-require_once 'classes/CsrfProtection.php';
-require_once 'classes/DatabaseFunctions.php';
-require_once 'fun/Fun.php';
-require_once 'fun/CategoryManager.php';
-require_once 'fun/ProductFun.php';
-require_once 'email/email.php';
+require_once __DIR__ . '/dbcon/Database.php';
+require_once __DIR__ . '/classes/User.php';
+require_once __DIR__ . '/classes/Security.php';
+require_once __DIR__ . '/classes/CsrfProtection.php';
+require_once __DIR__ . '/classes/DatabaseFunctions.php';
+require_once __DIR__ . '/fun/Fun.php';
+require_once __DIR__ . '/fun/CategoryManager.php';
+require_once __DIR__ . '/fun/ProductFun.php';
+require_once __DIR__ . '/email/email.php';
 $urlval = "http://localhost/fennec/";
 
 

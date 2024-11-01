@@ -54,7 +54,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $verificationLink = $urlval."verify_email.php?token=$verificationToken&email=$email";
             $mailResponse = smtp_mailer($email, 'Email Verification', "Please click the link below to verify your email address:\n$verificationLink");
 
-            if ($mailResponse['success']) {
+            if ($mailResponse=='sent') {
                 echo json_encode(['status' => 'success', 'message' => 'Registration successful! Verification email sent.']);
             } else {
                 echo json_encode(['status' => 'error', 'message' => 'Registration successful, but failed to send verification email: ' . $mailResponse['error']]);
