@@ -1,23 +1,34 @@
 <?php
-require_once("../global.php"); 
-    if (isset($_SESSION['userid'])) {
+ob_start(); 
+require_once("global.php"); 
 
-        $userId = base64_decode($_SESSION['userid']); 
+if (isset($_SESSION['userid'])) {
+    $userId = base64_decode($_SESSION['userid']); 
+    $dataRec = $dbFunctions->updateData('users', ['remember_token' => NULL], "id = '$userId'");
 
-    
-        $dbFunctions->updateData('users', ['remember_token' => NULL], "id = '$userId'");
+    session_unset();
+    session_destroy();
 
-        session_unset();
-        session_destroy();
-
-        if (isset($_COOKIE['remember_token'])) {
-            setcookie("remember_token", "", time() - 3600, "/");
-        }
-
-        header('Location: login.php');
-        exit();
-    } else {
-        header('Location: login.php');
-        exit();
+    if (isset($_COOKIE['remember_token'])) {
+        setcookie("remember_token", "", time() - 3600, "/");
     }
+
+
+    echo '
+    <script>
+    window.location = "'.$urlval.'admin/login.php";
+    </script>
+    ';
+    ob_end_flush(); 
+    exit();
+} else {
+
+    echo '
+    <script>
+    window.location = "'.$urlval.'admin/LoginRegister.php";
+    </script>
+    ';
+    ob_end_flush(); 
+    exit();
+}
 ?>
