@@ -430,7 +430,7 @@ $userData = $dbFunctions->getDatanotenc('user_detail', "userid = '$userid'");
               <div class="card">
                 <div class="card-body">
                   <h3 class="card-title mb-4">My Details</h3>
-                  <form id="userDetailsForm">
+                  <form id="userDetailsForm" onsubmit="submitForm(event)">
                     <div class="mb-3">
                       <label for="fullName" class="form-label">Full Name</label>
                       <input
@@ -454,13 +454,6 @@ $userData = $dbFunctions->getDatanotenc('user_detail', "userid = '$userid'");
                       />
                     </div>
                     <div class="mb-3">
-                      <!-- <button
-                        type="button"
-                        class="btn btn-outline-primary"
-                        id="viewProfileBtn"
-                      >
-                        View Profile
-                      </button> -->
                     </div>
                     <h4 class="mt-4 mb-3">Contact Details</h4>
                     <div class="row mb-3">
@@ -601,6 +594,33 @@ $userData = $dbFunctions->getDatanotenc('user_detail', "userid = '$userid'");
               })
               .catch(error => console.error('Error:', error));
       });
+
+
+      function submitForm(event) {
+  event.preventDefault();
+
+  // Collect form data
+  const formData = new FormData();
+  formData.append('country', document.getElementById('country').value);
+  formData.append('city', document.getElementById('city').value);
+  formData.append('contactNumber', document.getElementById('contactNumber').value);
+  formData.append('address', document.querySelector('textarea').value);
+
+  // Send data using fetch API
+  fetch('<?= $urlval?>ajax/update_user_details.php', {
+    method: 'POST',
+    body: formData,
+  })
+    .then(response => response.json())
+    .then(data => {
+      if (data.status === 'success') {
+        alert('Details updated successfully.');
+      } else {
+        alert('Error updating details: ' + data.message);
+      }
+    })
+    .catch(error => console.error('Error:', error));
+}
     </script>
     </body>
     </html>

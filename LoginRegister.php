@@ -55,10 +55,10 @@ include_once 'google-login.php';
                 </a>
                 </div>
                 <div class="mb-3 text-center">
-                  <button class="btn btn-primary w-100">
+                  <!-- <button class="btn btn-primary w-100">
                     <i class="bi bi-facebook me-2"></i>
                     Sign in with Facebook
-                  </button>
+                  </button> -->
                 </div>
                 <div class="text-center mb-3">
                   <hr class="divider" />
@@ -86,69 +86,6 @@ include_once 'google-login.php';
                   *By using social login, you agree to our Terms & Conditions and Privacy Notice.
                 </p>
               </form>
-
-              <!-- <form action="">
-                <div class="mb-3 text-center">
-                  <button class="btn btn-outline-dark w-100">
-                    <img
-                      src="https://www.google.com/favicon.ico"
-                      alt="Google icon"
-                      class="me-2"
-                      style="width: 20px; height: 20px" />
-                    Sign in with Google
-                  </button>
-                </div>
-                <div class="mb-3 text-center">
-                  <button class="btn btn-primary w-100">
-                    <i class="bi bi-facebook me-2"></i>
-                    Sign in with Facebook
-                  </button>
-                </div>
-                <div class="text-center mb-3">
-                  <hr class="divider" />
-                  <span class="text-muted">OR</span>
-                  <hr class="divider" />
-                </div>
-
-                <div class="mb-3">
-                  <label for="email" class="form-label" name="email">Email</label>
-                  <input
-                    type="email"
-                    class="form-control"
-                    id="email"
-                    placeholder="Enter your email"
-                    required />
-                </div>
-                <div class="mb-3">
-                  <label for="password" class="form-label" name="password">Password</label>
-                  <div class="input-group">
-                    <input
-                      type="password"
-                      class="form-control"
-                      id="password"
-                      placeholder="Enter your password"
-                      required />
-                    <button
-                      class="btn btn-outline-secondary"
-                      type="button"
-                      onclick="togglePassword()">
-                      Show
-                    </button>
-                  </div>
-                  <div class="text-end mt-1">
-                    <a href="#" class="text-decoration-none">Forgot your password?</a>
-                  </div>
-                </div>
-                <div class="d-grid">
-                  <button type="submit" class="btn btn-success">
-                    Login
-                  </button>
-                </div>
-                <p class="text-muted text-center mt-3 small">
-                  *By using social login, you agree to our Terms &
-                  Conditions and Privacy Notice.
-                </p>
-              </form> -->
 
               <div class="card mt-3 shadow">
                 <div class="card-body">
@@ -191,20 +128,16 @@ include_once 'google-login.php';
               </ul>
 
               <div class="mb-3 text-center">
-                <button class="btn btn-outline-dark w-100">
-                  <img
-                    src="https://www.google.com/favicon.ico"
-                    alt="Google icon"
-                    class="me-2"
-                    style="width: 20px; height: 20px" />
-                  Sign in with Google
-                </button>
+                <a class="btn btn-outline-dark w-100" href="<?php echo $client->createAuthUrl(); ?>">
+                      <img src="https://www.google.com/favicon.ico" alt="Google icon" class="me-2" style="width: 20px; height: 20px" />
+                      Sign in with Google
+                  </a>
               </div>
               <div class="mb-3 text-center">
-                <button class="btn btn-primary w-100">
+                <!-- <button class="btn btn-primary w-100">
                   <i class="bi bi-facebook me-2"></i>
                   Sign in with Facebook
-                </button>
+                </button> -->
               </div>
               <div class="text-center mb-3">
                 <hr class="divider" />
