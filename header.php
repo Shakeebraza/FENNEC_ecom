@@ -92,9 +92,9 @@
         <div class="d-flex custom-loginRegister">
           <a href="<?php
           if(isset($_SESSION['userid'])){
-            echo $urlval.'Post.php';
+            echo $urlval.'post.php';
           }else{
-            echo $urlval.'Product.php';
+            echo $urlval.'product.php';
 
           }
           ?>" class="btn custom-btn me-2 mb-lg-0 d-flex flex-column align-items-center">
