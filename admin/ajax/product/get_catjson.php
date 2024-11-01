@@ -1,7 +1,7 @@
 <?php
 require_once('../../../global.php');
 
-header('Content-Type: application/json');
+// header('Content-Type: application/json');
 
 $response = [];
 

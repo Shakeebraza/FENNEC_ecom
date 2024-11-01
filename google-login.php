@@ -41,10 +41,9 @@ if (isset($_GET['code'])) {
         echo json_encode(['status' => 'success', 'role' => 1]);
     }
 
-    // Redirect to index.php after successful login
     echo '
     <script>
-    window.location = "LoginRegister.php"; // Redirect to login page
+    window.location = "LoginRegister.php";
     </script>
     ';
     exit();
