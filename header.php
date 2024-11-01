@@ -24,15 +24,19 @@
 .btn.btn-outline-light.me-2 {
   border: none;
 }
+.nav-main-dwdisnmn {
+  position: absolute;
+  background: white;
+  border: 1px solid #ccc;
+  z-index: 1000;
+  right: 215px;
+  top: 107px;
+}
 
     </style>
   </head>
 
   <body>
-  <!-- <?php
-// var_dump($_SESSION['username']);
-// exit();
-?> -->
     <nav class="navbar navbar-expand-lg navbar-dark ">
       <div class="container">
         <a class="navbar-brand d-flex align-items-center" href="index.php" style="text-decoration: none;">
@@ -92,9 +96,9 @@
         <div class="d-flex custom-loginRegister">
           <a href="<?php
           if(isset($_SESSION['userid'])){
-            echo $urlval.'post.php';
+            echo $urlval.'Post.php';
           }else{
-            echo $urlval.'product.php';
+            echo $urlval.'Product.php';
 
           }
           ?>" class="btn custom-btn me-2 mb-lg-0 d-flex flex-column align-items-center">
@@ -157,64 +161,49 @@
     </div>
 
     <div class="nav-sub-menu-ct">
-      <div class="nav-menu-32323">
-        <div class="nav-menu-3344343">
-          <div class="nav-sub-menu-inn1">
-            <div class="nav-men-sub-ct-inn">
-              <ul>
-                <?php
-                $findCate = $categoryManager->getAllCategoriesHeaderMenu();
-                if ($findCate['status'] == 'success') {
-                  foreach ($findCate['data'] as $category) {
-
-                    echo '<li class="' . htmlspecialchars($category['slug']) . ' "><a href="' . $urlval.'category.php?slug=' . $category['slug'] . '">' . htmlspecialchars($category['category_name']) . '</a></li>';
-                  }
-                }
-                ?>
-              </ul>
-            </div>
-          </div>
-        </div>
-
-
-        <?php
-        if ($findCate['status'] == 'success') {
-          foreach ($findCate['data'] as $category) {
-
-
-            echo '
-              <div id="' . htmlspecialchars($category['slug']) . '" style="display:none;">
-              <div class="nav-main-dwdisnmn">
-              <div class="nav-snm-innnn">
-              <h2>Browse by</h2>
-              <div class="div-nv-sb-menu">
-              <ul>';
-
-            $duncatdata = $categoryManager->getAllSubCategoriesHeaderMenu($category['id']);
-            foreach ($duncatdata['data'] as $val) {
-              echo '
-                  <li><a class="" href="' . htmlspecialchars($category['slug']) . '">' . $val['subcategory_name'] . '</a></li>';
-            }
-            echo '
-                <ul>
-              </div>
-              </div>
-
-              <div class="div-img-right-submenu">
-                <img src="https://www.gumtree.com/assets/frontend/cars-guide.84c7d8c8754c04a88117e49a84535413.png " alt="">
-              </div>
-          
-          </div>
-          </div>
-          </div>
-            </div>
-          
+  <div class="nav-menu-32323">
+    <div class="nav-menu-3344343">
+      <div class="nav-sub-menu-inn1">
+        <div class="nav-men-sub-ct-inn">
+          <ul>
+            <?php
+            $findCate = $categoryManager->getAllCategoriesHeaderMenu();
+            if ($findCate['status'] == 'success') {
+              foreach ($findCate['data'] as $category) {
+                echo '
+                <li class="' . htmlspecialchars($category['slug']) . '">
+                  <a href="' . $urlval . 'category.php?slug=' . $category['slug'] . '">' . htmlspecialchars($category['category_name']) . '</a>
+                  <div class="nav-main-dwdisnmn" style="display:none;">
+                    <div class="nav-snm-innnn">
+                      <h2>Browse by</h2>
+                      <div class="div-nv-sb-menu">
+                        <ul>';
                 
-                ';
-          }
-        }
+                // Fetch subcategories for this category
+                $duncatdata = $categoryManager->getAllSubCategoriesHeaderMenu($category['id']);
+                foreach ($duncatdata['data'] as $val) {
+                  echo '<li class="lihpoverset"><a href="' . $urlval . 'category.php?slug=' . $category['slug'] . '&subcategory='.htmlspecialchars($val['id']).'">' . htmlspecialchars($val['subcategory_name']) . '</a></li>';
+                }
+                
+                echo '
+                        </ul>
+                      </div>
+                    </div>
+                    <div class="div-img-right-submenu">
+                      <img src="https://www.gumtree.com/assets/frontend/cars-guide.84c7d8c8754c04a88117e49a84535413.png" alt="">
+                    </div>
+                  </div>
+                </li>';
+              }
+            }
+            ?>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
-        ?>
 
 
 

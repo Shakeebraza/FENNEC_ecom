@@ -64,7 +64,6 @@
 <script src="https://unpkg.com/swiper/swiper-bundle.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 <script src="<?php echo $urlval?>custom/js/index.js"></script>
-<script src="<?php echo $urlval?>custom/js/header.js"></script>
 <script src="<?php echo $urlval?>custom/js/forsale.js"></script>
 <script src="<?php echo $urlval?>custom/js/script.js"></script>
 
@@ -86,12 +85,20 @@ $(document).ready(function() {
         }
     });
 
-    // Hide the search results when clicking outside
     $(document).on('click', function(event) {
         if (!$(event.target).closest('#searchForm').length) {
             $('#searchResults').hide();
         }
     });
 });
-
+$(document).ready(function() {
+  $('.nav-men-sub-ct-inn ul li').hover(
+    function() {
+      $(this).find('.nav-main-dwdisnmn').stop(true, true).slideDown(200);
+    }, 
+    function() {
+      $(this).find('.nav-main-dwdisnmn').stop(true, true).slideUp(200);
+    }
+  );
+});
 </script>

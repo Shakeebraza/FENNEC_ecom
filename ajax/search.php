@@ -8,7 +8,10 @@ if (isset($_GET['q'])) {
     if ($results) {
         echo ' <div class="suggestions" id="suggestions">';
         foreach ($results as $result) {
-            echo'<div class="suggestion-item">'.$result['name'].'</div>';
+           
+            echo '<div class="suggestion-item">';
+            echo '<a href="category.php?pid=' . $security->encrypt(htmlspecialchars($result['id'])) . '&slug='.htmlspecialchars($result['slug']).'">' . htmlspecialchars($result['name']) . '</a>';
+            echo '</div>';
         }
         echo '</div>';
     } else {

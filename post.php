@@ -104,7 +104,7 @@ $countries = $dbFunctions->getData('countries');
 
     <nav class="navbar navbar-light">
         <div class="container">
-            <a class="navbar-brand" href="#"><?php echo $fun->getSiteSettingValue('website_name') ?></a>
+            <a class="navbar-brand" href="<?= $urlval?>"><?php echo $fun->getSiteSettingValue('website_name') ?></a>
             <button class="btn btn-outline-secondary" type="button">Back</button>
         </div>
     </nav>

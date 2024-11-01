@@ -44,6 +44,10 @@ Class Productfun{
         ";
     
         $params = [];
+        if (!empty($filters['pid'])) {
+            $sql .= " AND p.id LIKE :id";
+            $params[':id'] = '%' . $filters['pid'] . '%';
+        }
         if (!empty($filters['product_name'])) {
             $sql .= " AND p.name LIKE :product_name";
             $params[':product_name'] = '%' . $filters['product_name'] . '%';
@@ -128,18 +132,22 @@ Class Productfun{
         return $response;
     }
     public function searchData($table, $query) {
-        $sql = "SELECT * FROM $table 
-                WHERE name LIKE :query 
-                OR brand LIKE :query 
-                OR description LIKE :query 
+        $sql = "SELECT p.*, c.category_name, c.slug, c.category_image 
+                FROM $table AS p
+                JOIN categories AS c ON p.category_id = c.id
+                WHERE p.name LIKE :query 
+                OR p.brand LIKE :query 
+                OR p.description LIKE :query 
+                OR c.category_name LIKE :query
                 LIMIT 10";
-
+    
         $stmt = $this->pdo->prepare($sql);
         $searchTerm = '%' . $query . '%';
         $stmt->bindParam(':query', $searchTerm);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
+    
 
     function getCountryCityPairs() {
         $query = "

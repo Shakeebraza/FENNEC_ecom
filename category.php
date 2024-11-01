@@ -9,6 +9,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     $min_price = $_GET['min_price'] ?? null;
     $max_price = $_GET['max_price'] ?? null;
     $subcategories = $_GET['subcategory'] ?? null;
+    $pId = $_GET['pid'] ?? null;
     $slug = $_GET['slug'] ?? null;
 
     $filterConditions = [];
@@ -28,9 +29,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (!empty($slug)) {
         $slugId = $dbFunctions->getDatanotenc('categories', "slug ='$slug'");
         $filterConditions['category'] = $slugId[0]['id'];
-        // var_dump();
-        // exit();
         
+    }
+    if(!empty($subcategories)){
+        $filterConditions['subcategory'] = $subcategories; 
+    }
+    if(!empty($pId)){
+        $filterConditions['pid'] = $security->decrypt($pId); 
     }
 }
 
