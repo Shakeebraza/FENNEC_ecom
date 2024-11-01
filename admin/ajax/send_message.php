@@ -1,6 +1,5 @@
 <?php
 require_once("../../global.php");
-session_start();
 if (isset($_POST['message']) && isset($_POST['conversation_id'])) {
     $message = $_POST['message'];
     $conversationId = $_POST['conversation_id'];

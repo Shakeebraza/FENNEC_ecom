@@ -1,6 +1,5 @@
 <?php
 require_once("../global.php"); 
-session_start();
     if (isset($_SESSION['userid'])) {
 
         $userId = base64_decode($_SESSION['userid']); 

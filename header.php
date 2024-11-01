@@ -1,5 +1,4 @@
 <?php
-session_start();
 ?>
 <!DOCTYPE php>
 <php lang="en">
@@ -31,7 +30,6 @@ session_start();
 
   <body>
   <!-- <?php
-//   session_start();
 // var_dump($_SESSION['username']);
 // exit();
 ?> -->

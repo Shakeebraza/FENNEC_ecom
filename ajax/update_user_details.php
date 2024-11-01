@@ -1,6 +1,5 @@
 <?php
 require_once("../global.php");
-session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $country = $_POST['country'] ?? '';
     $city = $_POST['city'] ?? '';

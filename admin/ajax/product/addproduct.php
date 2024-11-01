@@ -1,6 +1,5 @@
 <?php
 require_once('../../../global.php');
-session_start();
 header('Content-Type: application/json');
 
 // Initialize an array to store errors

@@ -1,6 +1,5 @@
 <?php
 require_once('../../../global.php');
-session_start();
 $totalRecords = $dbFunctions->getCount('users', '*', '');
 
 $searchName = $_POST['name'] ?? '';

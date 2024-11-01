@@ -1,6 +1,5 @@
 <?php
 require_once('../../../global.php');
-session_start();
 
 $chatId = $security->decrypt($_POST['chatId']);
 $currentUser = base64_decode($_SESSION['userid']);
