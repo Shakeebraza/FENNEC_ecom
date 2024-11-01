@@ -42,7 +42,11 @@ if (isset($_GET['code'])) {
     }
 
     // Redirect to index.php after successful login
-    header("Location: index.php");
+    echo '
+    <script>
+    window.location = "LoginRegister.php"; // Redirect to login page
+    </script>
+    ';
     exit();
 }
 ?>
