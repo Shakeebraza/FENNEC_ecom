@@ -10,7 +10,7 @@ $data = [
 $updateQuery = "UPDATE categories SET is_show = :is_show WHERE id = :id";
 $updateData = $dbFunctions->updateData('categories', $data, $id);
 
-header('Content-Type: application/json'); 
+// header('Content-Type: application/json'); 
 
 if ($updateData['success']) {
     echo json_encode(['success' => true, 'message' => 'Data updated successfully.']);
