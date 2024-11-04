@@ -22,7 +22,7 @@ if (isset($_GET['token']) && isset($_GET['email'])) {
             echo "
             <script>
                 alert('Email verified successfully! Redirecting to login page...');
-                window.location.href = '".$urlval."admin/login.php'; // Redirect to login page
+                window.location.href = '".$urlval."login.php'; // Redirect to login page
             </script>
             ";
             exit(); 

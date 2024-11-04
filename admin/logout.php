@@ -1,6 +1,6 @@
 <?php
 ob_start(); 
-require_once("global.php"); 
+require_once("../global.php"); 
 
 if (isset($_SESSION['userid'])) {
     $userId = base64_decode($_SESSION['userid']); 
