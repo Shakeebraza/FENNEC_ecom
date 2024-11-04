@@ -22,18 +22,36 @@ if (isset($_GET['token']) && isset($_GET['email'])) {
             echo "
             <script>
                 alert('Email verified successfully! Redirecting to login page...');
-                window.location.href = '".$urlval."login.php'; // Redirect to login page
+                window.location.href = '".$urlval."LoginRegister.php'; // Redirect to login page
             </script>
             ";
             exit(); 
         } else {
-            echo "Something went wrong, please contact the administrator.";
+            echo "
+            <script>
+                alert('Something went wrong, please contact the administrator.');
+                window.location.href = '".$urlval."LoginRegister.php'; // Redirect to login page
+            </script>
+            ";
+            exit(); 
         }
 
     } else {
-        echo "Invalid verification token or email!";
+        echo "
+        <script>
+            alert('Invalid verification token or email!');
+            window.location.href = '".$urlval."LoginRegister.php'; // Redirect to login page
+        </script>
+        ";
+        exit(); 
     }
 } else {
-    echo "No token or email provided!";
+    echo "
+    <script>
+        alert('No token or email provided!');
+        window.location.href = '".$urlval."LoginRegister.php'; // Redirect to login page
+    </script>
+    ";
+    exit(); 
 }
 ?>
