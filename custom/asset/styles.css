@@ -622,6 +622,10 @@ footer {
     flex-direction: column;
     align-items: center;
   }
+  .d-flex-new{
+    flex-direction: row !important;
+
+  }
 
   .navbar-brand {
     margin-right: auto;
@@ -2029,5 +2033,10 @@ display: none;
   background-color: #f8d7da;
   color: #721c24;
   border: 1px solid #f5c6cb;
+}
+@media (max-width: 767px) {
+  .mobileres{
+    display: none !important;
+  }
 }
 

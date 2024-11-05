@@ -272,6 +272,16 @@ document.querySelectorAll('.icon_heart').forEach(favoriteButton => {
         .catch(error => console.error('Error:', error));
     });
 });
+
+
+document.getElementById('topLocationsToggle').addEventListener('click', function() {
+  var content = document.getElementById('topLocationsContent');
+  if (content.style.display === 'none' || content.style.display === '') {
+    content.style.display = 'block'; 
+  } else {
+    content.style.display = 'none'; 
+  }
+});
 </script>
 </body>
 </html>

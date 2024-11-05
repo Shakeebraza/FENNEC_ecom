@@ -13,7 +13,7 @@
         <div class="line">
           <p><?= $phara ?></p>
         </div>
-        <div class="d-flex space-x-3 icon-sty">
+        <div class="d-flex space-x-3 icon-sty d-flex-new">
           <a href="<?php echo $fun->getSiteSettingValue('facebook_link') ?>" class="text-light hover:text-white"><i class="fab fa-facebook-f"></i></a>
           <a href="<?php echo $fun->getSiteSettingValue('instagram_link') ?>" class="text-light hover:text-white"><i class="fab fa-instagram"></i></a>
 

@@ -149,14 +149,23 @@
     <div id="mySidebar" class="sidebar">
       <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
       <a href="<?php echo $urlval ?>">Home</a>
-      <a href="<?php echo $urlval ?>">Post an Ad</a>
-      <a href="<?php echo $urlval ?>">Manage my Ads</a>
-      <a href="<?php echo $urlval ?>">Messages</a>
-      <a href="<?php echo $urlval ?>">Favourites</a>
-      <a href="<?php echo $urlval ?>">My Alerts</a>
-      <a href="<?php echo $urlval ?>">My Details</a>
-      <a href="<?php echo $urlval ?>">Manage my Job Ads</a>
-      <a href="<?php echo $urlval ?>">Help & Contact</a>
+      <a href="<?php
+          if(isset($_SESSION['userid'])){
+            echo $urlval.'Post.php';
+          }else{
+            echo $urlval.'Product.php';
+            
+          }
+          ?>">Post an Ad</a>
+      <?php if(isset($_SESSION['userid'])):?>
+        <a href="'.$urlval.'messages.php#upload-tab">Manage my Ads</a>
+        <a href="'.$urlval.'messages.php#messages-tab">Messages</a>
+        <a href="'.$urlval.'messages.php#favourite-tab">Favourites</a>
+        <a href="'.$urlval.'messages.php#details-tab">My Details</a>
+        <a href="'.$urlval.'messages.php#view-products-tab">Manage my Job Ads</a>
+        <?php endif;?>
+
+
       <a href="<?php echo $urlval ?>">Login</a>
     </div>
 
@@ -227,28 +236,41 @@
           </div>
 
           <div class="remenu-sub">
-            <?php
-            if ($findCate['status'] == 'success') {
-              foreach ($findCate['data'] as $category) {
-                echo '
-                  <div class="remenu-main-dw" data-id="' . htmlspecialchars($category['id']) . '" style="display:none;">
-                      <div class="remenu-innnn">
-                          <div class="div-sub-321">
-                              <img class="crs-end" src="' . $urlval . 'custom/asset/delete-button.png" alt="">
-                              <h3>' . htmlspecialchars($category['category_name']) . '</h3>
-                          </div>
-                          <h2>Browse by</h2>
-                          <ul>';
-                          $duncatdata = $categoryManager->getAllSubCategoriesHeaderMenu($category['id']);
-                          foreach ($duncatdata['data'] as $val) {
-                            echo '<li><a href="' . htmlspecialchars($val['slug']) . '">' . htmlspecialchars($val['subcategory_name']) . '</a></li>';
-                          }
-                          echo '
-                          </ul>
-                      </div>
-                  </div>';
-              }
-            }
-            ?>
+          <?php
+if ($findCate['status'] == 'success') {
+    foreach ($findCate['data'] as $category) {
+        ?>
+        <div class="remenu-main-dw" data-id="<?php echo htmlspecialchars($category['id']); ?>" style="display:none;">
+            <div class="remenu-innnn">
+                <div class="div-sub-321">
+                    <img class="crs-end" src="<?php echo $urlval; ?>custom/asset/delete-button.png" alt="Delete Button">
+                    <h3><?php echo htmlspecialchars($category['category_name']); ?></h3>
+                </div>
+                <h2>Browse by</h2>
+                <ul>
+                    <?php
+                    $duncatdata = $categoryManager->getAllSubCategoriesHeaderMenu($category['id']);
+                    if (!empty($duncatdata['data'])) {
+                        foreach ($duncatdata['data'] as $val) {
+                            ?>
+                            <li>
+                                <a href="<?php echo $urlval; ?>category.php?slug=<?php echo htmlspecialchars($category['slug']); ?>&subcategory=<?= $val['id']?>">
+                                    <?php echo htmlspecialchars($val['subcategory_name']); ?>
+                                </a>
+                            </li>
+                            <?php
+                        }
+                    } else {
+                        echo '<li>No subcategories found</li>';
+                    }
+                    ?>
+                </ul>
+            </div>
+        </div>
+        <?php
+    }
+}
+?>
+
           </div>
         </div>

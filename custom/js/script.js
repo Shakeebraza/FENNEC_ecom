@@ -1,11 +1,4 @@
-document.getElementById('topLocationsToggle').addEventListener('click', function() {
-    var content = document.getElementById('topLocationsContent');
-    if (content.style.display === 'none' || content.style.display === '') {
-      content.style.display = 'block'; 
-    } else {
-      content.style.display = 'none'; 
-    }
-  });
+
 
   document.addEventListener("DOMContentLoaded", function() {
     document.querySelectorAll('.car-vhcl-menu-res').forEach(function(item) {
@@ -13,6 +6,7 @@ document.getElementById('topLocationsToggle').addEventListener('click', function
         var categoryId = this.getAttribute('data-id');
         var submenu = document.querySelector('.remenu-main-dw[data-id="' + categoryId + '"]');
         let remenuIn = document.querySelector(".remenu-sub");
+        console.log('click');
 
         if (submenu) {
           document.querySelectorAll('.remenu-main-dw').forEach(function(menu) {
@@ -41,3 +35,5 @@ document.getElementById('topLocationsToggle').addEventListener('click', function
       });
     });
 });
+
+

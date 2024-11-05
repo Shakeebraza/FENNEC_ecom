@@ -277,6 +277,3 @@ include_once 'footer.php';
 </html>
 
 
-
-<!-- $verificationLink = $urlval."verify_email.php?token=$verificationToken&email=$email";
-            $mailResponse = smtp_mailer($email, 'Email Verification', "Please click the link below to verify your email address:\n$verificationLink"); -->
