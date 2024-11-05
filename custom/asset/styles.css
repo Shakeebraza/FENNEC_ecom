@@ -2000,4 +2000,34 @@ display: none;
 .pleft{
   padding-left: 10px !important;
 }
+#alert-message {
+  position: relative;
+  margin-top: 20px;
+  padding: 15px;
+  border-radius: 5px;
+  font-size: 16px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+#alert-message .btn-close {
+  position: absolute;
+  top: 1px;
+  right: 10px;
+  background-color: transparent;
+  border: none;
+  font-size: 15px;
+  opacity: 0.7;
+}
+
+#alert-message.alert-success {
+  background-color: #d4edda;
+  color: #155724;
+  border: 1px solid #c3e6cb;
+}
+
+#alert-message.alert-danger {
+  background-color: #f8d7da;
+  color: #721c24;
+  border: 1px solid #f5c6cb;
+}
 

@@ -48,6 +48,10 @@ include_once 'google-login.php';
               aria-labelledby="login-tab">
               
               <form id="loginForm" data-url="<?php echo $urlval ?>ajax/login.php">
+                <div id="alert-message" class="alert alert-danger alert-dismissible fade d-none" role="alert">
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  <span id="message-content"></span>
+                </div>
                 <div class="mb-3 text-center">
                 <a class="btn btn-outline-dark w-100" href="<?php echo $client->createAuthUrl(); ?>">
                     <img src="https://www.google.com/favicon.ico" alt="Google icon" class="me-2" style="width: 20px; height: 20px" />
@@ -234,35 +238,39 @@ include_once 'footer.php';
   });
 
   $(document).ready(function() {
-    $('#loginForm').on('submit', function(event) {
-      event.preventDefault();
+  $('#loginForm').on('submit', function(event) {
+    event.preventDefault();
 
-      let url = $(this).data('url'); // Get URL from data attribute
+    let url = $(this).data('url');
 
-      $.ajax({
-        url: url,
-        method: 'POST',
-        data: $(this).serialize(),
-        dataType: 'json',
-        success: function(response) {
-          if (response.status === 'success') {
-            if (response.role === 0) {
-              window.location.href = '../index.php';
-            } else {
-              window.location.href = 'index.php';
-            }
-          } else {
-            $('#message-content').text(response.message).fadeIn();
-            $('#alert-message').fadeIn();
-          }
-        },
-        error: function() {
-          $('#message-content').text('An unexpected error occurred.').fadeIn();
-          $('#alert-message').fadeIn();
+    $.ajax({
+      url: url,
+      method: 'POST',
+      data: $(this).serialize(),
+      dataType: 'json',
+      success: function(response) {
+        $('#alert-message').removeClass('d-none fade alert-danger alert-success');
+        
+        if (response.status === 'success') {
+          $('#alert-message').addClass('alert-success show');
+          $('#message-content').text('Login successful! Redirecting...');
+          setTimeout(function() {
+            window.location.href = response.role === 0 ? '../index.php' : 'index.php';
+          }, 2000);
+        } else {
+          $('#alert-message').addClass('alert-danger show');
+          $('#message-content').text(response.message);
         }
-      });
+      },
+      error: function() {
+        $('#alert-message').removeClass('d-none fade').addClass('alert-danger show');
+        $('#message-content').text('An unexpected error occurred.');
+      }
     });
   });
+});
+
+
 </script>
 </body>
 

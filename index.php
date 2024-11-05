@@ -123,84 +123,70 @@ include_once 'header.php';
           </div>
         </div>
         <div class="row mt-5">
-  <?php
-  // Fetch products
-  $productFind = $productFun->getProductsWithDetails(1, 16, []);
+        <?php
+// Fetch products
+$productFind = $productFun->getProductsWithDetails(1, 16, []);
 
-  // Check if products are available
-  if (!empty($productFind)) {
-      foreach ($productFind['products'] as $product) {
-          ?>
-          
-          <div class="col-md-3 mb-4">
-              <div class="product-card position-relative">
-                  
-                      <div class="badge bg-success position-absolute top-0 start-0 m-2">
-                      <?=$product['product_type']?>
-                      </div>
-                      <a href="<?= $urlval?>detail.php?slug=<?= $product['slug']?>">
-                  <img
-                      src="<?php echo $product['image']; ?>" 
-                      alt="<?php echo htmlspecialchars($product['name']); ?>" 
-                      class="product-image w-100" />
-                  <i class="fas fa-heart heart-icon"></i>
-                  <div class="p-3">
-                      <h5><?php echo htmlspecialchars($product['name']); ?></h5> 
-                      <p class="price">$<?php echo htmlspecialchars($product['price']); ?></p> 
-                      <p class="location">
-                          <i class="fas fa-map-marker-alt"></i> <?php echo htmlspecialchars($product['country']); ?> | <?php echo htmlspecialchars($product['city']); ?>
-                      </p>
-                      <p class="date">
-                          <i class="far fa-clock"></i> <?php echo htmlspecialchars($product['date']); ?>
-                      </p>
-                  </div>
-                  </a>
-              </div>
-          </div>
-     
-          <?php
-      }
-  } else {
-      echo '<p>No products found.</p>';
-  }
-  ?>
+// Check if products are available
+if (!empty($productFind)) {
+    foreach ($productFind['products'] as $product) {
+        ?>
+        <div class="col-md-3 mb-4">
+            <div class="product-card position-relative">
+                <?php if ($product['product_type'] != "standard") { ?>
+                    <div class="badge bg-success position-absolute top-0 start-0 m-2">
+                        <?php echo $product['product_type']; ?>
+                    </div>
+                <?php } ?>
+                <a href="<?= $urlval ?>detail.php?slug=<?= $product['slug'] ?>">
+                    <img
+                        src="<?php echo $product['image']; ?>"
+                        alt="<?php echo htmlspecialchars($product['name']); ?>"
+                        class="product-image w-100" />
+                </a>
+                <?php
+                    if (isset($_SESSION['userid'])) {
+                        ?>
+                        <a
+                            class="heart-icon icon_heart"
+                            data-productid="<?php echo $product['id']; ?>"
+                            id="favorite-button-<?php echo $product['id']; ?>">
+                            <i class="fas fa-heart"></i>
+                        </a>
+                        <?php
+                    } else {
+                        ?>
+                        <a class="heart-icon" href="<?= $urlval ?>LoginRegister.php">
+                            <i class="fas fa-heart"></i>
+                        </a>
+                        <?php
+                    }
+                    ?>
+
+                <div class="p-3">
+                    <h5><?php echo htmlspecialchars($product['name']); ?></h5>
+                    <p class="price">$<?php echo htmlspecialchars($product['price']); ?></p>
+                    <p class="location">
+                        <i class="fas fa-map-marker-alt"></i> <?php echo htmlspecialchars($product['country']); ?> | <?php echo htmlspecialchars($product['city']); ?>
+                    </p>
+                    <p class="date">
+                        <i class="far fa-clock"></i> <?php echo htmlspecialchars($product['date']); ?>
+                    </p>
+                </div>
+            </div>
+        </div>
+        <?php
+    }
+} else {
+    echo '<p>No products found.</p>';
+}
+?>
+
 </div>
 </div>
 
       <div class="modal" style="display: none">
-        <div class="modal-dialog">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title">Welcome to Fennec</h5>
-              <button
-                type="button"
-                class="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-              <p>Sign in or Register to:</p>
-              <ul>
-                <li>Send and receive messages</li>
-                <li>Post and manage your ads</li>
-                <li>Rate other users</li>
-                <li>Favourite ads to check them out later</li>
-                <li>
-                  Set alerts for your searches and never miss a new ad in
-                  your area
-                </li>
-              </ul>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-success">
-                Register
-              </button>
-              <button type="button" class="btn btn-outline-secondary">
-                Login
-              </button>
-            </div>
-          </div>
-        </div>
+
       </div>
     </div>
   </div>
@@ -259,7 +245,33 @@ include_once 'header.php';
 include_once 'footer.php';
 ?>
 <script>
+document.querySelectorAll('.icon_heart').forEach(favoriteButton => {
+    favoriteButton.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default anchor behavior
+        const productId = this.getAttribute('data-productid');
 
+        fetch('<?= $urlval ?>ajax/favorite.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: productId
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                this.innerHTML = data.isFavorited ?
+                    '<i class="fas fa-heart"></i> Favorited' :
+                    '<i class="far fa-heart"></i> Favourite';
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
 </script>
 </body>
 </html>
