@@ -130,7 +130,7 @@
             ';
           }else{
            echo '
-                     <a href="LoginRegister.php" class="btn custom-btn d-flex flex-column align-items-center">
+                     <a href="'.$urlval.'LoginRegister.php" class="btn custom-btn d-flex flex-column align-items-center">
             <i class="fa-solid fa-user mb-1 "></i>
             <span class="new-btn">Login</span>
           </a>
@@ -166,7 +166,7 @@
         <?php endif;?>
 
 
-      <a href="<?php echo $urlval ?>">Login</a>
+      <a href="<?php echo $urlval ?>LoginRegister.php">Login</a>
     </div>
 
     <div class="nav-sub-menu-ct">

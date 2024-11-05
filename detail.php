@@ -7,6 +7,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if (!empty($slug)) {
         $userId = isset($_SESSION['userid']) ? base64_decode($_SESSION['userid']) : NULL;
         $productData = $productFun->getProductDetailsBySlug($slug, $userId);
+
         if (empty($productData)) {
             header('Location: index.php');
             exit();
@@ -22,6 +23,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 // var_dump($productData['product']);
 
 ?>
+<style>
+
+    .swiper-pagination.secoundpage.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal {
+        top: 220%; 
+    }
+
+
+    @media screen and (max-width: 768px) {
+        .swiper-pagination.secoundpage.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal {
+            top: 275%; 
+        }
+    }
+
+  
+    @media screen and (max-width: 480px) {
+        .swiper-pagination.secoundpage.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal {
+            top: 275%; 
+        }
+    }
+</style>
 <div class="container mt-4">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -52,16 +73,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 <div class="swiper-container2" style="margin-bottom: 20px; border-radius: 12px; overflow: hidden;">
                     <div class="swiper-wrapper">
                         <?php
-                        foreach ($productData['gallery_images'] as $row) {
+                        if($productData['gallery_images']){
+                            foreach ($productData['gallery_images'] as $row) {
+                                echo '
+                                    <div class="swiper-slide">
+                                        <img src="' . $urlval . $row . '" class="card-img-top" alt="Not found Image" style="width: 100%; height: 80%; object-fit: cover;border-radius: 12px;">
+                                    </div>
+                                ';
+                            }
+                        }else{
                             echo '
-                                <div class="swiper-slide">
-                                    <img src="' . $urlval . $row . '" class="card-img-top" alt="Not found Image" style="width: 100%; height: 80%; object-fit: cover;border-radius: 12px;">
-                                </div>
-                            ';
+                            <div class="swiper-slide">
+                                <img src="' . $urlval . $productData['product']['proimage'] . '" class="card-img-top" alt="Not found Image" style="width: 100%; height: 80%; object-fit: cover;border-radius: 12px;">
+                            </div>
+                        ';
                         }
                         ?>
                     </div>
-                    <div class="swiper-pagination" style="bottom: 10px;"></div>
+                    <div class="swiper-pagination" style="bottom: 124px;"></div>
                 </div>
                 <div class="card-body">
                     <h5 class="card-title" style="font-size: 1.5em; color: #333;"><?= htmlspecialchars($productData['product']['product_name'] ?? 'Product Name'); ?></h5>
@@ -160,23 +189,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     </div>
 
     <h3 class="mt-4 mb-3"><b>You may also like...</b></h3>
-    <div class="swiper-container" style="margin-bottom: 40px; border-radius: 12px; overflow: hidden; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);">
-        <div class="swiper-wrapper">
-            <?php
-            $relatedProducts=$productFun->getRelatedProducts($productData['product']['category_id'] ,$productData['product']['product_id'] );
-            foreach ($relatedProducts as $relatedProduct) {
-                echo '
-                <div class="swiper-slide" style="background: #eaeaea; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;max-height: 50%;">
-                    <img src="' . htmlspecialchars($urlval . $relatedProduct['image']) . '" alt="' . htmlspecialchars($relatedProduct['title']) . '" style="border-radius: 12px; width: 100%; height: auto; transition: transform 0.3s;">
-                    <h5 style="margin-top: 10px; font-size: 1.2em; color: #333;">' . htmlspecialchars($relatedProduct['title']) . '</h5>
-                    <p style="font-weight: bold; color: #28a745; font-size: 1.1em; margin-top: 5px;">£' . htmlspecialchars($relatedProduct['price']) . '</p>
+<div class="swiper-container my-4" style="border-radius: 12px; overflow: hidden; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);">
+    <div class="swiper-wrapper">
+        <?php
+        $relatedProducts = $productFun->getRelatedProducts($productData['product']['category_id'], $productData['product']['product_id']);
+        foreach ($relatedProducts as $relatedProduct) {
+            echo '
+            <div class="swiper-slide d-flex flex-column align-items-center">
+                <div class="slide-content text-center p-3">
+                    <img src="' . htmlspecialchars($urlval . $relatedProduct['image']) . '" alt="' . htmlspecialchars($relatedProduct['title']) . '" class="img-fluid rounded">
+                    <h5 class="mt-2" style="font-size: 1.2em; color: #333;">' . htmlspecialchars($relatedProduct['title']) . '</h5>
+                    <p class="font-weight-bold text-success" style="font-size: 1.1em; margin-top: 5px;">£' . htmlspecialchars($relatedProduct['price']) . '</p>
                 </div>
-                ';
-            }
-            ?>
-        </div>
-        <div class="swiper-pagination" style="bottom: 10px;"></div>
+            </div>
+            ';
+        }
+        ?>
     </div>
+    <div class="swiper-pagination secoundpage"></div>
+</div>
+
 </div>
 
 <?php
@@ -185,36 +217,37 @@ include_once 'footer.php';
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const mainSwiper = new Swiper('.swiper-container2', {
-            loop: true,
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
-            },
-            autoplay: {
-                delay: 2500,
-                disableOnInteraction: false,
-            },
-        });
+        loop: true,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        autoplay: {
+            delay: 2500,
+            disableOnInteraction: false,
+        },
+    });
 
-        const relatedProductsSwiper = new Swiper('.swiper-container', {
-            slidesPerView: 4,
-            spaceBetween: 10,
-            pagination: {
-                el: '.swiper-pagination',
-                clickable: true,
+    const relatedProductsSwiper = new Swiper('.swiper-container', {
+        slidesPerView: 1, // Default to 1 slide on mobile
+        spaceBetween: 10,
+        pagination: {
+            el: '.swiper-pagination',
+            clickable: true,
+        },
+        breakpoints: {
+            480: {
+                slidesPerView: 1 // 1 slide for mobile
             },
-            breakpoints: {
-                1024: {
-                    slidesPerView: 3
-                },
-                600: {
-                    slidesPerView: 2
-                },
-                480: {
-                    slidesPerView: 1
-                }
-            }
-        });
+            600: {
+                slidesPerView: 2 // 2 slides for tablets
+            },
+            1024: {
+                slidesPerView: 3 // 3 slides for desktops
+            },
+            // You can add more breakpoints here if needed
+        }
+    });
 
         const favoriteButton = document.getElementById('favorite-button');
 

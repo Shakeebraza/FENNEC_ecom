@@ -208,6 +208,7 @@ Class Productfun{
                 p.name AS product_name,
                 p.description AS product_description,
                 p.price,
+                p.image as proimage,
                 p.user_id,
                 p.category_id,
                 p.discount_price,
