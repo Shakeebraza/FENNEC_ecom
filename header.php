@@ -72,7 +72,7 @@
               ?>
             </select>
           </div>
-          <button class="btn btn-success rounded-0" type="submit">
+          <button class="btn btn-success rounded-0 btn_seach_header" type="submit">
             <i class="fa-solid fa-magnifying-glass fa-magnifying-glass2"></i>
           </button>
         </form>
