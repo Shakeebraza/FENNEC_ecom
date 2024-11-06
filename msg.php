@@ -781,7 +781,15 @@ button:focus {
         border-top-right-radius: 6px;
         border-bottom-left-radius: 6px;
     }
+    #product-info-popup{
+        top: 40% !important;
+        left: 53% !important;
+    }
+    #product-name{
+        font-size: 12px !important;
+    }
 }
+
 </style>
 <section class="message-area">
     <div class="container">
@@ -929,6 +937,19 @@ $(document).ready(function() {
     }
     $(".chat-icon").click(function() {
     $(".chatbox").removeClass('showbox');
+});
+    function hidepopup(){
+        $('#popup-overlay').hide();
+    $('#product-info-popup').hide();
+    
+    $('body').css('overflow', 'auto');
+    }
+    $(window).on('scroll', function() {
+    var scrollThreshold = 600;
+
+    if ($(window).scrollTop() > scrollThreshold) {
+        hidepopup();
+    }
 });
 </script>
 </body>
