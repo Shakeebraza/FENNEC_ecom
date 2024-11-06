@@ -146,11 +146,11 @@
           }
           ?>">Post an Ad</a>
       <?php if(isset($_SESSION['userid'])):?>
-        <a href="'.$urlval.'messages.php#upload-tab">Manage my Ads</a>
-        <a href="'.$urlval.'messages.php#messages-tab">Messages</a>
-        <a href="'.$urlval.'messages.php#favourite-tab">Favourites</a>
-        <a href="'.$urlval.'messages.php#details-tab">My Details</a>
-        <a href="'.$urlval.'messages.php#view-products-tab">Manage my Job Ads</a>
+        <a href="<?= $urlval ?>messages.php#upload-tab">Manage my Ads</a>
+        <a href="<?= $urlval ?>messages.php#messages-tab">Messages</a>
+        <a href="<?= $urlval ?>messages.php#favourite-tab">Favourites</a>
+        <a href="<?= $urlval ?>messages.php#details-tab">My Details</a>
+        <a href="<?= $urlval ?>messages.php#view-products-tab">Manage my Job Ads</a>
         <?php endif;?>
 
 
