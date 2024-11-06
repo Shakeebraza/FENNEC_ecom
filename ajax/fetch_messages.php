@@ -5,7 +5,7 @@ if (isset($_SESSION['userid'])) {
     $conversationId = $security->decrypt($_POST['conversation_id']) ?? NULL;
 
     if (isset($conversationId)) {
-        $getMesData = $dbFunctions->getDatanotenc('messages', "conversation_id = '$conversationId'");
+        $getMesData = $dbFunctions->getDatanotenc('messages', "conversation_id = '$conversationId'", $groupBy = '', $orderBy = '', $orderDirection = 'ASC', $start = 0, $length = 10000);
 
         echo '<ul>'; // Open the <ul> tag
 
