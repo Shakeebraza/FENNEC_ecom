@@ -130,7 +130,10 @@ include_once 'google-login.php';
                 <li><i class="fas fa-heart me-2"></i> Favourite ads to check them out later</li>
                 <li><i class="fas fa-bell me-2"></i> Set alerts for your searches and never miss a new ad in your area</li>
               </ul>
-
+              <div id="alert-message2" class="alert alert-danger d-none" role="alert">
+                  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                  <span id="message-content"></span>
+                </div>
               <div class="mb-3 text-center">
                 <a class="btn btn-outline-dark w-100" href="<?php echo $client->createAuthUrl(); ?>">
                       <img src="https://www.google.com/favicon.ico" alt="Google icon" class="me-2" style="width: 20px; height: 20px" />
@@ -194,48 +197,40 @@ include_once 'footer.php';
     passwordField.type = passwordField.type === "password" ? "text" : "password";
   }
 
-  $('#registerForm').on('submit', function(event) {
-    event.preventDefault(); // Prevents default form submission
-
-    $.ajax({
-      url: $(this).attr('action'), // The action attribute in the form
-      method: 'POST',
-      data: $(this).serialize(), // Serializes form data
-      dataType: 'json', // Expected response type from the server
-      success: function(response) {
-        if (response.status === 'success') {
-          alert(response.message || 'Registration successful');
-          window.location.href = 'index.php'; // Redirects to the main page
-        } else {
-          alert(response.message || 'Registration failed');
-        }
-      },
-      error: function() {
-        alert('An unexpected error occurred. Please try again.');
-      }
-    });
-  });
   $(document).on('submit', '#registerForm', function(e) {
-    e.preventDefault();
+  e.preventDefault();
 
-    $.ajax({
-      url: $(this).attr('action'),
-      type: 'POST',
-      data: $(this).serialize(),
-      dataType: 'json',
-      success: function(response) {
-        if (response.status === 'success') {
-          alert('Registration successful!');
-          window.location.href = 'login.php';
-        } else {
-          alert(response.message || 'An error occurred. Please try again.');
-        }
-      },
-      error: function() {
-        alert('An unexpected error occurred. Please try again.');
+  $.ajax({
+    url: $(this).attr('action'),
+    type: 'POST',
+    data: $(this).serialize(),
+    dataType: 'json',
+    success: function(response) {
+      if (response.status === 'success') {
+        $('#alert-message2')
+          .removeClass('d-none alert-danger')
+          .addClass('alert-success')
+          .find('#message-content').text('Registration successful!');
+        
+        setTimeout(function() {
+          window.location.href = 'index.php';
+        }, 2000);
+      } else {
+     
+        $('#alert-message2')
+          .removeClass('d-none alert-success')
+          .addClass('alert-danger')
+          .find('#message-content').text(response.errors || 'An error occurred. Please try again.');
       }
-    });
+    },
+    error: function() {
+      $('#alert-message2')
+        .removeClass('d-none alert-success')
+        .addClass('alert-danger')
+        .find('#message-content').text('An unexpected error occurred. Please try again.');
+    }
   });
+});
 
   $(document).ready(function() {
   $('#loginForm').on('submit', function(event) {

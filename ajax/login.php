@@ -27,10 +27,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 echo json_encode(['status' => 'error', 'message' => 'Please verify your email first.']);
                 exit;
             }
-            // if ($user['role'] == 0) {
-            //     echo json_encode(['status' => 'error', 'message' => 'Please login and admin account.']);
-            //     exit;
-            // }
+            if ($user['status'] == 0) {
+                echo json_encode(['status' => 'error', 'message' => 'Your block by Admin contact at admin ']);
+                exit;
+            }
             if (password_verify($password, $user['password'])) {
                 
                 if ($remember) {

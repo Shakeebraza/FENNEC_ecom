@@ -43,6 +43,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         }
     }
 </style>
+
 <div class="container mt-4">
     <nav aria-label="breadcrumb">
         <ol class="breadcrumb">
@@ -73,21 +74,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 <div class="swiper-container2" style="margin-bottom: 20px; border-radius: 12px; overflow: hidden;">
                     <div class="swiper-wrapper">
                         <?php
-                        if($productData['gallery_images']){
+                        if (isset($productData['gallery_images'][0])) {
                             foreach ($productData['gallery_images'] as $row) {
                                 echo '
                                     <div class="swiper-slide">
-                                        <img src="' . $urlval . $row . '" class="card-img-top" alt="Not found Image" style="width: 100%; height: 80%; object-fit: cover;border-radius: 12px;">
+                                        <img src="' . $urlval . $row . '" class="card-img-top" alt="Not found Image" style="width: 100%; height: 80%; object-fit: cover; border-radius: 12px;">
                                     </div>
                                 ';
                             }
-                        }else{
+                        } else {
                             echo '
-                            <div class="swiper-slide">
-                                <img src="' . $urlval . $productData['product']['proimage'] . '" class="card-img-top" alt="Not found Image" style="width: 100%; height: 80%; object-fit: cover;border-radius: 12px;">
-                            </div>
-                        ';
+                                <div class="">
+                                    <img src="' . $urlval . $productData['product']['proimage'] . '" class="card-img-top" alt="Not found Image" style="width: 100%; height: 80%; object-fit: cover; border-radius: 12px;">
+                                </div>
+                            ';
                         }
+                        
                         ?>
                     </div>
                     <div class="swiper-pagination" style="bottom: 124px;"></div>

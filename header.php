@@ -16,22 +16,9 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="<?php echo $urlval ?>custom/asset/styles.css" />
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
+
     <style>
-#dropdownMenuButton {
-  border: none;
-  margin-top: 8px;
-}
-.btn.btn-outline-light.me-2 {
-  border: none;
-}
-.nav-main-dwdisnmn {
-  position: absolute;
-  background: white;
-  border: 1px solid #ccc;
-  z-index: 1000;
-  right: 215px;
-  top: 107px;
-}
+
 
     </style>
   </head>
@@ -114,7 +101,8 @@
                     </a>
                     <div class="dropdown">
                         <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-bars"></i> Menu
+                            <i class="fas fa-bars"></i> <br>
+                            <p>Menu</p>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                             <li><a class="dropdown-item" href="'.$urlval.'messages.php#upload-tab">Manage my Ads</a></li>
