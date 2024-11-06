@@ -83,7 +83,7 @@
         <div class="d-flex custom-loginRegister">
           <a href="<?php
           if(isset($_SESSION['userid'])){
-            echo $urlval.'Post.php';
+            echo $urlval.'post.php';
           }else{
             echo $urlval.'Product.php';
 
@@ -139,7 +139,7 @@
       <a href="<?php echo $urlval ?>">Home</a>
       <a href="<?php
           if(isset($_SESSION['userid'])){
-            echo $urlval.'Post.php';
+            echo $urlval.'post.php';
           }else{
             echo $urlval.'Product.php';
             
