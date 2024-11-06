@@ -385,6 +385,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
                         $productFind = $productFun->getProductsWithDetails(1, 16, $filterConditions);
                         $products = $productFind['products'];
+                        // var_dump($productFind);
                         if(!empty($products)){
                         foreach ($products as $proval) {
                             $description = $proval['description'];
@@ -397,7 +398,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                             $description = count($words) > 3 ? implode(" ", array_slice($words, 0, 3)) . '...' : $description;
 
                             echo '
-                                <a href="' . $urlval . 'detail.php?slug=' . $proval['slug'] . '">
+                                
                                     <div class="col">
                                         <div class="product-card">
                                             <img
@@ -409,6 +410,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                                 <i class="fas fa-heart"></i>
                                             </div>
                                             <div class="card-body">
+                                            <a href="' . $urlval . 'detail.php?slug=' . $proval['slug'] . '">
                                                 <div class="p-3">
                                                     <h5 class="card-title">' . $name . '</h5>
                                                     <p class="card-text">' . $description . '</p>
@@ -417,22 +419,28 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                                         <span class="product-price" style="color: red;">$' . $proval['price'] . '</span>
                                                         <span class="product-time small" style="font-size: 12px;">' . $proval['date'] . '</span>
                                                     </div>
-                                                </div>';
+                                                </div>
+                                                </a>';
                                             if(isset($_SESSION['userid'])){
-                                           echo' 
-                                                <button class="_91e21052 e07f63ca af478541 btn quick-add-btn" type="submit" style="padding: 5px 10px; font-size: 0.8em;">
-                                                    <svg viewBox="0 0 24 24" class="b4840212 _545e587d" style="width: 14px; height: 14px; vertical-align: middle;">
-                                                        <path fill-rule="evenodd" d="M7 18h6a7 7 0 0 0 0-14h-2a7 7 0 0 0-7 7v8.5l2.6-1.3.4-.1zm4-16h2a9 9 0 0 1 0 18H7.2l-3.8 2L2 21V11c0-5 4-9 9-9zm-4 9a1 1 0 1 1 2 0 1 1 0 0 1-2 0zm5-1a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm3 1a1 1 0 1 1 2 0 1 1 0 0 1-2 0z" clip-rule="evenodd"></path>
-                                                    </svg>
-                                                    <span class="_30de236c af478541 b7af14b4" style="font-size: 0.8em;">Chat</span>
-                                                </button>
-                                                ';
-                                            }
+                                              
+                                                if(base64_decode($_SESSION['userid']) != $proval['prouserid']){
+
+                                                    echo ' 
+                                                    <button class="btn quick-add-btn" type="button" style="background: #1987546e; border: none; padding: 5px;" 
+                                                    onclick="startChat(\'' . $security->encrypt($proval['id']) . '\')">
+                                                    <i class="fas fa-comment-dots" style="font-size: 1.2em; color: #00494f;"></i> Chat 
+                                                    </button>';
+                                                }else{
+                                                    echo '
+                                                    <p style="text-align: center;color: #00494f;">This is your Product<p>
+                                                    ';
+                                                }
+                                                }
                                                 echo'
                                             </div>
                                         </div>
                                     </div>
-                                </a>';
+                                ';
                         }
                         }else{
                             echo '
@@ -560,6 +568,26 @@ document.getElementById('openFilterModalBtn').onclick = function() {
                 modal.style.display = 'none';
             }
         };
+
+        function startChat(productId) {
+    $.ajax({
+        url: '<?= $urlval ?>ajax/start_chat.php',
+        type: 'POST',
+        dataType: 'json',  
+        data: { product_id: productId },  
+        success: function(response) {
+            if (response && response.success) {
+                window.location.href = '<?= $urlval ?>messages.php?product_id=' + productId;
+            } else {
+                alert(response.message || 'Could not start chat.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error:', status, error);
+            alert('Error connecting to chat. Please try again.');
+        }
+    });
+}
 </script>
 </body>
 

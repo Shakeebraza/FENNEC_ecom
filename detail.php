@@ -109,7 +109,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         <i class="fas fa-user"></i> <?php
                         $usid=$productData['product']['user_id'];
                             $datauserid = $dbFunctions->getDatanotenc('users',"id='$usid'");
-                            echo $datauserid[0]['username'];
+                            echo $datauserid[0]['username']??"Not found..";
                                                     ?><br>
                         <small class="text-muted">Posting for under a month</small>
                     </p>

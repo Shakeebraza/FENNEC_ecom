@@ -250,7 +250,7 @@ include_once 'footer.php';
           $('#alert-message').addClass('alert-success show');
           $('#message-content').text('Login successful! Redirecting...');
           setTimeout(function() {
-            window.location.href = response.role === 0 ? '../index.php' : 'index.php';
+            window.location.href =  '<?= $urlval?>index.php';
           }, 2000);
         } else {
           $('#alert-message').addClass('alert-danger show');

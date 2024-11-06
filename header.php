@@ -96,7 +96,7 @@
           if(isset($_SESSION['userid'])){
             echo '
                       <div class="d-flex">
-                    <a class="btn btn-outline-light me-2" href="'.$urlval.'messages.php">
+                    <a class="btn btn-outline-light me-2" href="'.$urlval.'msg.php">
                         <i class="fas fa-envelope"></i> Messages
                     </a>
                     <div class="dropdown">
@@ -147,7 +147,7 @@
           ?>">Post an Ad</a>
       <?php if(isset($_SESSION['userid'])):?>
         <a href="<?= $urlval ?>messages.php#upload-tab">Manage my Ads</a>
-        <a href="<?= $urlval ?>messages.php#messages-tab">Messages</a>
+        <a href="<?= $urlval ?>msg.php">Messages</a>
         <a href="<?= $urlval ?>messages.php#favourite-tab">Favourites</a>
         <a href="<?= $urlval ?>messages.php#details-tab">My Details</a>
         <a href="<?= $urlval ?>messages.php#view-products-tab">Manage my Job Ads</a>

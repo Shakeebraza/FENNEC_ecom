@@ -23,6 +23,7 @@ Class Productfun{
                 p.image AS product_image,
                 p.price AS product_price,
                 p.date AS productdate,
+                p.user_id AS prouserid,
                 p.product_type AS product_type,
                 p.discount_price AS product_discount_price,
                 c.category_name AS category_name,
@@ -125,6 +126,7 @@ Class Productfun{
                     'city' => $pro['city_name'],
                     'country' => $pro['country_name'],
                     'date' => $pro['productdate'],
+                    'prouserid' => $pro['prouserid'],
                 ];
             }
         }
@@ -378,6 +380,19 @@ Class Productfun{
                   </div>
                 </div>
             ';
+        }
+    }
+    public function GetUserId($id){
+        if(isset($id)){
+            $getdata = $this->dbfun->getDatanotenc('products', "id='$id'");
+            if(isset($getdata[0])){
+                $userId = $getdata[0]['user_id'];
+                return $userId;
+            } else {
+                return null;
+            }
+        } else {
+            return null;
         }
     }
 }
