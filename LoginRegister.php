@@ -80,7 +80,7 @@ include_once 'google-login.php';
                     <button class="btn btn-outline-secondary" type="button" onclick="togglePassword()">Show</button>
                   </div>
                   <div class="text-end mt-1">
-                    <a href="#" class="text-decoration-none">Forgot your password?</a>
+                    <a href="<?= $urlval?>forgetpass.php" class="text-decoration-none">Forgot your password?</a>
                   </div>
                 </div>
                 <div class="d-grid">
