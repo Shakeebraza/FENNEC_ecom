@@ -124,12 +124,23 @@ include_once 'header.php';
         </div>
         <div class="row mt-5">
         <?php
-// Fetch products
+
 $productFind = $productFun->getProductsWithDetails(1, 16, []);
 
-// Check if products are available
 if (!empty($productFind)) {
     foreach ($productFind['products'] as $product) {
+        $setSession = $fun->isSessionSet();
+        $fav = ""; // Default style if the product isn't favorited
+        
+        if ($setSession == true) {
+            $uid = base64_decode($_SESSION['userid']);
+            $pid = $product['id'];
+            $isFav = $dbFunctions->getDatanotenc('favorites', "user_id = '$uid' AND product_id = '$pid'");
+            
+            if ($isFav) {
+                $fav = "style='color: red'"; // Set red color if product is favorited
+            }
+        }
         ?>
         <div class="col-md-3 mb-4">
             <div class="product-card position-relative">
@@ -144,24 +155,27 @@ if (!empty($productFind)) {
                         alt="<?php echo htmlspecialchars($product['name']); ?>"
                         class="product-image w-100" />
                 </a>
+                
                 <?php
-                    if (isset($_SESSION['userid'])) {
-                        ?>
-                        <a
-                            class="heart-icon icon_heart"
-                            data-productid="<?php echo $product['id']; ?>"
-                            id="favorite-button-<?php echo $product['id']; ?>">
-                            <i class="fas fa-heart"></i>
-                        </a>
-                        <?php
-                    } else {
-                        ?>
-                        <a class="heart-icon" href="<?= $urlval ?>LoginRegister.php">
-                            <i class="fas fa-heart"></i>
-                        </a>
-                        <?php
-                    }
+                if ($setSession == true) {
+                    // If user is logged in
                     ?>
+                    <a
+                        class="heart-icon icon_heart"
+                        data-productid="<?php echo $product['id']; ?>"
+                        id="favorite-button-<?php echo $product['id']; ?>">
+                        <i class="fas fa-heart" <?php echo $fav; ?>></i>
+                    </a>
+                    <?php
+                } else {
+                    // If user is not logged in
+                    ?>
+                    <a class="heart-icon" href="<?= $urlval ?>LoginRegister.php">
+                        <i class="fas fa-heart"></i>
+                    </a>
+                    <?php
+                }
+                ?>
 
                 <div class="p-3">
                     <h5><?php echo htmlspecialchars($product['name']); ?></h5>
@@ -181,6 +195,7 @@ if (!empty($productFind)) {
     echo '<p>No products found.</p>';
 }
 ?>
+
 
 </div>
 </div>
@@ -263,8 +278,8 @@ document.querySelectorAll('.icon_heart').forEach(favoriteButton => {
         .then(data => {
             if (data.success) {
                 this.innerHTML = data.isFavorited ?
-                    '<i class="fas fa-heart"></i> Favorited' :
-                    '<i class="far fa-heart"></i> Favourite';
+                    '<i class="fas fa-heart" style="color: red;"></i>' :
+                    '<i class="far fa-heart" style="color: red;"></i>';
             } else {
                 alert('Error: ' + data.message);
             }

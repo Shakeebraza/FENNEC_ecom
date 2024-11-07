@@ -1,13 +1,26 @@
 <?php
 $setSession = $fun->isSessionSet();
 
+$redirectUrl = $urlval . 'admin/logout.php'; 
 if ($setSession == false) {
-    $redirectUrl = $urlval . 'admin/login.php'; 
-    echo '
-    <script>
-        window.location.href = "' . $redirectUrl . '";
-    </script>'; 
-    exit();
+   
+    
+        echo '
+        <script>
+            window.location.href = "' . $redirectUrl . '";
+        </script>'; 
+        exit();
+
+
+}
+
+if($_SESSION['role'] != 1){
+        echo '
+        <script>
+            window.location.href = "' . $redirectUrl . '";
+        </script>'; 
+        exit();
+
 }
 $current_url = $_SERVER['REQUEST_URI'];
 
