@@ -14,8 +14,8 @@ include_once 'header.php';
                     <div class="card-body">
                         <h1 class="card-title text-center mb-4">Forgotten Password</h1>
                         <p class="text-center text-muted">Please enter your registered email address.</p>
-                        <div id="responseMessage" class="mt-3 text-center"></div>
                         <form id="forgotPasswordForm">
+                            <div id="responseMessage" class="mt-3 text-center"></div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
                                 <input type="email" class="form-control" id="email" name="email" required>
