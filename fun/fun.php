@@ -349,6 +349,7 @@ class Fun {
                 $_SESSION['email_verified_at'] = $userData[0]['email_verified_at'];
                 $_SESSION['role'] = $userData[0]['role'];
                 $_SESSION['profile'] = $this->urlval.$userData[0]['profile'];
+                $_SESSION['remember'] = $userData[0]['remember_token'];
                 
         
                 return true;
@@ -356,6 +357,22 @@ class Fun {
         }
         
         
+        return false;
+    }
+    public function RequestSessioncheck(){
+        if(isset($_SESSION['userid']) && isset($_SESSION['remember'])){
+            $id= base64_decode($_SESSION['userid']);
+            $remember = $_SESSION['remember'];
+            $valid=$this->dbfun->getDatanotenc('users',"id = '$id' AND remember_token = '$remember'");
+            if($valid){
+                return true;
+
+            }else{
+                return false;
+
+            }
+
+        }
         return false;
     }
     

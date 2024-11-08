@@ -130,7 +130,7 @@ $productFind = $productFun->getProductsWithDetails(1, 16, []);
 if (!empty($productFind)) {
     foreach ($productFind['products'] as $product) {
         $setSession = $fun->isSessionSet();
-        $fav = ""; // Default style if the product isn't favorited
+        $fav = ""; 
         
         if ($setSession == true) {
             $uid = base64_decode($_SESSION['userid']);
@@ -138,7 +138,7 @@ if (!empty($productFind)) {
             $isFav = $dbFunctions->getDatanotenc('favorites', "user_id = '$uid' AND product_id = '$pid'");
             
             if ($isFav) {
-                $fav = "style='color: red'"; // Set red color if product is favorited
+                $fav = "style='color: red'"; 
             }
         }
         ?>

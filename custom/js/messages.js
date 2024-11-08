@@ -1,38 +1,40 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const editContactDetailsBtn = document.getElementById(
-      "editContactDetailsBtn"
-    );
-    const editPasswordBtn = document.getElementById("editPasswordBtn");
-    const contactFields = ["firstName", "lastName", "contactNumber"];
-    const passwordField = document.getElementById("password");
+  const editContactDetailsBtn = document.getElementById("editContactDetailsBtn");
+  const editPasswordBtn = document.getElementById("editPasswordBtn");
+  
+  // Update the contactFields to match your HTML input IDs
+  const contactFields = ["country", "city", "contactNumber"];
+  const passwordField = document.getElementById("password");
 
-    editContactDetailsBtn.addEventListener("click", function () {
-      contactFields.forEach((field) => {
-        const input = document.getElementById(field);
+  editContactDetailsBtn.addEventListener("click", function () {
+    contactFields.forEach((field) => {
+      const input = document.getElementById(field);
+      if (input) {
         input.readOnly = !input.readOnly;
         input.classList.toggle("form-control-plaintext");
-      });
-      this.textContent =
-        this.textContent === "Edit Contact Details"
-          ? "Save Contact Details"
-          : "Edit Contact Details";
+      }
     });
+    this.textContent =
+      this.textContent === "Edit Contact Details"
+        ? "Save Contact Details"
+        : "Edit Contact Details";
+  });
 
-    editPasswordBtn.addEventListener("click", function () {
-      passwordField.type =
-        passwordField.type === "password" ? "text" : "password";
-      passwordField.readOnly = !passwordField.readOnly;
-      passwordField.classList.toggle("form-control-plaintext");
-      this.textContent =
-        this.textContent === "Edit Password"
-          ? "Save Password"
-          : "Edit Password";
-    });
+  editPasswordBtn.addEventListener("click", function () {
+    passwordField.type = passwordField.type === "password" ? "text" : "password";
+    passwordField.readOnly = !passwordField.readOnly;
+    passwordField.classList.toggle("form-control-plaintext");
+    this.textContent =
+      this.textContent === "Edit Password"
+        ? "Save Password"
+        : "Edit Password";
+  });
 
-    // Image preview functionality
-    const imageInput = document.getElementById("images");
-    const imagePreview = document.getElementById("imagePreview");
+  // Image preview functionality
+  const imageInput = document.getElementById("images");
+  const imagePreview = document.getElementById("imagePreview");
 
+  if (imageInput) {
     imageInput.addEventListener("change", function (event) {
       imagePreview.innerHTML = "";
       const files = event.target.files;
@@ -48,4 +50,5 @@ document.addEventListener("DOMContentLoaded", function () {
         }
       }
     });
-  });
+  }
+});

@@ -210,6 +210,9 @@ Class Productfun{
                 p.name AS product_name,
                 p.description AS product_description,
                 p.price,
+                p.conditions,
+                p.product_type,
+                p.created_at as prodate,
                 p.image as proimage,
                 p.user_id,
                 p.category_id,
@@ -357,6 +360,9 @@ Class Productfun{
     function displayProducts($products) {
     
         foreach ($products as $product) {
+            $description =$product['description'];
+              $words = explode(" ", $description);
+              $description = count($words) > 5 ? implode(" ", array_slice($words, 0, 5)) . '...' : $description;
             echo '
                 <div class="col-md-4 mb-4">
                   <div class="card product-card">
@@ -367,7 +373,7 @@ Class Productfun{
                     />
                     <div class="card-body">
                       <h5 class="card-title">' . htmlspecialchars($product['name']) . '</h5>
-                      <p class="card-text">' . htmlspecialchars($product['description']) . '</p>
+                      <p class="card-text">' . htmlspecialchars( $description ) . '</p>
                       <p class="card-text"><strong>Price:</strong> $' . number_format($product['price'], 2) . '</p>
                       <p class="card-text">
                         <small class="text-muted">Listed ' . $this->dbfun->time_ago($product['created_at']) . '</small>

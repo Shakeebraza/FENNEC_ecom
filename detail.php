@@ -26,7 +26,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 <style>
 
     .swiper-pagination.secoundpage.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal {
-        top: 220%; 
+        top: 244%;
     }
 
 
@@ -92,12 +92,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         
                         ?>
                     </div>
-                    <div class="swiper-pagination" style="bottom: 124px;"></div>
+                    <div class="swiper-pagination" style="bottom: 615px;"></div>
                 </div>
-                <div class="card-body">
-                    <h5 class="card-title" style="font-size: 1.5em; color: #333;"><?= htmlspecialchars($productData['product']['product_name'] ?? 'Product Name'); ?></h5>
-                    <p class="card-text" style="color: #555; line-height: 1.5;"><?php echo htmlspecialchars($productData['product']['product_description'] ?? 'No description available.'); ?></p>
+                <div class="card-body" style="padding: 1.5em; background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+                    <h5 class="card-title" style="font-size: 2em; font-weight: bold; color: #333; letter-spacing: 1px; margin-bottom: 0.8em; text-transform: uppercase;"><?= htmlspecialchars($productData['product']['product_name'] ?? 'Product Name'); ?></h5>
+                    <p class="card-text" style="font-size: 1.1em; color: #777; line-height: 1.6; text-align: justify;">
+                        <?= htmlspecialchars($productData['product']['product_description'] ?? 'No description available.'); ?>
+                    </p>
                 </div>
+
+                <div class="product-details" style="padding: 2em 1.5em; background-color: #f7f7f7; border-radius: 12px; margin-top: 1.5em; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                    <div style="margin-bottom: 1.2em;">
+                        <p style="font-size: 1.2em; color: #333; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 0.5em;">Brand:
+                            <span style="font-size: 1.1em; color: #555; font-weight: 400;"><?= isset($productData['product']['brand']) ? $productData['product']['brand'] : 'N/A'; ?></span>
+                        </p>
+                    </div>
+                    <div style="margin-bottom: 1.2em;">
+                        <p style="font-size: 1.2em; color: #333; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 0.5em;">Condition:
+                            <span style="font-size: 1.1em; color: #555; font-weight: 400;"><?= isset($productData['product']['conditions']) ? $productData['product']['conditions'] : 'N/A'; ?></span>
+                        </p>
+                    </div>
+                    <div style="margin-bottom: 1.2em;">
+                        <p style="font-size: 1.2em; color: #333; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 0.5em;">Product Type:
+                            <span style="font-size: 1.1em; color: #555; font-weight: 400;"><?= isset($productData['product']['product_type']) ? $productData['product']['product_type'] : 'N/A'; ?></span>
+                        </p>
+                    </div>
+                    <div>
+                        <p style="font-size: 1.2em; color: #333; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 0.5em;">Created At:
+                            <span style="font-size: 1.1em; color: #555; font-weight: 400;"><?= isset($productData['product']['prodate']) ? date('F j, Y', strtotime($productData['product']['prodate'])) : 'N/A'; ?></span>
+                        </p>
+                    </div>
+                </div>
+
+
             </div>
         </div>
 
@@ -116,8 +143,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     <p class="card-text">
                         <i class="fas fa-check-circle text-success"></i> Email address verified
                     </p>
-                    <button class="btn btn-success w-100 mb-2">Email</button>
                     <?php
+                    if (isset($_SESSION['userid'])) {
+                        $sessionUserId = base64_decode($_SESSION['userid']);
+                        $productId = $productData['product']['product_id'];
+                        
+                        if ($sessionUserId != $productId) {
+                            $encryptedProductId = $security->encrypt($productData['product']['product_id']);
+                            
+                          
+                            ?>
+                            <button onclick="startChat('<?= $encryptedProductId ?>')" class="btn btn-success w-100 mb-2">Chat</button>
+                            <?php
+                        }
+                    } else {
+                        echo '<a href="' . $urlval . 'LoginRegister.php" class="btn btn-success w-100 mb-2">Chat</a>';
+                    }
+                    ?>
+                    <?php
+                    
                     if ($productData['is_favorited'] == 1): ?>
                         <button class="btn buttonss w-100 mb-2" data-productid="<?php echo $productData['product']['product_id']; ?>" id="favorite-button">
                             <i class="<?php echo $productData['is_favorited'] ? 'fas' : 'far'; ?> fa-heart"></i>
@@ -142,9 +186,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     ?>
 
                     <?php endif; ?>
-                    <button class="btn buttonss w-100">
+                    <!-- <button class="btn buttonss w-100">
                         <i class="fas fa-flag"></i> Report
-                    </button>
+                    </button> -->
                 </div>
             </div>
 
@@ -278,6 +322,26 @@ include_once 'footer.php';
                 .catch(error => console.error('Error:', error));
         });
     });
+
+    function startChat(productId) {
+    $.ajax({
+        url: '<?= $urlval ?>ajax/start_chat.php',
+        type: 'POST',
+        dataType: 'json',  
+        data: { product_id: productId },  
+        success: function(response) {
+            if (response && response.success) {
+                window.location.href = '<?= $urlval ?>msg.php';
+            } else {
+                alert(response.message || 'Could not start chat.');
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('AJAX Error:', status, error);
+            alert('Error connecting to chat. Please try again.');
+        }
+    });
+}
 </script>
 </body>
 

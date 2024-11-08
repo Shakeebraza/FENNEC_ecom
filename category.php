@@ -396,6 +396,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
                             $words = explode(" ", $description);
                             $description = count($words) > 3 ? implode(" ", array_slice($words, 0, 3)) . '...' : $description;
+                            $setSession = $fun->isSessionSet();
+                            $fav = ""; 
+                            
+                            if ($setSession == true) {
+                                $uid = base64_decode($_SESSION['userid']);
+                                $pid = $proval['id'];
+                                $isFav = $dbFunctions->getDatanotenc('favorites', "user_id = '$uid' AND product_id = '$pid'");
+                                
+                                if ($isFav) {
+                                    $fav = "style='color: red'"; 
+                                }
+                            }
 
                             echo '
                                 
@@ -407,7 +419,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                                 alt="' . $name . '"
                                             />
                                             <div class="heart-icon">
-                                                <i class="fas fa-heart"></i>
+                                                                    <a
+                                            class="heart-icon icon_heart"
+                                            data-productid="'. $proval['id'] .'?>"
+                                            id="favorite-button-'.$proval['id'] .'">
+                                            <i class="fas fa-heart" '.$fav .'></i>
+                                        </a>
                                             </div>
                                             <div class="card-body">
                                             <a href="' . $urlval . 'detail.php?slug=' . $proval['slug'] . '">
@@ -577,7 +594,7 @@ document.getElementById('openFilterModalBtn').onclick = function() {
         data: { product_id: productId },  
         success: function(response) {
             if (response && response.success) {
-                window.location.href = '<?= $urlval ?>messages.php?product_id=' + productId;
+                window.location.href = '<?= $urlval ?>msg.php';
             } else {
                 alert(response.message || 'Could not start chat.');
             }
@@ -588,6 +605,34 @@ document.getElementById('openFilterModalBtn').onclick = function() {
         }
     });
 }
+
+document.querySelectorAll('.icon_heart').forEach(favoriteButton => {
+    favoriteButton.addEventListener('click', function(event) {
+        event.preventDefault(); // Prevent default anchor behavior
+        const productId = this.getAttribute('data-productid');
+
+        fetch('<?= $urlval ?>ajax/favorite.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                id: productId
+            }),
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                this.innerHTML = data.isFavorited ?
+                    '<i class="fas fa-heart" style="color: red;"></i>' :
+                    '<i class="far fa-heart" style="color: red;"></i>';
+            } else {
+                alert('Error: ' + data.message);
+            }
+        })
+        .catch(error => console.error('Error:', error));
+    });
+});
 </script>
 </body>
 

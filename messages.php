@@ -41,7 +41,7 @@ $userData = $dbFunctions->getDatanotenc('user_detail', "userid = '$userid'");
           </button>
         </li>
         <li class="nav-item" role="presentation">
-          <button
+          <!-- <button
             class="nav-link"
             id="messages-tab"
             data-bs-toggle="tab"
@@ -50,7 +50,7 @@ $userData = $dbFunctions->getDatanotenc('user_detail', "userid = '$userid'");
             role="tab"
           >
             <i class="fas fa-comment me-2"></i>Messages
-          </button>
+          </button> -->
         </li>
         <li class="nav-item" role="presentation">
           <button
@@ -324,79 +324,7 @@ $userData = $dbFunctions->getDatanotenc('user_detail', "userid = '$userid'");
             ?>
           </div>
         </div>
-        <div class="tab-pane fade" id="messages" role="tabpanel">
-          <div class="border rounded-lg overflow-hidden">
-            <div class="row g-0">
-              <div class="col-4 border-end">
-                <h6 class="p-3 border-bottom">2 Conversations</h6>
-                <div class="conversation-list">
-                  <div
-                    class="conversation-item active d-flex align-items-center p-3 border-bottom"
-                  >
-                    <div class="avatar me-3">N</div>
-                    <div class="flex-grow-1">
-                      <h6 class="mb-0">Nasrullha</h6>
-                      <small class="text-muted"
-                        >Hi Nasrullha, I'm interested in your item. Is this
-                        still ...</small
-                      >
-                    </div>
-                    <small class="text-muted">Today</small>
-                  </div>
-                  <div
-                    class="conversation-item d-flex align-items-center p-3 border-bottom"
-                  >
-                    <div class="avatar me-3">J</div>
-                    <div class="flex-grow-1">
-                      <h6 class="mb-0">james</h6>
-                      <small class="text-muted"
-                        >Hi james, I'm interested in your item. Is this still
-                        avail...</small
-                      >
-                    </div>
-                    <small class="text-muted">Today</small>
-                  </div>
-                </div>
-              </div>
-              <div class="col-8">
-                <div class="p-3 border-bottom d-flex align-items-center">
-                  <div class="avatar me-3">N</div>
-                  <div>
-                    <h6 class="mb-0">Nasrullha</h6>
-                    <small class="text-muted"
-                      >Vauxhall, CORSA, Limited Edition, Hatchback, 2012,
-                      Manual, 1229 (cc), 3 doors</small
-                    >
-                    <br />
-                    <small class="text-muted">£1,250 • Bradford</small>
-                  </div>
-                </div>
-                <div class="message-area p-3">
-                  <div class="message sent p-2 rounded">
-                    <p class="mb-0">Hi Nasrullha,</p>
-                    <p class="mb-0">
-                      I'm interested in your item. Is this still available?
-                    </p>
-                    <p class="mb-0">Thanks</p>
-                    <small class="text-muted">Today</small>
-                  </div>
-                </div>
-                <div class="p-3 border-top">
-                  <div class="input-group">
-                    <input
-                      type="text"
-                      class="form-control"
-                      placeholder="Write a message"
-                    />
-                    <button class="btn btn-button" type="button">
-                      <i class="fas fa-paper-plane"></i>
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+       
         <div class="tab-pane fade" id="favourite" role="tabpanel">
           <h3 class="mb-4">Hi <?php echo $_SESSION['username']?>, you have <?php $isFavorit =$productFun->getUserFavorites(base64_decode($_SESSION['userid']));
           echo $isFavorit['count'];
@@ -404,6 +332,9 @@ $userData = $dbFunctions->getDatanotenc('user_detail', "userid = '$userid'");
           <div class="row">
             <?php
             foreach ($isFavorit['favorites'] as $favorite) {
+              $description =$favorite['description'];
+              $words = explode(" ", $description);
+              $description = count($words) > 5 ? implode(" ", array_slice($words, 0, 5)) . '...' : $description;
               echo '
               <div class="col-md-6 col-lg-4 mb-4">
                   <div class="favourite-item position-relative">
@@ -413,7 +344,7 @@ $userData = $dbFunctions->getDatanotenc('user_detail', "userid = '$userid'");
                       </a>
                       <div class="p-3">
                           <h5 class="mb-1">' . htmlspecialchars($favorite['name']) . '</h5>
-                          <p class="mb-2">' . htmlspecialchars($favorite['description']) . '</p>
+                          <p class="mb-2">' . htmlspecialchars($description) . '</p>
                           <p class="mb-0">
                               <strong>£' . number_format($favorite['price'], 2) . '</strong>
                           </p>
@@ -431,107 +362,63 @@ $userData = $dbFunctions->getDatanotenc('user_detail', "userid = '$userid'");
                 <div class="card-body">
                   <h3 class="card-title mb-4">My Details</h3>
                   <form id="userDetailsForm" onsubmit="submitForm(event)">
+                  <div id="responseMessage" class="alert" style="display:none;"></div>
                     <div class="mb-3">
                       <label for="fullName" class="form-label">Full Name</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="fullName"
-                        value="<?php echo $_SESSION['username']?>"
-                        readonly
-                      />
+                      <input type="text" class="form-control" id="fullName" value="<?php echo $_SESSION['username'] ?>" readonly />
                     </div>
                     <div class="mb-3">
-                      <label for="email" class="form-label"
-                        >Email address</label
-                      >
-                      <input
-                        type="email"
-                        class="form-control"
-                        id="email"
-                        value="<?php echo $_SESSION['email']?>"
-                        readonly
-                      />
+                      <label for="email" class="form-label">Email address</label>
+                      <input type="email" class="form-control" id="email" value="<?php echo $_SESSION['email'] ?>" readonly />
                     </div>
-                    <div class="mb-3">
-                    </div>
+
                     <h4 class="mt-4 mb-3">Contact Details</h4>
                     <div class="row mb-3">
                       <div class="col">
-                        <label for="country" class="form-label"
-                          >Country</label
-                        >
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="country"
-                          value="<?php echo $userData[0]['country'] ?? ''?>"
-                       
-                        />
+                        <label for="country" class="form-label">Country</label>
+                        <input type="text" class="form-control" id="country" value="<?php echo $userData[0]['country'] ?? '' ?>" />
                       </div>
                       <div class="col">
-                        <label for="city" class="form-label"
-                          >Last Name</label
-                        >
-                        <input
-                          type="text"
-                          class="form-control"
-                          id="city"
-                          value="<?php echo $userData[0]['city'] ?? '' ?>"
-                       
-                        />
+                        <label for="city" class="form-label">City</label>
+                        <input type="text" class="form-control" id="city" value="<?php echo $userData[0]['city'] ?? '' ?>" />
                       </div>
                     </div>
                     <div class="mb-3">
-                      <label for="contactNumber" class="form-label"
-                        >Contact Number</label
-                      >
-                      <input
-                        type="tel"
-                        class="form-control"
-                        id="contactNumber"
-                        placeholder="Add contact number"
-                        value="<?php echo $userData[0]['number'] ?? '' ?>"
-                      />
-                      </div>
-                      <div class="mb-3">
-                      <label for="contactNumber" class="form-label"
-                        >Address</label
-                      >
-                      <textarea class="form-control" name="" id="" rows="10" cols="50">
-                      <?php echo $userData[0]['address'] ?? '' ?>
-                      </textarea>
+                      <label for="contactNumber" class="form-label">Contact Number</label>
+                      <input type="tel" class="form-control" id="contactNumber" value="<?php echo $userData[0]['number'] ?? '' ?>" />
                     </div>
                     <div class="mb-3">
-                      <button
-                        type="button"
-                        class="btn btn-button"
-                        id="editContactDetailsBtn"
-                      >
-                        Edit Contact Details
-                      </button>
+                      <label for="address" class="form-label">Address</label>
+                      <textarea class="form-control" id="address" rows="3"><?php echo $userData[0]['address'] ?? '' ?></textarea>
                     </div>
-                    <h4 class="mt-4 mb-3">Password</h4>
-                    <div class="mb-3">
-                      <label for="password" class="form-label">Password</label>
-                      <input
-                        type="password"
-                        class="form-control"
-                        id="password"
-                        value="************"
-                        readonly
-                      />
-                    </div>
-                    <div class="mb-3">
-                      <button
-                        type="button"
-                        class="btn btn-button"
-                        id="editPasswordBtn"
-                      >
-                        Edit Password
-                      </button>
-                    </div>
+                      <input type="hidden" name="token" id="csrf_token_update_info" value="<?php echo $CsrfProtection->generateToken() ?>">
+                      
+                    <!-- Button to submit the contact form -->
+                    <button type="submit" class="btn btn-primary">Save Contact Details</button>
+
+                    <!-- Button to open the password modal -->
+                    <button type="button" class="btn btn-button" onclick="openPasswordModal()">Edit Password</button>
                   </form>
+
+
+                </div>
+                <div id="passwordModal" class="modal" style="display: none;">
+                        <div class="modal-content">
+                          <span class="close" onclick="closePasswordModal()">&times;</span>
+                          <h4>Update Password</h4>
+                          <form id="passwordForm" onsubmit="updatePassword(event)">
+                            <div class="mb-3">
+                              <label for="newPassword" class="form-label">New Password</label>
+                              <input type="password" class="form-control" id="newPassword" required />
+                            </div>
+                            <div class="mb-3">
+                              <label for="confirmPassword" class="form-label">Confirm Password</label>
+                              <input type="password" class="form-control" id="confirmPassword" required />
+                            </div>
+                            <input type="hidden" name="token" id="csrf_token_password_chnage" value="<?php echo $CsrfProtection->generateToken() ?>">
+                            <button type="submit" class="btn btn-success">Save Password</button>
+                          </form>
+                        </div>
                 </div>
               </div>
             </div>
@@ -539,6 +426,7 @@ $userData = $dbFunctions->getDatanotenc('user_detail', "userid = '$userid'");
         </div>
       </div>
     </div>
+
     <?php
     include_once 'footer.php';
     ?>
@@ -594,33 +482,103 @@ $userData = $dbFunctions->getDatanotenc('user_detail', "userid = '$userid'");
               })
               .catch(error => console.error('Error:', error));
       });
-
-
+       
+      
+      
       function submitForm(event) {
-  event.preventDefault();
+    event.preventDefault(); 
 
-  // Collect form data
-  const formData = new FormData();
-  formData.append('country', document.getElementById('country').value);
-  formData.append('city', document.getElementById('city').value);
-  formData.append('contactNumber', document.getElementById('contactNumber').value);
-  formData.append('address', document.querySelector('textarea').value);
+    const formData = new FormData();
+    formData.append('country', document.getElementById('country').value);
+    formData.append('city', document.getElementById('city').value);
+    formData.append('contactNumber', document.getElementById('contactNumber').value);
+    formData.append('address', document.getElementById('address').value);
+    formData.append('token', document.getElementById('csrf_token_update_info').value);
 
-  // Send data using fetch API
-  fetch('<?= $urlval?>ajax/update_user_details.php', {
-    method: 'POST',
-    body: formData,
-  })
+    const responseMessageDiv = document.getElementById('responseMessage');
+    responseMessageDiv.style.display = 'none';
+
+    console.log('Submitting form...');
+
+    fetch('<?= $urlval ?>ajax/update_user_details.php', {
+        method: 'POST',
+        body: formData
+    })
     .then(response => response.json())
     .then(data => {
-      if (data.status === 'success') {
-        alert('Details updated successfully.');
-      } else {
-        alert('Error updating details: ' + data.message);
-      }
+        console.log('Response received:', data); 
+
+        if (data.status === 'success') {
+            responseMessageDiv.className = 'alert alert-success'; 
+            responseMessageDiv.innerText = data.message || 'Contact details updated successfully.';
+        } else {
+            responseMessageDiv.className = 'alert alert-danger'; 
+            responseMessageDiv.innerText = data.message || 'Error updating contact details.';
+        }
+
+        responseMessageDiv.style.display = 'block'; 
+    })
+    .catch(error => {
+        console.error('Error:', error);
+        responseMessageDiv.className = 'alert alert-danger'; 
+        responseMessageDiv.innerText = 'An error occurred while updating contact details.';
+        responseMessageDiv.style.display = 'block'; 
+    });
+}
+
+        function openPasswordModal() {
+          document.getElementById('passwordModal').style.display = 'block';
+        }
+
+        function closePasswordModal() {
+          document.getElementById('passwordModal').style.display = 'none';
+        }
+
+
+        function updatePassword(event) {
+    event.preventDefault();
+
+    const newPassword = document.getElementById('newPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const token = document.getElementById('csrf_token_password_chnage').value;
+
+    // Password confirmation check
+    if (newPassword !== confirmPassword) {
+        displayMessage('Passwords do not match!', 'error');
+        return;
+    }
+
+    const formData = new FormData();
+    formData.append('password', newPassword);
+    formData.append('token', token);
+
+    fetch('<?= $urlval ?>ajax/update_password.php', {
+        method: 'POST',
+        body: formData,
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.status === 'success') {
+            displayMessage(data.message, 'success');
+            
+            setTimeout(() => {
+                closePasswordModal();
+                location.reload();
+            }, 5000);
+        } else {
+            displayMessage(data.message, 'error');
+        }
     })
     .catch(error => console.error('Error:', error));
 }
+
+function displayMessage(message, type) {
+    const messageDiv = document.getElementById('message');
+    messageDiv.textContent = message;
+    messageDiv.className = type === 'success' ? 'alert alert-success' : 'alert alert-danger';
+    messageDiv.style.display = 'block';
+}
+
     </script>
     </body>
     </html>
