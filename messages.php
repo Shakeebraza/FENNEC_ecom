@@ -78,244 +78,104 @@ $userData = $dbFunctions->getDatanotenc('user_detail', "userid = '$userid'");
         </li>
       </ul>
       <div class="tab-content mt-4" id="myTabContent">
-        <div class="tab-pane fade show active" id="upload" role="tabpanel">
-          <div class="card">
-            <div class="card-header">
-              <h3 class="card-title pb-3">Upload New Product</h3>
-              <p class="card-subtitle text-muted">
-                Fill in the details to list your product for sale.
-              </p>
-            </div>
-            <div class="card-body">
-              <form id="uploadProductForm">
-                <ul class="nav nav-pills mb-3 " id="pills-tab" role="tablist">
-                  <li class="nav-item" role="presentation">
-                    <button 
-                      class="nav-link btn-button "
-                      id="pills-basic-tab"
-                      data-bs-toggle="pill"
-                      data-bs-target="#pills-basic"
-                      type="button"
-                      role="tab"
-                    >
-                      Basic Info
-                    </button>
-                  </li>
-                  <li class="nav-item pleft" role="presentation">
-                    <button
-                      class="nav-link btn-button"
-                      id="pills-details-tab"
-                      data-bs-toggle="pill"
-                      data-bs-target="#pills-details"
-                      type="button"
-                      role="tab"
-                    >
-                      Details
-                    </button>
-                  </li>
-                  <li class="nav-item pleft" role="presentation">
-                    <button
-                      class="nav-link btn-button"
-                      id="pills-media-tab"
-                      data-bs-toggle="pill"
-                      data-bs-target="#pills-media"
-                      type="button"
-                      role="tab"
-                    >
-                      Media
-                    </button>
-                  </li>
-                </ul>
-                <div class="tab-content" id="pills-tabContent">
-                  <div
-                    class="tab-pane fade show "
-                    id="pills-basic"
-                    role="tabpanel"
-                  >
-                    <div class="mb-3">
-                      <label for="title" class="form-label"
-                        >Product Title</label
-                      >
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="title"
-                        placeholder="Enter product title"
-                      />
-                    </div>
-                    <div class="mb-3">
-                      <label for="category" class="form-label">Category</label>
-                      <select class="form-select" id="category">
-                        <option selected>Select category</option>
-                        <option value="electronics">Electronics</option>
-                        <option value="clothing">Clothing</option>
-                        <option value="home">Home & Garden</option>
-                        <option value="sports">Sports & Outdoors</option>
-                      </select>
-                    </div>
-                    <div class="mb-3">
-                        <label for="category" class="form-label">Sub Category</label>
-                        <select class="form-select" id="category">
-                          <option selected>Select category</option>
-                          <option value="electronics">Car</option>
-                          <option value="clothing">Honda</option>
-                          <option value="home">Mehran</option>
-                        </select>
-                      </div>
-                    <div class="mb-3">
-                      <label class="form-label">Condition</label>
-                      <div class="form-check">
-                        <input
-                          class="form-check-input"
-                          type="radio"
-                          name="condition"
-                          id="conditionNew"
-                          checked
-                        />
-                        <label class="form-check-label" for="conditionNew"
-                          >New</label
-                        >
-                      </div>
-                      <div class="form-check">
-                        <input
-                          class="form-check-input"
-                          type="radio"
-                          name="condition"
-                          id="conditionUsed"
-                        />
-                        <label class="form-check-label" for="conditionUsed"
-                          >Used</label
-                        >
-                      </div>
-                    </div>
-                    <div class="mb-3">
-                      <label for="price" class="form-label">Price</label>
-                      <input
-                        type="number"
-                        class="form-control"
-                        id="price"
-                        placeholder="Enter price"
-                      />
-                    </div>
-                  </div>
-                  <div class="tab-pane fade" id="pills-details" role="tabpanel">
-                    <div class="mb-3">
-                      <label for="description" class="form-label"
-                        >Description</label
-                      >
-                      <textarea
-                        class="form-control"
-                        id="description"
-                        rows="3"
-                        placeholder="Describe your product"
-                      ></textarea>
-                    </div>
-                    <div class="mb-3">
-                      <label for="brand" class="form-label">Brand</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="brand"
-                        placeholder="Enter brand name"
-                      />
-                    </div>
-                    <div class="mb-3">
-                      <label for="model" class="form-label">Model</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        id="model"
-                        placeholder="Enter model number"
-                      />
-                    </div>
-                    <div class="mb-3">
-                      <label class="form-label">Features</label>
-                      <div class="row">
-                        <div class="col-md-6">
-                          <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              id="feature1"
-                            />
-                            <label class="form-check-label" for="feature1"
-                              >Feature 1</label
-                            >
-                          </div>
-                          <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              id="feature2"
-                            />
-                            <label class="form-check-label" for="feature2"
-                              >Feature 2</label
-                            >
-                          </div>
-                        </div>
-                        <div class="col-md-6">
-                          <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              id="feature3"
-                            />
-                            <label class="form-check-label" for="feature3"
-                              >Feature 3</label
-                            >
-                          </div>
-                          <div class="form-check">
-                            <input
-                              class="form-check-input"
-                              type="checkbox"
-                              id="feature4"
-                            />
-                            <label class="form-check-label" for="feature4"
-                              >Feature 4</label
-                            >
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="tab-pane fade" id="pills-media" role="tabpanel">
-                    <div class="mb-3">
-                      <label for="images" class="form-label"
-                        >Product Images</label
-                      >
-                      <input
-                        class="form-control"
-                        type="file"
-                        id="images"
-                        multiple
-                      />
-                      <div id="imagePreview" class="upload-preview"></div>
-                    </div>
-                    <div class="mb-3">
-                      <label for="video" class="form-label"
-                        >Product Video (optional)</label
-                      >
-                      <input
-                        class="form-control"
-                        type="file"
-                        id="video"
-                        accept="video/*"
-                      />
-                    </div>
-                  </div>
-                </div>
-              </form>
-            </div>
-            <div class="card-footer">
-              <button type="button" class="btn  btn-button">
-                Save Draft
-              </button>
-              <button type="button" class="btn float-end btn-button">
-                Publish Listing
-              </button>
-            </div>
-          </div>
+      <div class="tab-content mt-4" id="myTabContent">
+  <div class="tab-pane fade show active" id="upload" role="tabpanel">
+  <div class="card">
+  <div class="card-header">
+    <h3 class="card-title pb-3">Upload New Product</h3>
+    <p class="card-subtitle text-muted">
+      Fill in the details to list your product for sale.
+    </p>
+  </div>
+  <div class="card-body">
+    <form id="productForm" enctype="multipart/form-data">
+      <h5>Basic Info</h5>
+      <div class="mb-3">
+        <label for="title" class="form-label">Product Title</label>
+        <input type="text" class="form-control" id="title" name="productName" placeholder="Enter product title" required />
+      </div>
+      <div class="mb-3">
+        <label for="category" class="form-label">Category</label>
+        <select class="form-select" id="category" name="category" required>
+          <?php
+          $findCate = $categoryManager->getAllCategoriesHeaderMenu();
+          if ($findCate['status'] == 'success') {
+              foreach ($findCate['data'] as $category) {
+                  echo '<option value="' . $category['id'] . '">' . $category['category_name'] . '</option>';
+              }
+          }
+          ?>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="subcategory" class="form-label">Sub Category</label>
+        <select class="form-select" id="subcategory" name="subcategory" required></select>
+      </div>
+      <div class="mb-3">
+        <label class="form-label">Condition</label>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="condition" id="conditionNew" value="new" checked required />
+          <label class="form-check-label" for="conditionNew">New</label>
         </div>
+        <div class="form-check">
+          <input class="form-check-input" type="radio" name="condition" id="conditionUsed" value="used" required />
+          <label class="form-check-label" for="conditionUsed">Used</label>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="price" class="form-label">Price</label>
+        <input type="number" class="form-control" name="price" id="price" placeholder="Enter price" required />
+      </div>
+
+      <h5>Details</h5>
+      <div class="mb-3">
+        <label for="description" class="form-label">Description</label>
+        <textarea class="form-control" id="description" rows="3" name="description" placeholder="Describe your product" required></textarea>
+      </div>
+      <div class="mb-3">
+        <label for="brand" class="form-label" name="brand">Brand</label>
+        <input type="text" class="form-control" id="brand" name="brand" placeholder="Enter brand name" required />
+      </div>
+      <div class="mb-3">
+        <label for="country" class="form-label">Country</label>
+        <select id="country" name="country" class="form-select" required>
+          <option value="" disabled selected>Select a country</option>
+          <?php
+          $countries = $dbFunctions->getData('countries');
+          foreach ($countries as $cont) {
+              echo '<option value="' . $security->decrypt($cont['id']) . '">' . $security->decrypt($cont['name']) . '</option>';
+          }
+          ?>
+        </select>
+      </div>
+      <div class="mb-3">
+        <label for="city" class="form-label">City <span style="color: red;">*</span></label>
+        <select id="city" name="city" class="form-select" required>
+          <option value="" disabled selected>Select a city</option>
+        </select>
+        <div class="text-danger" id="cityError"></div>
+      </div>
+
+      <h5>Media</h5>
+      <div class="mb-3">
+        <label for="images" class="form-label">Product Images</label>
+        <input class="form-control" type="file" id="images" name="image" multiple required />
+        <div id="imagePreview" class="upload-preview"></div>
+      </div>
+      <div class="form-group mb-3" style="padding: 20px;border: 2px solid #28a745;border-radius: 10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);background-color: #f9f9f9;">
+        <label for="gallery" class="custom-file-upload">Upload Gallery Images</label>
+        <input type="file" id="gallery" name="gallery[]" accept="image/*" multiple required>
+        <div id="imagePreview" class="image-preview"></div>
+        <div class="text-danger" id="galleryError"></div>
+      </div>
+
+      <button type="submit" class="btn btn-success float-end">Publish Listing</button>
+    </form>
+  </div>
+</div>
+
+  </div>
+</div>
         <div class="tab-pane fade" id="view-products" role="tabpanel">
           <h3 class="mb-4">My Products</h3>
           <div class="row">
@@ -579,6 +439,92 @@ function displayMessage(message, type) {
     messageDiv.style.display = 'block';
 }
 
+$('#productForm').on('submit', function(e) {
+    e.preventDefault(); // Prevent the form from submitting normally
+
+    // Create a FormData object from the form
+    let formData = new FormData(this);
+
+    // Send AJAX request
+    $.ajax({
+        url: '<?= $urlval ?>ajax/addproduct.php', // The URL where the form data will be sent
+        type: 'POST', // The HTTP request method
+        data: formData, // The form data
+        processData: false, // Prevent jQuery from automatically processing the data
+        contentType: false, // Prevent jQuery from setting the content type
+        success: function(response) {
+            // Handle the response from the server
+            if (response.success) {
+                showSuccessAlert(); // Show success alert
+            } else if (response.errors) {
+                handleErrors(response.errors); // Handle validation or other errors
+            }
+        },
+        error: function() {
+            // Handle AJAX request error
+            showErrorAlert(); // Show error alert
+        }
+    });
+});
+
+function showSuccessAlert() {
+    alert('Ad posted successfully!'); // Display success message
+}
+
+function showErrorAlert() {
+    alert('There was an error posting your ad. Please try again.'); // Display error message
+}
+
+function handleErrors(errors) {
+    // Handle errors such as validation issues or missing fields
+    for (let field in errors) {
+        let errorMessage = errors[field];
+        $('#' + field + 'Error').text(errorMessage); // Display error next to the field
+    }
+}
+
+
+
+$('#category').on('change', function() {
+            var catId = $(this).val();
+
+            if (catId) {
+                $.ajax({
+                    url: '<?php echo $urlval ?>admin/ajax/product/get_subcat.php',
+                    type: 'POST',
+                    data: {
+                        catId: catId
+                    },
+                    success: function(data) {
+                        $('#subcategory').html(data);
+                    },
+                    error: function() {
+                        alert('Error fetching cities. Please try again.');
+                    }
+                });
+            } else {
+                $('#subcategory').html('<option value="" disabled selected>Select a Category</option>');
+            }
+        });
+        $('#country').on('change', function() {
+        var countryId = $(this).val();
+        if (countryId) {
+            $.ajax({
+                url: '<?php echo $urlval ?>admin/ajax/product/get_cities.php',
+                type: 'POST',
+                data: { country_id: countryId },
+                success: function(data) {
+                    $('#city').html(data);
+                },
+                error: function() {
+                    alert('Error fetching cities. Please try again.');
+                }
+            });
+        } else {
+            $('#city').html('<option value="" disabled>Select City</option>');
+        }
+    });
+        
     </script>
     </body>
     </html>

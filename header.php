@@ -18,7 +18,10 @@
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css" />
 
     <style>
-
+#dropdownMenuButton {
+  height: 47px;
+  overflow-y: hidden;
+}
 
     </style>
   </head>
@@ -106,6 +109,7 @@
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
                             <li><a class="dropdown-item" href="'.$urlval.'messages.php#upload-tab">Manage my Ads</a></li>
+                            <li><a class="dropdown-item" href="'.$urlval.'msg.php">Messages</a></li>
                             <li><a class="dropdown-item" href="'.$urlval.'messages.php#favourite-tab">Favourites</a></li>
                             <li><a class="dropdown-item" href="'.$urlval.'messages.php#details-tab">My Details</a></li>
                             <li><a class="dropdown-item" href="'.$urlval.'messages.php#view-products-tab">View my Job Ads</a></li>

@@ -6,29 +6,8 @@ document.addEventListener("DOMContentLoaded", function () {
   const contactFields = ["country", "city", "contactNumber"];
   const passwordField = document.getElementById("password");
 
-  editContactDetailsBtn.addEventListener("click", function () {
-    contactFields.forEach((field) => {
-      const input = document.getElementById(field);
-      if (input) {
-        input.readOnly = !input.readOnly;
-        input.classList.toggle("form-control-plaintext");
-      }
-    });
-    this.textContent =
-      this.textContent === "Edit Contact Details"
-        ? "Save Contact Details"
-        : "Edit Contact Details";
-  });
 
-  editPasswordBtn.addEventListener("click", function () {
-    passwordField.type = passwordField.type === "password" ? "text" : "password";
-    passwordField.readOnly = !passwordField.readOnly;
-    passwordField.classList.toggle("form-control-plaintext");
-    this.textContent =
-      this.textContent === "Edit Password"
-        ? "Save Password"
-        : "Edit Password";
-  });
+
 
   // Image preview functionality
   const imageInput = document.getElementById("images");
@@ -52,3 +31,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
   }
 });
+
+

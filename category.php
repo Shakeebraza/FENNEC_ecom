@@ -418,14 +418,27 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                                 class="card-img-top"
                                                 alt="' . $name . '"
                                             />
-                                            <div class="heart-icon">
-                                                                    <a
+                                            <div class="heart-icon">';
+                                    if(isset($_SESSION['userid'])){
+                                        echo'
+                                             <a
                                             class="heart-icon icon_heart"
                                             data-productid="'. $proval['id'] .'?>"
                                             id="favorite-button-'.$proval['id'] .'">
                                             <i class="fas fa-heart" '.$fav .'></i>
                                         </a>
-                                            </div>
+                                        ';
+                                    }else{
+                                        echo'
+                                        <a class="heart-icon" href="'.$urlval.'LoginRegister.php">
+                                            <i class="fas fa-heart"></i>
+                                        </a>
+                                        
+                                        ';
+                                    }
+                                                               
+                                            
+                                        echo'</div>
                                             <div class="card-body">
                                             <a href="' . $urlval . 'detail.php?slug=' . $proval['slug'] . '">
                                                 <div class="p-3">
