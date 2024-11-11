@@ -269,14 +269,11 @@ if ($findCate['status'] == 'success') {
           </div>
         </div>
 
-
-        <div class="ads-container">
-    <ins class="adsbygoogle"
-        style="display:block; text-align:center; width:300px; height:250px;"
-        data-ad-client="ca-pub-3594717569153380"
-        data-ad-slot="1234567890"
-        data-ad-format="auto"></ins>
-    <script>
-        (adsbygoogle = window.adsbygoogle || []).push({});
-    </script>
-</div>
+        <ins class="adsbygoogle"
+     style="display:block"
+     data-ad-client="ca-pub-3145087323601863"
+     data-ad-slot="YOUR_AD_SLOT"
+     data-ad-format="auto"></ins>
+<script>
+  (adsbygoogle = window.adsbygoogle || []).push({});
+</script>
