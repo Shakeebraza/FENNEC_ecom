@@ -182,18 +182,25 @@
                       <div class="div-nv-sb-menu">
                         <ul>';
 
-                  // Fetch subcategories for this category
                   $duncatdata = $categoryManager->getAllSubCategoriesHeaderMenu($category['id']);
                   foreach ($duncatdata['data'] as $val) {
                     echo '<li class="lihpoverset"><a href="' . $urlval . 'category.php?slug=' . $category['slug'] . '&subcategory=' . htmlspecialchars($val['id']) . '">' . htmlspecialchars($val['subcategory_name']) . '</a></li>';
                   }
-
+                  $productPremium=$productFun->PoplarProductper();
                   echo '
                         </ul>
                       </div>
                     </div>
-                    <div class="div-img-right-submenu">
-                      <img src="https://www.gumtree.com/assets/frontend/cars-guide.84c7d8c8754c04a88117e49a84535413.png" alt="">
+                    <div class="div-img-right-submenu" style="width:20%">';
+                    if(!empty($productPremium)){
+                    echo'  <a href="'.$urlval.'detail.php?slug='.$productPremium['slug'].'">
+                                          <img src="'.$urlval.$productPremium['image'].'" alt="" style="width:100%">
+                                          <a>';
+                    }else{
+                      echo'<img src="https://www.gumtree.com/assets/frontend/cars-guide.84c7d8c8754c04a88117e49a84535413.png" alt="">';
+                    }
+                  
+                      echo'
                     </div>
                   </div>
                 </li>';
