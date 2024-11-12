@@ -25,7 +25,7 @@ if (isset($_SESSION['userid'])) {
 
     echo '
     <script>
-    window.location = "'.$urlval.'admin/LoginRegister.php";
+    window.location = "'.$urlval.'admin/login.php";
     </script>
     ';
     ob_end_flush(); 

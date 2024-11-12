@@ -5,12 +5,29 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $settingsArray = [];
 
     foreach ($_POST as $key => $value) {
-        $settingsArray[$key] = htmlspecialchars($value);
+        if($key == 'google_add_script'){
+            $settingsArray[$key] = $value;
+
+        }elseif($key == 'google_ads_txt'){
+            $filePath = $_SERVER['DOCUMENT_ROOT'] . '/Ads.txt';
+
+            if (file_put_contents($filePath, $value) !== false) {
+                echo "Ads.txt updated successfully at $filePath.";
+            } else {
+                echo "Failed to update Ads.txt at $filePath.";
+            }
+            $settingsArray[$key] = htmlspecialchars($value);
+
+        }
+        else{
+
+            $settingsArray[$key] = htmlspecialchars($value);
+        }
     }
 
     if($settingsArray){
         $updateData=$fun->updateDatasiteseeting('site_settings',$settingsArray);
-        var_dump($updateData);
+        // var_dump($updateData);
 
     }
 
