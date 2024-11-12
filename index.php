@@ -5,7 +5,109 @@ include_once 'header.php';
 
 ?>
 <style>
-  
+/* Popup Overlay */
+.popup-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease, visibility 0.4s ease;
+}
+
+/* Popup Content */
+.popup-content {
+    background: linear-gradient(145deg, #fff, #f1f1f1);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 90%;
+    max-width: 450px;
+    position: relative;
+    transform: translateY(-50px);
+    transition: transform 0.4s ease;
+}
+
+/* Show Animation */
+.popup-overlay.show {
+    opacity: 1;
+    visibility: visible;
+}
+
+.popup-content.show {
+    transform: translateY(0);
+}
+
+/* Close Button */
+.close-btn {
+    position: absolute;
+    top: 15px;
+    right: 20px;
+    font-size: 24px;
+    color: #ff4d4d;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.close-btn:hover {
+    color: #e63946;
+}
+
+/* Product Image */
+.product-image {
+    width: 100%;
+    height: auto;
+    border-radius: 15px;
+    margin-bottom: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+/* Headings and Text */
+h2 {
+    font-size: 28px;
+    color: #333;
+    margin-bottom: 15px;
+}
+
+h3 {
+    font-size: 22px;
+    color: #666;
+    margin-bottom: 10px;
+}
+
+p {
+    font-size: 16px;
+    color: #777;
+    margin-bottom: 20px;
+}
+
+/* Button Styling */
+.btn2 {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 12px 25px;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 18px;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+}
+
+.btn2:hover {
+    background-color: #0056b3;
+    transform: translateY(-3px);
+}
+
 </style>
 <!-- index content -->
 <div class="custom-slider-container">
@@ -256,6 +358,35 @@ if (!empty($productFind)) {
   <?php } ?>
 </div>
 </div>
+
+<!-- Popup Modal -->
+<div id="popupModal" class="popup-overlay">
+    <div class="popup-content">
+        <span class="close-btn" onclick="closePopup()">&times;</span>
+
+        <h2>🔥 Popular Product</h2>
+        <div class="product-details">
+          <?php
+          $product = $productFun->PoplarProduct();
+
+          if ($product) {
+            echo "<p>{$product['description']}</p>";
+            echo'<img src="'.$urlval.$product['image'].'" alt="'.$product['name'].'" class="product-image">';
+            echo '<h3>'.$product['name'].'</h3>';
+            echo '<p>'.$product['description'].'</p>';
+            echo '<a href="detail.php?slug='.$product['slug'] .'" class="btn2">View Product</a>';
+             
+          } else {
+              echo "<p>No popular products found.</p>";
+          }
+          
+          ?>
+            
+            
+        </div>
+    </div>
+</div>
+
 <?php
 include_once 'footer.php';
 ?>
@@ -296,6 +427,33 @@ document.getElementById('topLocationsToggle').addEventListener('click', function
       content.style.display = 'none'; 
     }
   });
+
+// Function to show the popup with smooth animation
+function showPopup() {
+    const popupOverlay = document.getElementById('popupModal');
+    const popupContent = popupOverlay.querySelector('.popup-content');
+
+    popupOverlay.classList.add('show');
+    setTimeout(() => {
+        popupContent.classList.add('show');
+    }, 100);
+}
+
+// Function to close the popup
+function closePopup() {
+    const popupOverlay = document.getElementById('popupModal');
+    const popupContent = popupOverlay.querySelector('.popup-content');
+
+    popupContent.classList.remove('show');
+    setTimeout(() => {
+        popupOverlay.classList.remove('show');
+    }, 400);
+}
+
+// Automatically show the popup after a few seconds
+window.onload = function() {
+    setTimeout(showPopup, 2000); // Show after 2 seconds
+};
 </script>
 </body>
 </html>

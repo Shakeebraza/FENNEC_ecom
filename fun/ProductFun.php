@@ -521,8 +521,11 @@ Class Productfun{
                       </p>
                       <div class="d-flex justify-content-between">
                         <a class="btn btn-button btn-sm" href="'.$this->urlval.'productedit.php?productid='.$this->security->encrypt($product['id']).'">Edit</a>
+                        <div>
+                        <a class="btn btn-button btn-sm btn-boost" href="'.$this->urlval.'productboost.php?productid='.$this->security->encrypt($product['id']) .'">Boost</a>
                        <button class="btn btn-button btn-sm btn-delete" data-product-id="' . $this->security->encrypt($product['id']). '">Delete</button>
                       </div>
+                       </div>
                     </div>
                   </div>
                 </div>
@@ -542,6 +545,28 @@ Class Productfun{
             return null;
         }
     }
+    public function PoplarProduct()
+    {
+
+        $conn = $this->pdo;
+        $stmt = $conn->prepare("
+            SELECT * 
+            FROM products 
+            WHERE product_type IN ('premium', 'gold') 
+            AND is_enable = 1 
+            AND status = 'active' 
+            ORDER BY RAND() 
+            LIMIT 1
+        ");
+        $stmt->execute();
+        $product = $stmt->fetch(PDO::FETCH_ASSOC);
+        if ($product) {
+            return $product;
+        } else {
+            return null;
+        }
+    }
+
 }
 
 ?>
