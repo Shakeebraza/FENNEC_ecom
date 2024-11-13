@@ -8,7 +8,8 @@ $price = $_POST['price'];
 $planName = $_POST['plan_name'];
 
 $paypalUrl = "https://www.sandbox.paypal.com/cgi-bin/webscr";
-$businessEmail = "sb-ue2eh27310939@business.example.com";
+$businessEmail = $fun->getSiteSettingValue('paypal_email_address');
+
 ?>
 
 <form id="paypalForm" action="<?php echo $paypalUrl; ?>" method="post">

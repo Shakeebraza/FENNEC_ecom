@@ -60,12 +60,40 @@ class Fun {
             return 'Error: ' . $e->getMessage();
         }
     }
+ 
     public function getTotalBoxCount() {
         $query = "SELECT COUNT(*) AS total FROM box";
         $stmt = $this->pdo->prepare($query);
         $stmt->execute();
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result['total'];
+    }
+    public function boost_plansTotalCount() {
+        $query = "SELECT COUNT(*) AS total FROM boost_plans";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total'];
+    }
+    public function getAllboost_plans($start,$length) {
+        try {
+            $tabledata = $this->dbfun->getData('boost_plans','', '', 'created_at', 'DESC', $start, $length); 
+            if (empty($tabledata)) {
+               
+                return [];
+            } else {
+                
+            }
+            foreach ($tabledata as &$row) {
+                foreach ($row as $key => $value) {
+                    $row[$key] = $this->security->decrypt($value);
+                }
+            }
+
+            return $tabledata; 
+        } catch (PDOException $e) {
+            return 'Error: ' . $e->getMessage();
+        }
     }
     public function getBoxPermission($id) {
         $data = $this->dbfun->getData('boxsetting', "boxid = '$id'");
@@ -669,13 +697,9 @@ class Fun {
         try {
             $pdo->beginTransaction();
     
-            // Update boost_plans table
-            $stmt1 = $pdo->prepare("UPDATE boost_plans SET status = 'active', txn_id = ?, updated_at = NOW() WHERE id = ?");
-            $stmt1->execute([$txnId, $planId]);
-    
             // Insert into payments table
-            $stmt2 = $pdo->prepare("INSERT INTO payments (plan_id, user_id, txn_id, amount, status) VALUES (?, ?, ?, ?, 'completed')");
-            $stmt2->execute([$planId, $userId, $txnId, $amount]);
+            $stmt2 = $pdo->prepare("INSERT INTO payments (plan_id,proid, user_id, txn_id, amount, status) VALUES (?,?, ?, ?, ?, 'completed')");
+            $stmt2->execute([$planId,$productId, $userId, $txnId, $amount]);
     
             // Determine product type based on plan ID
             $productType = '';
@@ -708,6 +732,47 @@ class Fun {
         }
     }
     
-    
+    public function getTotalPayment()
+        {
+            $query = "SELECT COUNT(*) as total FROM payments";
+            $stmt = $this->pdo->prepare($query);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return $result['total'];
+        }
+
+        // Function to get paginated payment data
+public function getPaymentData($start, $length)
+{
+    $query = "
+        SELECT 
+            p.id, 
+            p.plan_id, 
+            p.proid, 
+            p.user_id, 
+            p.txn_id, 
+            p.amount, 
+            p.status, 
+            p.created_at,
+            u.username, 
+            u.email,
+            pr.name as product_name,
+            bp.name as plan_name
+        FROM payments p
+        LEFT JOIN users u ON p.user_id = u.id
+        LEFT JOIN products pr ON p.proid = pr.id
+        LEFT JOIN boost_plans bp ON p.plan_id = bp.id
+        ORDER BY p.created_at DESC
+        LIMIT :start, :length
+    ";
+
+    $stmt = $this->pdo->prepare($query);
+    $stmt->bindParam(':start', $start, PDO::PARAM_INT);
+    $stmt->bindParam(':length', $length, PDO::PARAM_INT);
+    $stmt->execute();
+
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
     
 }

@@ -71,6 +71,12 @@
                     <li class="nav-item <?=isActive('/fennec/admin/box/index.php');  ?>">
                         <a class="nav-link" href="<?php echo $urlval?>admin/box/index.php"><i class="fas fa-desktop"></i> Box</a>
                     </li>
+                    <li class="nav-item <?=isActive('/fennec/admin/packages/index.php');  ?>">
+                        <a class="nav-link" href="<?php echo $urlval?>admin/packages/index.php"><i class="fas fa-shopping-cart"></i> Packages</a>
+                    </li>
+                    <li class="nav-item <?=isActive('/fennec/admin/packages/payment.php');  ?>">
+                        <a class="nav-link" href="<?php echo $urlval?>admin/packages/payment.php"><i class="fas fa-credit-card"></i> payment</a>
+                    </li>
                     <li class="nav-item <?=isActive('/fennec/admin/box/setting.php');  ?>">
                         <a class="nav-link" href="<?php echo $urlval?>admin/box/setting.php"><i class="fas fa-cog"></i> Site Setting</a>
                     </li>
@@ -156,6 +162,14 @@
                 <li class="<?=isActive('/fennec/admin/box/index.php');  ?>">
                     <a href="<?php echo $urlval?>admin/box/index.php">
                         <i class="fas fa-desktop"></i>Box</a>
+                </li>
+                <li class="<?=isActive('/fennec/admin/packages/index.php');  ?>">
+                    <a href="<?php echo $urlval?>admin/packages/index.php">
+                    <i class="fas fa-shopping-cart"></i>Packages</a>
+                </li>
+                <li class="<?=isActive('/fennec/admin/packages/payment.php');  ?>">
+                    <a href="<?php echo $urlval?>admin/packages/payment.php">
+                    <i class="fas fa-credit-card"></i>payment</a>
                 </li>
                 <li class="<?=isActive('/fennec/admin/setting.php');  ?>">
                     <a href="<?php echo $urlval?>admin/setting.php">
