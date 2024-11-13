@@ -656,5 +656,58 @@ class Fun {
     
         return $menuData;
     }
+    function getBoostPlans() {
+        $query = "SELECT * FROM boost_plans WHERE status = 'active'";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    function updateBoostPlanStatus($planId, $txnId, $userId, $amount, $productId) {
+        global $pdo;
+    
+        try {
+            $pdo->beginTransaction();
+    
+            // Update boost_plans table
+            $stmt1 = $pdo->prepare("UPDATE boost_plans SET status = 'active', txn_id = ?, updated_at = NOW() WHERE id = ?");
+            $stmt1->execute([$txnId, $planId]);
+    
+            // Insert into payments table
+            $stmt2 = $pdo->prepare("INSERT INTO payments (plan_id, user_id, txn_id, amount, status) VALUES (?, ?, ?, ?, 'completed')");
+            $stmt2->execute([$planId, $userId, $txnId, $amount]);
+    
+            // Determine product type based on plan ID
+            $productType = '';
+            switch ($planId) {
+                case 1:
+                    $productType = 'standard';
+                    break;
+                case 2:
+                    $productType = 'premium';
+                    break;
+                case 3:
+                    $productType = 'gold';
+                    break;
+                default:
+                    $productType = 'standard';
+                    break;
+            }
+    
+            // Update the product table's product_type based on the selected plan
+            $stmt3 = $pdo->prepare("UPDATE products SET product_type = ? WHERE id = ?");
+            $stmt3->execute([$productType, $productId]);
+    
+            $pdo->commit();
+            return true;
+    
+        } catch (Exception $e) {
+            $pdo->rollBack();
+            echo "Failed: " . $e->getMessage();
+            return false;
+        }
+    }
+    
+    
     
 }

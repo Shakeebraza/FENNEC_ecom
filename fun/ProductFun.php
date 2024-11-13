@@ -522,7 +522,7 @@ Class Productfun{
                       <div class="d-flex justify-content-between">
                         <a class="btn btn-button btn-sm" href="'.$this->urlval.'productedit.php?productid='.$this->security->encrypt($product['id']).'">Edit</a>
                         <div>
-                        <a class="btn btn-button btn-sm btn-boost" href="'.$this->urlval.'productboost.php?productid='.$this->security->encrypt($product['id']) .'">Boost</a>
+                        <a class="btn btn-button btn-sm btn-boost" href="'.$this->urlval.'productboost.php?productid='.base64_encode($product['id']) .'">Boost</a>
                        <button class="btn btn-button btn-sm btn-delete" data-product-id="' . $this->security->encrypt($product['id']). '">Delete</button>
                       </div>
                        </div>

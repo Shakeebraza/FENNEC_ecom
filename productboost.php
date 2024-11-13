@@ -1,17 +1,30 @@
 <?php
 require_once 'global.php';
 include_once 'header.php';
-
+$redirectUrl = $urlval . 'index.php';
 if (!isset($_GET['productid'])) {
-    die('Product ID not provided.');
+    echo '
+    <script>
+        window.location.href = "' . $redirectUrl . '";
+    </script>'; 
+    exit();
 }
 
-// Decrypt the product ID
-$productId = $security->decrypt($_GET['productid']);
+
+$productId = base64_decode($_GET['productid']);
+$getproduct = $dbFunctions->getDatanotenc('products',"id='$productId'");
+
+if(empty($getproduct[0])){
+    echo '
+    <script>
+        window.location.href = "' . $redirectUrl . '";
+    </script>'; 
+    exit();
+}
 ?>
 
 <style>
-    /* General Styling for the page */
+
     body {
         font-family: 'Arial', sans-serif;
         background-color: #f4f7fc;
@@ -19,7 +32,7 @@ $productId = $security->decrypt($_GET['productid']);
         padding: 0;
     }
 
-    /* Container for both plans, to be displayed in a row */
+
     .plans-row {
         display: flex;
         justify-content: space-between;
@@ -136,45 +149,43 @@ $productId = $security->decrypt($_GET['productid']);
 </style>
 
 <!-- Plans Row Container -->
-<div class="plans-row">
-    <!-- Gold Plan Container -->
-    <div class="boost-container gold-plan">
-        <h2>Gold Boost Plan</h2>
-        <div class="boost-image">
-            <img src="gold.jpg" alt="Gold Plan">
-        </div>
-        <p>Unlock higher visibility for your product for 7 days.</p>
-        <ul class="boost-benefits">
-            <li>Priority listing for 7 days</li>
-            <li>Increased visibility to attract more buyers</li>
-            <li>Featured in Gold section</li>
-            <li>Improved engagement and sales</li>
-        </ul>
-        <form method="POST" action="purchase.php">
-            <input type="hidden" name="boost_type" value="gold">
-            <button type="submit" class="btn2">Activate Gold Plan</button>
-        </form>
-    </div>
+<?php
+$boostPlans = $fun->getBoostPlans();
+?>
 
-    <!-- Premium Plan Container -->
-    <div class="boost-container premium-plan">
-        <h2>Premium Boost Plan</h2>
+<div class="plans-row">
+    <?php foreach ($boostPlans as $plan): ?>
+    <div class="boost-container <?php echo strtolower($plan['slug']); ?>-plan">
+        <h2><?php echo $plan['name']; ?></h2>
         <div class="boost-image">
-            <img src="premium.jpg" alt="Premium Plan">
+            <img src="<?php echo $urlval . $plan['image']; ?>" alt="<?php echo $plan['name']; ?>">
         </div>
-        <p>Get top placement for your product for 14 days.</p>
+        <p><?php echo $plan['description']; ?></p>
+        <p><strong>Price:</strong> $<?php echo number_format($plan['price'], 2); ?></p>
         <ul class="boost-benefits">
-            <li>Top listing for 14 days</li>
-            <li>Maximum visibility to potential buyers</li>
-            <li>Exclusive placement in Premium section</li>
-            <li>Boost your sales and reputation</li>
+            <?php 
+            $benefits = explode(',', $plan['benefits']);
+            foreach ($benefits as $benefit): 
+            ?>
+            <li><?php echo trim($benefit); ?></li>
+            <?php endforeach; ?>
         </ul>
-        <form method="POST" action="purchase.php">
-            <input type="hidden" name="boost_type" value="premium">
-            <button type="submit" class="btn2">Activate Premium Plan</button>
+
+        <!-- Form to redirect to the payment page -->
+        <form method="POST" action="payment.php">
+            <input type="hidden" name="boost_type" value="<?php echo $plan['slug']; ?>">
+            <input type="hidden" name="plan_id" value="<?php echo $plan['id']; ?>">
+            <input type="hidden" name="price" value="<?php echo $plan['price']; ?>">
+            <input type="hidden" name="plan_name" value="<?php echo $plan['name']; ?>">
+            <input type="hidden" name="proid" value="<?php echo $productId; ?>">
+            <button type="submit" class="btn2">Activate <?php echo $plan['name']; ?></button>
         </form>
     </div>
+    <?php endforeach; ?>
 </div>
+
+
+
 
 <?php
 include_once 'footer.php';
