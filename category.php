@@ -568,6 +568,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 </div>
             </form>
         </div>
+
+        <div class="col-md-12 mb-4 mt-4">
+  <!-- Premium Products Slider -->
+  <div class="sidebar-box" style="box-shadow: 4px 3px 6px #A4A4A485; padding: 20px; background-color: white; border: 2px solid #198754;">
+    <h5 class="text-center" style="color: #198754;">Premium Products</h5>
+    <div class="slider" style="background-color: #fef5e6; padding: 10px;">
+      <?php
+        $productMultipalinPre = $productFun->PoplarProductperMultipal();
+        if($productMultipalinPre){
+            foreach($productMultipalinPre as $row){
+                $imgproductpre = $urlval . $row['image']; 
+                $detailsurl=$urlval."detail.php?slug=".$row['slug'];
+                $productName = htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8'); 
+
+                echo '
+                    <div>
+                        <a href="'.$detailsurl.'">
+                            <img src="' . $imgproductpre . '" alt="' . $productName . '" class="img-fluid">
+                        </a>
+                        <h6 class="text-center" style="color: #198754;">' . $productName . '</h6>
+                    </div>
+                ';
+            }
+        } else {
+            echo '
+                <div>
+                    <h6 class="text-center" style="color: #198754;">Not a single product</h6>
+                </div>
+            ';
+        }
+
+      
+      ?>
+    </div>
+  </div>
+
+</div>
         </div>
 
     </div>
@@ -646,6 +683,17 @@ document.querySelectorAll('.icon_heart').forEach(favoriteButton => {
         .catch(error => console.error('Error:', error));
     });
 });
+$(document).ready(function(){
+    $('.slider').slick({
+      infinite: true,        // Enable infinite scrolling
+      slidesToShow: 1,       // Show one image at a time
+      slidesToScroll: 1,     // Scroll one image at a time
+      arrows: true,          // Enable previous and next arrows
+      dots: true,            // Show dots navigation
+      autoplay: true,        // Enable autoplay
+      autoplaySpeed: 2000,   // Set the speed of autoplay
+    });
+  });
 </script>
 </body>
 

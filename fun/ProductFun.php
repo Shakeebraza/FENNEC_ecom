@@ -587,6 +587,76 @@ Class Productfun{
             return null;
         }
     }
+    public function PoplarProductperMultipal()
+    {
+        $conn = $this->pdo;
+        $stmt = $conn->prepare("
+            SELECT * 
+            FROM products 
+            WHERE product_type IN ('premium') 
+            AND is_enable = 1 
+            AND status = 'active' 
+            ORDER BY RAND()
+        ");
+        $stmt->execute();
+        
+        // Fetch all matching products
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // If products are found, return them; otherwise, return null
+        if ($products) {
+            return $products;
+        } else {
+            return null;
+        }
+    }
+    public function PoplarProductgoldMultipal()
+    {
+        $conn = $this->pdo;
+        $stmt = $conn->prepare("
+            SELECT * 
+            FROM products 
+            WHERE product_type IN ('gold') 
+            AND is_enable = 1 
+            AND status = 'active' 
+            ORDER BY RAND()
+        ");
+        $stmt->execute();
+        
+        // Fetch all matching products
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // If products are found, return them; otherwise, return null
+        if ($products) {
+            return $products;
+        } else {
+            return null;
+        }
+    }
+    public function PoplarProductMuultipal()
+    {
+        $conn = $this->pdo;
+        $stmt = $conn->prepare("
+            SELECT * 
+            FROM products 
+            WHERE product_type IN ('premium','gold') 
+            AND is_enable = 1 
+            AND status = 'active' 
+            ORDER BY RAND()
+        ");
+        $stmt->execute();
+        
+        // Fetch all matching products
+        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        
+        // If products are found, return them; otherwise, return null
+        if ($products) {
+            return $products;
+        } else {
+            return null;
+        }
+    }
+    
 
 }
 

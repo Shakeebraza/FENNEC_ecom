@@ -107,7 +107,39 @@ p {
     background-color: #0056b3;
     transform: translateY(-3px);
 }
+.sidebar-box {
+  margin-bottom: 30px;
+  border-radius: 8px;
+}
 
+.sidebar-box .slider {
+  margin-top: 20px;
+}
+
+.sidebar-box .slider img {
+  border-radius: 8px;
+  transition: transform 0.3s ease;
+}
+
+.sidebar-box .slider img:hover {
+  transform: scale(1.05); /* Slight zoom effect on hover */
+}
+
+.sidebar-box h6 {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 14px;
+  color: #333;
+}
+
+@media (max-width: 768px) {
+  .sidebar-box .slider {
+    margin-top: 10px;
+  }
+  .sidebar-box h6 {
+    font-size: 12px;
+  }
+}
 </style>
 <!-- index content -->
 <div class="custom-slider-container">
@@ -199,108 +231,208 @@ p {
               $image2=$urlval.$box2[0]['image'];
             
         ?>
-      <div class="container mt-4">
-        <div class="banner">
-          <div class="container" style="box-shadow: 4px 3px 6px #A4A4A485;">
+<div class="container mt-4">
+    <div class="banner">
+        <div class="container" style="box-shadow: 4px 3px 6px #A4A4A485;">
             <div class="row align-items-center p">
-              <div class="col-md-3 mb-3 mb-md-0 p-0">
-                <img
-                  src="<?= $image2 ?>"
-                  alt="Blue car"
-                  class="img-fluid" />
-              </div>
-              <div class="col-md-6 mb-3 mb-md-0">
-                <h3><?=  $box2[0]['heading'];?></h3>
-                <p><?=  $box2[0]['phara'];?></p>
-                <?=  $box2[0]['longtext'];?>
-              </div>
-              <div class="col-md-3">
-                <!-- <button class="btn btn-warning text-dark w-100 mb-2">
-                  <span class="eu-flag d-inline-block me-2"></span>
-                  Enter reg
-                </button> -->
-                <a href="<?=  $box2[0]['link'];?>" class="btn btn-success w-100">Click now</a>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="row mt-5">
-        <?php
-
-$productFind = $productFun->getProductsWithDetails(1, 16, []);
-
-if (!empty($productFind)) {
-    foreach ($productFind['products'] as $product) {
-        $setSession = $fun->isSessionSet();
-        $fav = ""; 
-        
-        if ($setSession == true) {
-            $uid = base64_decode($_SESSION['userid']);
-            $pid = $product['id'];
-            $isFav = $dbFunctions->getDatanotenc('favorites', "user_id = '$uid' AND product_id = '$pid'");
-            
-            if ($isFav) {
-                $fav = "style='color: red'"; 
-            }
-        }
-        ?>
-        <div class="col-md-3 mb-4">
-            <div class="product-card position-relative">
-                <?php if ($product['product_type'] != "standard") { ?>
-                    <div class="badge bg-success position-absolute top-0 start-0 m-2">
-                        <?php echo $product['product_type']; ?>
-                    </div>
-                <?php } ?>
-                <a href="<?= $urlval ?>detail.php?slug=<?= $product['slug'] ?>">
+                <div class="col-md-3 mb-3 mb-md-0 p-0">
                     <img
-                        src="<?php echo $product['image']; ?>"
-                        alt="<?php echo htmlspecialchars($product['name']); ?>"
-                        class="product-image w-100" />
-                </a>
-                
-                <?php
-                if ($setSession == true) {
-                    // If user is logged in
-                    ?>
-                    <a
-                        class="heart-icon icon_heart"
-                        data-productid="<?php echo $product['id']; ?>"
-                        id="favorite-button-<?php echo $product['id']; ?>">
-                        <i class="fas fa-heart" <?php echo $fav; ?>></i>
-                    </a>
-                    <?php
-                } else {
-                    // If user is not logged in
-                    ?>
-                    <a class="heart-icon" href="<?= $urlval ?>LoginRegister.php">
-                        <i class="fas fa-heart"></i>
-                    </a>
-                    <?php
-                }
-                ?>
-
-                <div class="p-3">
-                    <h5><?php echo htmlspecialchars($product['name']); ?></h5>
-                    <p class="price">$<?php echo htmlspecialchars($product['price']); ?></p>
-                    <p class="location">
-                        <i class="fas fa-map-marker-alt"></i> <?php echo htmlspecialchars($product['country']); ?> | <?php echo htmlspecialchars($product['city']); ?>
-                    </p>
-                    <p class="date">
-                        <i class="far fa-clock"></i> <?php echo htmlspecialchars($product['date']); ?>
-                    </p>
+                        src="<?= $image2 ?>"
+                        alt="Blue car"
+                        class="img-fluid" />
+                </div>
+                <div class="col-md-6 mb-3 mb-md-0">
+                    <h3><?=  $box2[0]['heading'];?></h3>
+                    <p><?=  $box2[0]['phara'];?></p>
+                    <?=  $box2[0]['longtext'];?>
+                </div>
+                <div class="col-md-3">
+                    <a href="<?=  $box2[0]['link'];?>" class="btn btn-success w-100">Click now</a>
                 </div>
             </div>
         </div>
-        <?php
-    }
-} else {
-    echo '<p>No products found.</p>';
-}
-?>
+    </div>
+
+    <div class="row mt-5">
+        <!-- Sidebar Section -->
+        <div class="col-md-3 mb-4">
+  <!-- Premium Products Slider -->
+  <div class="sidebar-box" style="box-shadow: 4px 3px 6px #A4A4A485; padding: 20px; background-color: white; border: 2px solid #198754;">
+    <h5 class="text-center" style="color: #198754;">Premium Products</h5>
+    <div class="slider" style="background-color: #fef5e6; padding: 10px;">
+      <?php
+        $productMultipalinPre = $productFun->PoplarProductperMultipal();
+        if($productMultipalinPre){
+            foreach($productMultipalinPre as $row){
+                $imgproductpre = $urlval . $row['image']; 
+                $detailsurl=$urlval."detail.php?slug=".$row['slug'];
+                $productName = htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8'); 
+
+                echo '
+                    <div>
+                        <a href="'.$detailsurl.'">
+                            <img src="' . $imgproductpre . '" alt="' . $productName . '" class="img-fluid">
+                        </a>
+                        <h6 class="text-center" style="color: #198754;">' . $productName . '</h6>
+                    </div>
+                ';
+            }
+        } else {
+            echo '
+                <div>
+                    <h6 class="text-center" style="color: #198754;">Not a single product</h6>
+                </div>
+            ';
+        }
+
+      
+      ?>
+    </div>
+  </div>
+
+  <!-- Gold Products Slider -->
+  <div class="sidebar-box" style="box-shadow: 4px 3px 6px #A4A4A485; padding: 20px; background-color: white; border: 2px solid #198754;">
+    <h5 class="text-center" style="color: #198754;">Top Products</h5>
+    <div class="slider" style="background-color: #fef5e6; padding: 10px;">
+    <?php
+        $productMultipalinPre = $productFun->PoplarProductMuultipal();
+        if($productMultipalinPre){
+            foreach($productMultipalinPre as $row){
+                $imgproductpre = $urlval . $row['image']; 
+                $detailsurl=$urlval."detail.php?slug=".$row['slug'];
+                $productName = htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8'); 
+
+                echo '
+                    <div>
+                        <a href="'.$detailsurl.'">
+                            <img src="' . $imgproductpre . '" alt="' . $productName . '" class="img-fluid">
+                        </a>
+                        <h6 class="text-center" style="color: #198754;">' . $productName . '</h6>
+                    </div>
+                ';
+            }
+        } else {
+            echo '
+                <div>
+                    <h6 class="text-center" style="color: #198754;">Not a single product</h6>
+                </div>
+            ';
+        }
+
+      
+      ?>
+    </div>
+  </div>
+
+  <!-- Top Products Slider -->
+  <div class="sidebar-box" style="box-shadow: 4px 3px 6px #A4A4A485; padding: 20px; background-color: white; border: 2px solid #198754;">
+    <h5 class="text-center" style="color: #198754;">Gold Products</h5>
+    <div class="slider" style="background-color: #fef5e6; padding: 10px;">
+    <?php
+        $productMultipalinPre = $productFun->PoplarProductgoldMultipal();
+        if($productMultipalinPre){
+            foreach($productMultipalinPre as $row){
+                $imgproductpre = $urlval . $row['image']; 
+                $detailsurl=$urlval."detail.php?slug=".$row['slug'];
+                $productName = htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8'); 
+
+                echo '
+                    <div>
+                        <a href="'.$detailsurl.'">
+                            <img src="' . $imgproductpre . '" alt="' . $productName . '" class="img-fluid">
+                        </a>
+                        <h6 class="text-center" style="color: #198754;">' . $productName . '</h6>
+                    </div>
+                ';
+            }
+        } else {
+            echo '
+                <div>
+                    <h6 class="text-center" style="color: #198754;">Not a single product</h6>
+                </div>
+            ';
+        }
+
+      
+      ?>
+    </div>
+  </div>
+</div>
 
 
+
+        <!-- Products Section -->
+        <div class="col-md-9">
+            <div class="row">
+                <?php
+                $productFind = $productFun->getProductsWithDetails(1, 12, []);
+
+                if (!empty($productFind)) {
+                    foreach ($productFind['products'] as $product) {
+                        $setSession = $fun->isSessionSet();
+                        $fav = ""; 
+                        
+                        if ($setSession == true) {
+                            $uid = base64_decode($_SESSION['userid']);
+                            $pid = $product['id'];
+                            $isFav = $dbFunctions->getDatanotenc('favorites', "user_id = '$uid' AND product_id = '$pid'");
+                            
+                            if ($isFav) {
+                                $fav = "style='color: red'"; 
+                            }
+                        }
+                        ?>
+                        <div class="col-md-4 mb-4">
+                            <div class="product-card position-relative">
+                                <?php if ($product['product_type'] != "standard") { ?>
+                                    <div class="badge bg-success position-absolute top-0 start-0 m-2">
+                                        <?php echo $product['product_type']; ?>
+                                    </div>
+                                <?php } ?>
+                                <a href="<?= $urlval ?>detail.php?slug=<?= $product['slug'] ?>">
+                                    <img
+                                        src="<?php echo $product['image']; ?>"
+                                        alt="<?php echo htmlspecialchars($product['name']); ?>"
+                                        class="product-image w-100" />
+                                </a>
+                                
+                                <?php if ($setSession == true) { ?>
+                                    <a
+                                        class="heart-icon icon_heart"
+                                        data-productid="<?php echo $product['id']; ?>"
+                                        id="favorite-button-<?php echo $product['id']; ?>">
+                                        <i class="fas fa-heart" <?php echo $fav; ?>></i>
+                                    </a>
+                                <?php } else { ?>
+                                    <a class="heart-icon" href="<?= $urlval ?>LoginRegister.php">
+                                        <i class="fas fa-heart"></i>
+                                    </a>
+                                <?php } ?>
+
+                                <div class="p-3">
+                                    <h5><?php echo htmlspecialchars($product['name']); ?></h5>
+                                    <p class="price">$<?php echo htmlspecialchars($product['price']); ?></p>
+                                    <p class="location">
+                                        <i class="fas fa-map-marker-alt"></i> <?php echo htmlspecialchars($product['country']); ?> | <?php echo htmlspecialchars($product['city']); ?>
+                                    </p>
+                                    <p class="date">
+                                        <i class="far fa-clock"></i> <?php echo htmlspecialchars($product['date']); ?>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <?php
+                    }
+                } else {
+                    echo '<p>No products found.</p>';
+                }
+                ?>
+            </div>
+        </div>
+    </div>
 </div>
-</div>
+
+
 
       <div class="modal" style="display: none">
 
@@ -390,6 +522,7 @@ if (!empty($productFind)) {
 <?php
 include_once 'footer.php';
 ?>
+
 <script>
 document.querySelectorAll('.icon_heart').forEach(favoriteButton => {
     favoriteButton.addEventListener('click', function(event) {
@@ -454,6 +587,18 @@ function closePopup() {
 window.onload = function() {
     setTimeout(showPopup, 2000); // Show after 2 seconds
 };
+
+$(document).ready(function(){
+    $('.slider').slick({
+      infinite: true,        // Enable infinite scrolling
+      slidesToShow: 1,       // Show one image at a time
+      slidesToScroll: 1,     // Scroll one image at a time
+      arrows: true,          // Enable previous and next arrows
+      dots: true,            // Show dots navigation
+      autoplay: true,        // Enable autoplay
+      autoplaySpeed: 2000,   // Set the speed of autoplay
+    });
+  });
 </script>
 </body>
 </html>

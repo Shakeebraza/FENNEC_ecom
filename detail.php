@@ -24,22 +24,65 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 ?>
 <style>
+    /* Slider Item Styling */
+    .slider-item {
+        position: relative;
+    }
+
+    .image-container {
+        position: relative;
+        width: 100%;
+    }
+
+    .image-container img {
+        width: 100%;
+        height: auto;
+    }
+
+    /* Overlay and Product Name Styling */
+    .image-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.5);
+        /* Semi-transparent background */
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        transition: opacity 0.3s ease-in-out;
+    }
+
+    .image-container:hover .image-overlay {
+        opacity: 1;
+        /* Show overlay on hover */
+    }
+
+    .product-name {
+        color: #fff;
+        font-size: 1.5rem;
+        font-weight: bold;
+        text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        /* Add shadow to make text readable */
+    }
 
     .swiper-pagination.secoundpage.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal {
-        top: 244%;
+        top: 215%;
     }
 
 
     @media screen and (max-width: 768px) {
         .swiper-pagination.secoundpage.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal {
-            top: 275%; 
+            top: 275%;
         }
     }
 
-  
+
     @media screen and (max-width: 480px) {
         .swiper-pagination.secoundpage.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal {
-            top: 275%; 
+            top: 275%;
         }
     }
 </style>
@@ -89,10 +132,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                 </div>
                             ';
                         }
-                        
+
                         ?>
                     </div>
-                    <div class="swiper-pagination" style="bottom: 615px;"></div>
+                    <div class="swiper-pagination" style="bottom: 415px;"></div>
                 </div>
                 <div class="card-body" style="padding: 1.5em; background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
                     <h5 class="card-title" style="font-size: 2em; font-weight: bold; color: #333; letter-spacing: 1px; margin-bottom: 0.8em; text-transform: uppercase;"><?= htmlspecialchars($productData['product']['product_name'] ?? 'Product Name'); ?></h5>
@@ -134,9 +177,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     <h5 class="card-title">Seller Information</h5>
                     <p class="card-text">
                         <i class="fas fa-user"></i> <?php
-                        $usid=$productData['product']['user_id'];
-                            $datauserid = $dbFunctions->getDatanotenc('users',"id='$usid'");
-                            echo $datauserid[0]['username']??"Not found..";
+                                                    $usid = $productData['product']['user_id'];
+                                                    $datauserid = $dbFunctions->getDatanotenc('users', "id='$usid'");
+                                                    echo $datauserid[0]['username'] ?? "Not found..";
                                                     ?><br>
                         <small class="text-muted">Posting for under a month</small>
                     </p>
@@ -147,21 +190,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     if (isset($_SESSION['userid'])) {
                         $sessionUserId = base64_decode($_SESSION['userid']);
                         $productId = $productData['product']['product_id'];
-                        
+
                         if ($sessionUserId != $productId) {
                             $encryptedProductId = $security->encrypt($productData['product']['product_id']);
-                            
-                          
-                            ?>
+
+
+                    ?>
                             <button onclick="startChat('<?= $encryptedProductId ?>')" class="btn btn-success w-100 mb-2">Chat</button>
-                            <?php
+                    <?php
                         }
                     } else {
                         echo '<a href="' . $urlval . 'LoginRegister.php" class="btn btn-success w-100 mb-2">Chat</a>';
                     }
                     ?>
                     <?php
-                    
+
                     if ($productData['is_favorited'] == 1): ?>
                         <button class="btn buttonss w-100 mb-2" data-productid="<?php echo $productData['product']['product_id']; ?>" id="favorite-button">
                             <i class="<?php echo $productData['is_favorited'] ? 'fas' : 'far'; ?> fa-heart"></i>
@@ -202,6 +245,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     <button class="btn ">Get instant price</button>
                 </div>
             </div>
+
+            <div class="card card-body">
+
+                <!-- Slick Slider -->
+
+                <div class="slider">
+                    <?php
+                    $productMultipalinPre = $productFun->PoplarProductperMultipal();
+                    if ($productMultipalinPre) {
+                        foreach ($productMultipalinPre as $row) {
+                            $imgproductpre = $urlval . $row['image'];
+                            $detailsurl = $urlval . "detail.php?slug=" . $row['slug'];
+                            $productName = htmlspecialchars($row['name'], ENT_QUOTES, 'UTF-8');
+
+                            echo '
+                    <div class="slider-item">
+                        <a href="' . $detailsurl . '">
+                                <div class="image-container">
+                                    <img src="' . $imgproductpre . '" class="d-block w-100" alt="Image 1">
+                                    <div class="image-overlay">
+                                        <h6 class="product-name">' . $productName . '</h6>
+                                    </div>
+                                </div>
+                        </a>
+                            </div>
+                ';
+                        }
+                    } else {
+                        echo '
+                <div>
+                    <h6 class="text-center" style="color: #198754;">Not a single product</h6>
+                </div>
+            ';
+                    }
+
+
+                    ?>
+
+                </div>
+
+
+            </div>
+
         </div>
     </div>
 
@@ -235,12 +321,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     </div>
 
     <h3 class="mt-4 mb-3"><b>You may also like...</b></h3>
-<div class="swiper-container my-4" style="border-radius: 12px; overflow: hidden; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);">
-    <div class="swiper-wrapper">
-        <?php
-        $relatedProducts = $productFun->getRelatedProducts($productData['product']['category_id'], $productData['product']['product_id']);
-        foreach ($relatedProducts as $relatedProduct) {
-            echo '
+    <div class="swiper-container my-4" style="border-radius: 12px; overflow: hidden; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);">
+        <div class="swiper-wrapper">
+            <?php
+            $relatedProducts = $productFun->getRelatedProducts($productData['product']['category_id'], $productData['product']['product_id']);
+            foreach ($relatedProducts as $relatedProduct) {
+                echo '
             <div class="swiper-slide d-flex flex-column align-items-center">
                 <div class="slide-content text-center p-3">
                     <img src="' . htmlspecialchars($urlval . $relatedProduct['image']) . '" alt="' . htmlspecialchars($relatedProduct['title']) . '" class="img-fluid rounded">
@@ -249,11 +335,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 </div>
             </div>
             ';
-        }
-        ?>
+            }
+            ?>
+        </div>
+        <div class="swiper-pagination secoundpage"></div>
     </div>
-    <div class="swiper-pagination secoundpage"></div>
-</div>
 
 </div>
 
@@ -263,37 +349,37 @@ include_once 'footer.php';
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const mainSwiper = new Swiper('.swiper-container2', {
-        loop: true,
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-        autoplay: {
-            delay: 2500,
-            disableOnInteraction: false,
-        },
-    });
+            loop: true,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
+            },
+            autoplay: {
+                delay: 2500,
+                disableOnInteraction: false,
+            },
+        });
 
-    const relatedProductsSwiper = new Swiper('.swiper-container', {
-        slidesPerView: 1, // Default to 1 slide on mobile
-        spaceBetween: 10,
-        pagination: {
-            el: '.swiper-pagination',
-            clickable: true,
-        },
-        breakpoints: {
-            480: {
-                slidesPerView: 1 // 1 slide for mobile
+        const relatedProductsSwiper = new Swiper('.swiper-container', {
+            slidesPerView: 1, // Default to 1 slide on mobile
+            spaceBetween: 10,
+            pagination: {
+                el: '.swiper-pagination',
+                clickable: true,
             },
-            600: {
-                slidesPerView: 2 // 2 slides for tablets
-            },
-            1024: {
-                slidesPerView: 3 // 3 slides for desktops
-            },
-            // You can add more breakpoints here if needed
-        }
-    });
+            breakpoints: {
+                480: {
+                    slidesPerView: 1 // 1 slide for mobile
+                },
+                600: {
+                    slidesPerView: 2 // 2 slides for tablets
+                },
+                1024: {
+                    slidesPerView: 3 // 3 slides for desktops
+                },
+                // You can add more breakpoints here if needed
+            }
+        });
 
         const favoriteButton = document.getElementById('favorite-button');
 
@@ -324,24 +410,39 @@ include_once 'footer.php';
     });
 
     function startChat(productId) {
-    $.ajax({
-        url: '<?= $urlval ?>ajax/start_chat.php',
-        type: 'POST',
-        dataType: 'json',  
-        data: { product_id: productId },  
-        success: function(response) {
-            if (response && response.success) {
-                window.location.href = '<?= $urlval ?>msg.php';
-            } else {
-                alert(response.message || 'Could not start chat.');
+        $.ajax({
+            url: '<?= $urlval ?>ajax/start_chat.php',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                product_id: productId
+            },
+            success: function(response) {
+                if (response && response.success) {
+                    window.location.href = '<?= $urlval ?>msg.php';
+                } else {
+                    alert(response.message || 'Could not start chat.');
+                }
+            },
+            error: function(xhr, status, error) {
+                console.error('AJAX Error:', status, error);
+                alert('Error connecting to chat. Please try again.');
             }
-        },
-        error: function(xhr, status, error) {
-            console.error('AJAX Error:', status, error);
-            alert('Error connecting to chat. Please try again.');
-        }
+        });
+    }
+    $(document).ready(function() {
+        $('.slider').slick({
+            infinite: true,
+            slidesToShow: 1,
+            slidesToScroll: 1,
+            arrows: true,
+            dots: true,
+            autoplay: true,
+            autoplaySpeed: 2000,
+            fade: true,
+            speed: 1000
+        });
     });
-}
 </script>
 </body>
 
