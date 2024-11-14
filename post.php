@@ -205,6 +205,34 @@ $countries = $dbFunctions->getData('countries');
                     <label for="email" class="form-label">Email</label>
                     <input type="email" class="form-control" id="email" name="email" value="<?= $_SESSION['email']?>" required>
                 </div>
+                <div class="mb-3" style="padding: 20px; border: 2px solid #007bff; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); background-color: #f0f8ff;">
+                    <h5>Select Package</h5>
+                    <div>
+                        <!-- Free Package Option -->
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="boostPlan" id="packageFree" value="standard" checked>
+                            <label class="form-check-label" for="packageFree">
+                                Free Package
+                            </label>
+                        </div>
+
+                        <!-- Dynamically Loaded Boost Plans -->
+                        <?php
+                        $boostPlans = $fun->getBoostPlans(); 
+                        if (!empty($boostPlans)) : ?>
+                            <?php foreach ($boostPlans as $plan) : ?>
+                                <div class="form-check">
+                                    <input class="form-check-input" type="radio" name="boostPlan" id="package_<?= $plan['id'] ?>" value="<?= $plan['id'] ?>">
+                                    <label class="form-check-label" for="package_<?= $plan['id'] ?>">
+                                        <?=$plan['name'] ?> - <?= $plan['price'] ?> USD
+                                    </label>
+                                </div>
+                            <?php endforeach; ?>
+                        <?php else : ?>
+                            <p>No packages available.</p>
+                        <?php endif; ?>
+                    </div>
+                </div>
                 <div class="btn-main-div" style="display: flex;justify-content: space-between;">
                     <button type="submit" class="btn btn-primary">Post Ad</button>
                     <button type="button" class="btn btn-secondary" onclick="goBackToSubcategory()">Back</button>
@@ -345,27 +373,53 @@ $countries = $dbFunctions->getData('countries');
 
     // Handle form submission
     $('#productForm').on('submit', function(e) {
-        e.preventDefault(); 
-        let formData = new FormData(this);
+    e.preventDefault();
 
-        $.ajax({
-            url: '<?= $urlval ?>ajax/addproduct.php',
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                if (response.success) {
+    // Get the selected package value
+    let selectedPackage = $('#packageSelect').val();
+    
+    // Determine the URL based on the selected package
+    let url = (selectedPackage === 'standard')
+        ? '<?= $urlval ?>ajax/addproduct.php'
+        : '<?= $urlval ?>ajax/addproductpackige.php';
+    
+    let formData = new FormData(this);
+
+    // Submit the form using the determined URL
+    $.ajax({
+        url: url,
+        type: 'POST',
+        data: formData,
+        processData: false,
+        contentType: false,
+        success: function(response) {
+            if (response.success) {
+                if(selectedPackage === 'standard'){
                     showSuccessAlert();
-                } else if (response.errors) {
-                    handleErrors(response.errors);
+
+                }else{
+                    let paymentForm = $('<form>', {
+                        'action': response.redirect,
+                        'method': 'POST'
+                    }).append(
+                        $('<input>', { 'type': 'hidden', 'name': 'boost_type', 'value': response.boostType }),
+                        $('<input>', { 'type': 'hidden', 'name': 'plan_id', 'value': response.planId }),
+                        $('<input>', { 'type': 'hidden', 'name': 'price', 'value': response.price }),
+                        $('<input>', { 'type': 'hidden', 'name': 'plan_name', 'value': response.planName }),
+                        $('<input>', { 'type': 'hidden', 'name': 'productId', 'value': response.productId })
+                    );
+                    $('body').append(paymentForm);
+                    paymentForm.submit();
                 }
-            },
-            error: function() {
-                showErrorAlert();
+            } else if (response.errors) {
+                handleErrors(response.errors);
             }
-        });
+        },
+        error: function() {
+            showErrorAlert();
+        }
     });
+});
 
     function showSuccessAlert() {
         alert('Ad posted successfully!');
