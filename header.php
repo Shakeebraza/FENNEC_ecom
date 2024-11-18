@@ -1,4 +1,12 @@
 <?php
+
+
+if (isset($_GET['lang'])) {
+  $_SESSION['lang'] = $_GET['lang'];
+}
+
+$lang = $_SESSION['lang'] ?? 'en';
+$lan = $fun->loadLanguage($lang);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -33,6 +41,24 @@
       overflow-y: hidden;
       padding: 0px 20px;
     }
+    .language-switcher {
+    margin: 20px;
+    display: inline-block;
+}
+
+.language-switcher select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.language-switcher select:hover {
+    background-color: #e2e2e2;
+}
   </style>
 </head>
 
@@ -68,7 +94,7 @@
             id="searchInput"
             class="form-control p-2 rounded-0 search-input"
             type="search"
-            placeholder="Search Fennec"
+            placeholder="<?= $lan['Search_fennec']?>"
             aria-label="Search" />
         </div>
         <div class="input-group w-25 mb-2 mb-lg-0 custom-form-location">
@@ -76,7 +102,7 @@
             <i class="fa-solid fa-location-dot me-2"></i>
           </span>
           <select class="form-select rounded-0 location-select custom-select">
-            <option value="" selected>Select a country</option>
+            <option value="" selected><?= $lan['Select_country']?></option>
             <?php
             $countries = $dbFunctions->getData('countries');
             foreach ($countries as $cont) {
@@ -102,28 +128,27 @@
                   }
                   ?>" class="btn custom-btn me-2 mb-lg-0 d-flex flex-column align-items-center">
           <i class="fa-solid fa-dollar-sign mb-1 fa-plus-circle"></i>
-          <span class="new-btn">Sell</span>
+          <span class="new-btn"><?= $lan['sell'] ?></span>
         </a>
         <?php
         if (isset($_SESSION['userid'])) {
           echo '
                       <div class="d-flex">
                     <a class="btn btn-outline-light me-2" href="' . $urlval . 'msg.php">
-                        <i class="fas fa-envelope"></i> Messages
+                        <i class="fas fa-envelope"></i> '.$lan['messages'].'
                     </a>
                     <div class="dropdown">
                         <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                             <i class="fas fa-bars"></i> <br>
-                            <p>Menu</p>
+                            <p>'.$lan['menu'].'</p>
                         </button>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="' . $urlval . 'messages.php#upload-tab">Manage my Ads</a></li>
-                            <li><a class="dropdown-item" href="' . $urlval . 'msg.php">Messages</a></li>
-                            <li><a class="dropdown-item" href="' . $urlval . 'messages.php#favourite-tab">Favourites</a></li>
-                            <li><a class="dropdown-item" href="' . $urlval . 'messages.php#details-tab">My Details</a></li>
-                            <li><a class="dropdown-item" href="' . $urlval . 'messages.php#view-products-tab">View my Job Ads</a></li>
-                            <li><a class="dropdown-item" href="#">Help & Contact</a></li>
-                            <li><a class="dropdown-item" href="' . $urlval . 'logout.php">Logout</a></li>
+                            <li><a class="dropdown-item" href="' . $urlval . 'messages.php#upload-tab">'.$lan['manage_ads'].'</a></li>
+                            <li><a class="dropdown-item" href="' . $urlval . 'msg.php">'.$lan['messages'].'</a></li>
+                            <li><a class="dropdown-item" href="' . $urlval . 'messages.php#favourite-tab">'.$lan['favourites'].'</a></li>
+                            <li><a class="dropdown-item" href="' . $urlval . 'messages.php#details-tab">'.$lan['my_details'].'</a></li>
+                            <li><a class="dropdown-item" href="' . $urlval . 'messages.php#view-products-tab">'.$lan['view_job_ads'].'</a></li>
+                            <li><a class="dropdown-item" href="' . $urlval . 'logout.php">'.$lan['logout'].'</a></li>
                         </ul>
                     </div>
                 </div>
@@ -132,7 +157,7 @@
           echo '
                      <a href="' . $urlval . 'LoginRegister.php" class="btn custom-btn d-flex flex-column align-items-center">
             <i class="fa-solid fa-user mb-1 "></i>
-            <span class="new-btn">Login</span>
+            <span class="new-btn">'.$lan['login'].'</span>
           </a>
            ';
         }
@@ -141,7 +166,26 @@
 
 
       </div>
+      
     </div>
+    <div class="language-switcher">
+    <select id="languageSelect" onchange="changeLanguage(this.value)">
+    <option value="en" <?php echo ($lang == 'en') ? 'selected' : ''; ?>>English</option>
+    <?php
+    $languages = $fun->FindAllLan();
+    
+    if ($languages) {
+        foreach ($languages as $language) {
+            $fileName = pathinfo(basename($language['file_path']), PATHINFO_FILENAME);
+            echo '<option value="' . $fileName . '" ' . ($lang == $language['language_code'] ? 'selected' : '') . '>';
+            echo $language['language_name'];
+            echo '</option>';
+        }
+    }
+    ?>
+</select>
+
+</div>  
   </nav>
   <div id="searchResults" class="searchResults mt-3"></div>
   <!-- mobile ka  h -->

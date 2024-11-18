@@ -138,6 +138,39 @@ class Fun {
             return null;
         }
     }
+    public function uploadLanFiles($file) {
+        $uploadDir = __DIR__ . '/../languages/';
+        $uploadnewDir = 'languages/';
+        $fileName = basename($file['name']);
+        $uniqueFileName = uniqid() . '_' . $fileName;
+        $targetFilePath = $uploadDir . $uniqueFileName;
+    
+        $fileExtension = pathinfo($fileName, PATHINFO_EXTENSION);
+        if ($fileExtension !== 'php') {
+            return null; 
+        }
+    
+
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+    
+        if (move_uploaded_file($file['tmp_name'], $targetFilePath)) {
+            return $uploadnewDir . $uniqueFileName;
+        } else {
+            return null;
+        }
+    }
+    public function FindAllLan() {
+     
+        $getLan = $this->dbfun->getDatanotenc('languages');
+        if ($getLan && !empty($getLan)) {
+            return $getLan;
+        } else {
+            return null;
+        }
+    }
+    
     public function deleteData($id) {
         if (isset($id)) {
 
@@ -260,10 +293,38 @@ class Fun {
         $result = $stmt->fetch(PDO::FETCH_ASSOC);
         return $result['total'];
     }
+  
 
     public function getAllcat($start,$length) {
         try {
             $tabledata = $this->dbfun->getData('categories','', '', 'created_at', 'DESC', $start, $length);
+            if (empty($tabledata)) {
+
+                return [];
+            } else {
+
+            }
+            foreach ($tabledata as &$row) {
+                foreach ($row as $key => $value) {
+                    $row[$key] = $this->security->decrypt($value);
+                }
+            }
+
+            return $tabledata;
+        } catch (PDOException $e) {
+            return 'Error: ' . $e->getMessage();
+        }
+    }
+    public function getTotalLanCount() {
+        $query = "SELECT COUNT(*) AS total FROM languages";
+        $stmt = $this->pdo->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetch(PDO::FETCH_ASSOC);
+        return $result['total'];
+    }
+    public function getAllLan($start,$length) {
+        try {
+            $tabledata = $this->dbfun->getData('languages','', '', 'id', 'DESC', $start, $length);
             if (empty($tabledata)) {
 
                 return [];
@@ -774,5 +835,15 @@ public function getPaymentData($start, $length)
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
+function loadLanguage($lang) {
+    $file = __DIR__ . "/../languages/{$lang}.php";
+
+    if (file_exists($file)) {
+        return include($file);
+    }
     
+    // Default language file (English)
+    return include(__DIR__ . "/../languages/en.php");
+}
+
 }

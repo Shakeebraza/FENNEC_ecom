@@ -102,7 +102,10 @@ $(document).ready(function() {
     }
   );
 });
+function changeLanguage(languageFile) {
 
+    window.location.href = '?lang=' + languageFile;
+}
 
 
 </script>
