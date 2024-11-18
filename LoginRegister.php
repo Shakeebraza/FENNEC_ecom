@@ -23,7 +23,7 @@ include_once 'google-login.php';
                 role="tab"
                 aria-controls="login"
                 aria-selected="true">
-                LOGIN
+                <?=$lan['login']?>
               </button>
             </li>
             <li class="nav-item" role="presentation">
@@ -36,7 +36,7 @@ include_once 'google-login.php';
                 role="tab"
                 aria-controls="register"
                 aria-selected="false">
-                REGISTER
+                <?=$lan['REGISTER']?>
               </button>
             </li>
           </ul>
@@ -55,7 +55,7 @@ include_once 'google-login.php';
                 <div class="mb-3 text-center">
                 <a class="btn btn-outline-dark w-100" href="<?php echo $client->createAuthUrl(); ?>">
                     <img src="https://www.google.com/favicon.ico" alt="Google icon" class="me-2" style="width: 20px; height: 20px" />
-                    Sign in with Google
+                    <?= $lan['sign_in_with_google']?>
                 </a>
                 </div>
                 <div class="mb-3 text-center">
@@ -70,24 +70,24 @@ include_once 'google-login.php';
                   <hr class="divider" />
                 </div>
                 <div class="mb-3">
-                  <label for="email" class="form-label">Email</label>
+                  <label for="email" class="form-label"><?= $lan['email']?></label>
                   <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required />
                 </div>
                 <div class="mb-3">
-                  <label for="password" class="form-label">Password</label>
+                  <label for="password" class="form-label"><?= $lan['password']?></label>
                   <div class="input-group">
                     <input type="password" class="form-control" id="password" name="password" placeholder="Enter your password" required />
-                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword()">Show</button>
+                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword()"><?= $lan['show']?></button>
                   </div>
                   <div class="text-end mt-1">
-                    <a href="<?= $urlval?>forgetpass.php" class="text-decoration-none">Forgot your password?</a>
+                    <a href="<?= $urlval?>forgetpass.php" class="text-decoration-none"><?= $lan['Forgot_your_pass']?></a>
                   </div>
                 </div>
                 <div class="d-grid">
-                  <button type="submit" class="btn btn-success">Login</button>
+                  <button type="submit" class="btn btn-success"><?= $lan['login']?></button>
                 </div>
                 <p class="text-muted text-center mt-3 small">
-                  *By using social login, you agree to our Terms & Conditions and Privacy Notice.
+                  <?= $lan['login_privacy_policy']?>
                 </p>
               </form>
 
@@ -137,7 +137,7 @@ include_once 'google-login.php';
               <div class="mb-3 text-center">
                 <a class="btn btn-outline-dark w-100" href="<?php echo $client->createAuthUrl(); ?>">
                       <img src="https://www.google.com/favicon.ico" alt="Google icon" class="me-2" style="width: 20px; height: 20px" />
-                      Sign in with Google
+                      <?= $lan['sign_in_with_google']?>
                   </a>
               </div>
               <div class="mb-3 text-center">

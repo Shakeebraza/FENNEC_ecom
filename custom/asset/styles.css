@@ -2052,7 +2052,7 @@ display: none;
   border: 1px solid #ccc;
   z-index: 1000;
   right: 215px;
-  top: 107px;
+  top: 120px;
 }
 /* tablet screen */
 @media (min-width: 800px) and (max-width: 1500px) {
