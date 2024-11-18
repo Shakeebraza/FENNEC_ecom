@@ -69,7 +69,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     }
 
     .swiper-pagination.secoundpage.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal {
-        top: 215%;
+        top: 160%;
     }
 
 
@@ -174,17 +174,17 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         <div class="col-md-4">
             <div class="card mb-4">
                 <div class="card-body">
-                    <h5 class="card-title">Seller Information</h5>
+                    <h5 class="card-title"><?= $lan['seller_information']?></h5>
                     <p class="card-text">
                         <i class="fas fa-user"></i> <?php
                                                     $usid = $productData['product']['user_id'];
                                                     $datauserid = $dbFunctions->getDatanotenc('users', "id='$usid'");
                                                     echo $datauserid[0]['username'] ?? "Not found..";
                                                     ?><br>
-                        <small class="text-muted">Posting for under a month</small>
+                        <small class="text-muted"><?= $lan['posting_month']?></small>
                     </p>
                     <p class="card-text">
-                        <i class="fas fa-check-circle text-success"></i> Email address verified
+                        <i class="fas fa-check-circle text-success"></i> <?= $lan['email_address_verified']?>
                     </p>
                     <?php
                     if (isset($_SESSION['userid'])) {
@@ -196,11 +196,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
 
                     ?>
-                            <button onclick="startChat('<?= $encryptedProductId ?>')" class="btn btn-success w-100 mb-2">Chat</button>
+                            <button onclick="startChat('<?= $encryptedProductId ?>')" class="btn btn-success w-100 mb-2"><?= $lan['chat'] ?></button>
                     <?php
                         }
                     } else {
-                        echo '<a href="' . $urlval . 'LoginRegister.php" class="btn btn-success w-100 mb-2">Chat</a>';
+                        echo '<a href="' . $urlval . 'LoginRegister.php" class="btn btn-success w-100 mb-2">'.$lan['chat'].'</a>';
                     }
                     ?>
                     <?php
@@ -208,20 +208,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     if ($productData['is_favorited'] == 1): ?>
                         <button class="btn buttonss w-100 mb-2" data-productid="<?php echo $productData['product']['product_id']; ?>" id="favorite-button">
                             <i class="<?php echo $productData['is_favorited'] ? 'fas' : 'far'; ?> fa-heart"></i>
-                            <?php echo $productData['is_favorited'] ? 'Favorited' : 'Favourite'; ?>
+                            <?php echo $productData['is_favorited'] ? $lan['Favorited'] : $lan['Favourite']; ?>
                         </button>
                     <?php else:
                         if (isset($_SESSION['userid'])) {
                             echo '
                         <button class="btn buttonss w-100 mb-2" data-productid="' . $productData['product']['product_id'] . '" id="favorite-button">
-                            <i class="far fa-heart"></i> Favourite
+                            <i class="far fa-heart"></i> '.$lan['Favourite'].'
                         </button>
                             
                             ';
                         } else {
                             echo '
                                 <a class="btn buttonss w-100 mb-2" href="' . $urlval . 'LoginRegister.php">
-                                    <i class="far fa-heart"></i> Favourite
+                                    <i class="far fa-heart"></i> '.$lan['Favourite'].'
                                 </a>
                             
                             ';
@@ -291,7 +291,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         </div>
     </div>
 
-    <div class="container mt-5">
+    <!-- <div class="container mt-5">
         <div class="row align-items-center">
             <div class="col-md-8">
                 <div class="card">
@@ -318,9 +318,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                 <img src="https://www.gumtree.com/assets/partnership-ads/anyvan-background-1.ef9693bb727a2143b522a1f8105a9ada.png" alt="AnyVan delivery truck" class="img-fluid">
             </div>
         </div>
-    </div>
+    </div> -->
 
-    <h3 class="mt-4 mb-3"><b>You may also like...</b></h3>
+    <h3 class="mt-4 mb-3"><b><?= $lan['you_may_also_like']?></b></h3>
     <div class="swiper-container my-4" style="border-radius: 12px; overflow: hidden; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);">
         <div class="swiper-wrapper">
             <?php

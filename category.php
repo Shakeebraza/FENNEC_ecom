@@ -323,14 +323,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                     <div class="mt-5">
                         <div class="card" style="max-width: 100%;">
                             <div class="card-body">
-                                <h5 class="card-title mb-3">Price Range</h5>
+                                <h5 class="card-title mb-3"><?= $lan['pricerange']?></h5>
                                 <div class="mb-3">
-                                    <label for="minPrice" class="form-label">Minimum Price:</label>
-                                    <input type="number" name="min_price" class="form-control" id="minPrice" placeholder="Enter minimum price" min="0" step="500">
+                                    <label for="minPrice" class="form-label"><?= $lan['minimum_Price']?></label>
+                                    <input type="number" name="min_price" class="form-control" id="minPrice" placeholder="<?= $lan['enter']?><?= $lan['minimum_Price']?>" min="0" step="500">
                                 </div>
                                 <div class="mb-3">
-                                    <label for="maxPrice" class="form-label">Maximum Price:</label>
-                                    <input type="number" name="max_price" class="form-control" id="maxPrice" placeholder="Enter maximum price" min="0" step="500">
+                                    <label for="maxPrice" class="form-label"><?= $lan['maximum_price']?></label>
+                                    <input type="number" name="max_price" class="form-control" id="maxPrice" placeholder="<?= $lan['enter']?><?= $lan['maximum_price']?>" min="0" step="500">
                                 </div>
                               
                             </div>
@@ -350,7 +350,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         <div class="col-md-9">
             <div class="d-flex justify-content-between align-items-center mobileres">
                 <div class="d-flex align-items-center mb-4">
-                    <span class="me-2">VIEW AS</span>
+                    <span class="me-2"><?= $lan['view_as']?></span>
                     <div
                         class="view-option icon-list"
                         data-cols="1"
@@ -458,11 +458,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                                     echo ' 
                                                     <button class="btn quick-add-btn" type="button" style="background: #1987546e; border: none; padding: 5px;" 
                                                     onclick="startChat(\'' . $security->encrypt($proval['id']) . '\')">
-                                                    <i class="fas fa-comment-dots" style="font-size: 1.2em; color: #00494f;"></i> Chat 
+                                                    <i class="fas fa-comment-dots" style="font-size: 1.2em; color: #00494f;"></i> '.$lan['chat'].' 
                                                     </button>';
                                                 }else{
                                                     echo '
-                                                    <p style="text-align: center;color: #00494f;">This is your Product<p>
+                                                    <p style="text-align: center;color: #00494f;">'.$lan['your_product'].'<p>
                                                     ';
                                                 }
                                                 }
@@ -491,7 +491,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             <form id="filterForm" method="GET" action="">
                 <input type="hidden" name="slug" value="<?php echo $_GET['slug']?>">
                 <div class="mb-4">
-                    <h5>Location</h5>
+                    <h5><?= $lan['location']?></h5>
                     <div class="input-group mb-3">
                         <span class="input-group-text"><i class="fas fa-map-marker-alt"></i></span>
                         <select id="country-city-select" name="location" class="form-control">
@@ -509,11 +509,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                         </select>
                     </div>
 
-                    <button type="submit" class="btn btn-sell-car ms-3 w-50 custom-button">Search</button>
+                    <button type="submit" class="btn btn-sell-car ms-3 w-50 custom-button"><?=$lan['search']?></button>
                 </div>
 
                 <div class="">
-                    <h5>Sub Category</h5>
+                    <h5><?= $lan['sub_category']?></h5>
                     <div class="ms-3">
                        
                     <?php
@@ -561,7 +561,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                     <label for="maxPrice" class="form-label">Maximum Price:</label>
                                     <input type="number" name="max_price" class="form-control" id="maxPrice" placeholder="Enter maximum price" min="0" step="1000">
                                 </div>
-                                <button type="submit" class="btn btn-sell-car w-100">Search</button>
+                                <button type="submit" class="btn btn-sell-car w-100"><?=$lan['search']?></button>
                             </div>
                         </div>
                     </div>
@@ -572,7 +572,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         <div class="col-md-12 mb-4 mt-4">
   <!-- Premium Products Slider -->
   <div class="sidebar-box" style="box-shadow: 4px 3px 6px #A4A4A485; padding: 20px; background-color: white; border: 2px solid #198754;">
-    <h5 class="text-center" style="color: #198754;">Premium Products</h5>
+    <h5 class="text-center" style="color: #198754;"><?= $lan['premium_products']?></h5>
     <div class="slider" style="background-color: #fef5e6; padding: 10px;">
       <?php
         $productMultipalinPre = $productFun->PoplarProductperMultipal();

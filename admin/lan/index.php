@@ -14,9 +14,13 @@ include_once('../header.php');
                         <h3 class="title-5 m-b-35">Languages Table</h3>
                         <div class="table-data__tool">
                             <div class="table-data__tool-right">
-                                <a href="<?= $urlval ?>admin/lan/add.php" class="au-btn au-btn-icon au-btn--green au-btn--small">
-                                    <i class="zmdi zmdi-plus"></i> Add Languages
-                                </a>
+                            <a href="<?= $urlval ?>admin/lan/add.php" class="au-btn au-btn-icon au-btn--small" style="background-color: #333; color: white;">
+                                <i class="zmdi zmdi-plus"></i> Add Languages
+                            </a>
+                            <a href="<?= $urlval ?>languages/en.php" class="au-btn au-btn-icon au-btn--small" style="background-color: #28a745; color: white;" download>
+                                <i class="zmdi zmdi-download"></i> Download Template
+                            </a>
+
                             </div>
                         </div>
                     </div>

@@ -473,65 +473,66 @@ Class Productfun{
         ];
     }
 
-    function getProductsForUser($userId) {
-        if($userId){
-        $query = "
-            SELECT id, name, slug, description, image, price, created_at
-            FROM products
-            WHERE user_id = :user_id AND is_enable = 1 AND status = 'active'
-            ORDER BY created_at DESC
-        ";
+    function getProductsForUser($userId, $lan) {
+        if ($userId) {
+            $query = "
+                SELECT id, name, slug, description, image, price, created_at
+                FROM products
+                WHERE user_id = :user_id AND is_enable = 1 AND status = 'active'
+                ORDER BY created_at DESC
+            ";
     
-        $stmt = $this->pdo->prepare($query);
-        $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
-        $stmt->execute();
+            $stmt = $this->pdo->prepare($query);
+            $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+            $stmt->execute();
     
-        $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
+            $products = $stmt->fetchAll(PDO::FETCH_ASSOC);
     
-        if (!empty($products)) {
-            $this->displayProducts($products);
+            if (!empty($products)) {
+                $this->displayProducts($products, $lan);
+            } else {
+                throw new Exception("No products found for user with ID: " . htmlspecialchars($userId));
+            }
         } else {
-            throw new Exception("No products found for user with ID: " . htmlspecialchars($userId));
+            return $lan['No_products_found_for_user']; // Translated message
         }
-    }else{
-        return "No products found for user with ID:";
-    }
     }
     
-    function displayProducts($products) {
-    
+    function displayProducts($products, $lan) {
         foreach ($products as $product) {
-            $description =$product['description'];
-              $words = explode(" ", $description);
-              $description = count($words) > 5 ? implode(" ", array_slice($words, 0, 5)) . '...' : $description;
+            $description = $product['description'];
+            $words = explode(" ", $description);
+            $description = count($words) > 5 ? implode(" ", array_slice($words, 0, 5)) . '...' : $description;
+    
             echo '
                 <div class="col-md-4 mb-4">
-                  <div class="card product-card">
-                    <img
-                      src="' . htmlspecialchars($product['image']) . '"
-                      class="card-img-top"
-                      alt="' . htmlspecialchars($product['name']) . '"
-                    />
-                    <div class="card-body">
-                      <h5 class="card-title">' . htmlspecialchars($product['name']) . '</h5>
-                      <p class="card-text">' . htmlspecialchars( $description ) . '</p>
-                      <p class="card-text"><strong>Price:</strong> $' . number_format($product['price'], 2) . '</p>
-                      <p class="card-text">
-                        <small class="text-muted">Listed ' . $this->dbfun->time_ago($product['created_at']) . '</small>
-                      </p>
-                      <div class="d-flex justify-content-between">
-                        <a class="btn btn-button btn-sm" href="'.$this->urlval.'productedit.php?productid='.$this->security->encrypt($product['id']).'">Edit</a>
-                        <div>
-                        <a class="btn btn-button btn-sm btn-boost" href="'.$this->urlval.'productboost.php?productid='.base64_encode($product['id']) .'">Boost</a>
-                       <button class="btn btn-button btn-sm btn-delete" data-product-id="' . $this->security->encrypt($product['id']). '">Delete</button>
-                      </div>
-                       </div>
+                    <div class="card product-card">
+                        <img
+                            src="' . htmlspecialchars($product['image']) . '"
+                            class="card-img-top"
+                            alt="' . htmlspecialchars($product['name']) . '"
+                        />
+                        <div class="card-body">
+                            <h5 class="card-title">' . htmlspecialchars($product['name']) . '</h5>
+                            <p class="card-text">' . htmlspecialchars($description) . '</p>
+                            <p class="card-text"><strong>' . $lan['price'] . ':</strong> $' . number_format($product['price'], 2) . '</p>
+                            <p class="card-text">
+                                <small class="text-muted">' . $lan['listed'] . ' ' . $this->dbfun->time_ago($product['created_at']) . '</small>
+                            </p>
+                            <div class="d-flex justify-content-between">
+                                <a class="btn btn-button btn-sm" href="'.$this->urlval.'productedit.php?productid='.$this->security->encrypt($product['id']).'">'.$lan['edit'].'</a>
+                                <div>
+                                    <a class="btn btn-button btn-sm btn-boost" href="'.$this->urlval.'productboost.php?productid='.base64_encode($product['id']).'">'.$lan['boost'].'</a>
+                                    <button class="btn btn-button btn-sm btn-delete" data-product-id="' . $this->security->encrypt($product['id']) . '">' . $lan['delete'] . '</button>
+                                </div>
+                            </div>
+                        </div>
                     </div>
-                  </div>
                 </div>
             ';
         }
     }
+    
     public function GetUserId($id){
         if(isset($id)){
             $getdata = $this->dbfun->getDatanotenc('products', "id='$id'");

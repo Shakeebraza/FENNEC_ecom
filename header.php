@@ -7,6 +7,8 @@ if (isset($_GET['lang'])) {
 
 $lang = $_SESSION['lang'] ?? 'en';
 $lan = $fun->loadLanguage($lang);
+// var_dump($lang);
+// exit();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -177,7 +179,7 @@ $lan = $fun->loadLanguage($lang);
     if ($languages) {
         foreach ($languages as $language) {
             $fileName = pathinfo(basename($language['file_path']), PATHINFO_FILENAME);
-            echo '<option value="' . $fileName . '" ' . ($lang == $language['language_code'] ? 'selected' : '') . '>';
+            echo '<option value="' . $fileName . '" ' . ($lang == $fileName ? 'selected' : '') . '>';
             echo $language['language_name'];
             echo '</option>';
         }
@@ -191,24 +193,24 @@ $lan = $fun->loadLanguage($lang);
   <!-- mobile ka  h -->
   <div id="mySidebar" class="sidebar">
     <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-    <a href="<?php echo $urlval ?>">Home</a>
+    <a href="<?php echo $urlval ?>"><?= $lan['home']?></a>
     <a href="<?php
               if (isset($_SESSION['userid'])) {
                 echo $urlval . 'post.php';
               } else {
                 echo $urlval . 'Product.php';
               }
-              ?>">Post an Ad</a>
+              ?>"><?= $lan['post']?></a>
     <?php if (isset($_SESSION['userid'])): ?>
-      <a href="<?= $urlval ?>messages.php#upload-tab">Manage my Ads</a>
-      <a href="<?= $urlval ?>msg.php">Messages</a>
-      <a href="<?= $urlval ?>messages.php#favourite-tab">Favourites</a>
-      <a href="<?= $urlval ?>messages.php#details-tab">My Details</a>
-      <a href="<?= $urlval ?>messages.php#view-products-tab">Manage my Job Ads</a>
+      <a href="<?= $urlval ?>messages.php#upload-tab"><?= $lan['manage_ads']?></a>
+      <a href="<?= $urlval ?>msg.php"><?= $lan['messages']?></a>
+      <a href="<?= $urlval ?>messages.php#favourite-tab"><?= $lan['favourites']?></a>
+      <a href="<?= $urlval ?>messages.php#details-tab"><?= $lan['my_details']?></a>
+      <a href="<?= $urlval ?>messages.php#view-products-tab"><?= $lan['view_job_ads']?></a>
     <?php endif; ?>
 
 
-    <a href="<?php echo $urlval ?>LoginRegister.php">Login</a>
+    <a href="<?php echo $urlval ?>LoginRegister.php"><?= $lan['login']?></a>
   </div>
 
   <div class="nav-sub-menu-ct">
@@ -218,6 +220,7 @@ $lan = $fun->loadLanguage($lang);
           <div class="nav-men-sub-ct-inn">
             <ul>
               <?php
+              $browse_by=$lan['browse_by'] ?? 'Browse by';
               $findCate = $categoryManager->getAllCategoriesHeaderMenu();
               if ($findCate['status'] == 'success') {
                 foreach ($findCate['data'] as $category) {
@@ -226,7 +229,7 @@ $lan = $fun->loadLanguage($lang);
                   <a href="' . $urlval . 'category.php?slug=' . $category['slug'] . '">' . htmlspecialchars($category['category_name']) . '</a>
                   <div class="nav-main-dwdisnmn" style="display:none;">
                     <div class="nav-snm-innnn">
-                      <h2>Browse by</h2>
+                      <h2>'.$browse_by.'</h2>
                       <div class="div-nv-sb-menu">
                         <ul>';
 
@@ -286,6 +289,7 @@ $lan = $fun->loadLanguage($lang);
 
     <div class="remenu-sub">
       <?php
+       $browse_by=$lan['browse_by'] ?? 'Browse by';
       if ($findCate['status'] == 'success') {
         foreach ($findCate['data'] as $category) {
       ?>
@@ -295,7 +299,7 @@ $lan = $fun->loadLanguage($lang);
                 <img class="crs-end" src="<?php echo $urlval; ?>custom/asset/delete-button.png" alt="Delete Button">
                 <h3><?php echo htmlspecialchars($category['category_name']); ?></h3>
               </div>
-              <h2>Browse by</h2>
+              <h2><?= $browse_by?></h2>
               <ul>
                 <?php
                 $duncatdata = $categoryManager->getAllSubCategoriesHeaderMenu($category['id']);
@@ -310,7 +314,7 @@ $lan = $fun->loadLanguage($lang);
                 <?php
                   }
                 } else {
-                  echo '<li>No subcategories found</li>';
+                  echo '<li>'.$lan['No_subcategories_found'].'</li>';
                 }
                 ?>
               </ul>

@@ -52,7 +52,7 @@
     <hr>
 
     <div class="mt-4 pb-3 text-center">
-      <p>Copyright © 2024 All rights reserved</p>
+      <p><?= $lan['copyright']?></p>
     </div>
   </div>
 </footer>
