@@ -168,7 +168,7 @@ include_once 'header.php';
       <div class="container mt-5">
 
 
-        <h3 class="mt-5">Featured Categories</h3>
+        <h3 class="mt-5"><?= $lan['Featured_Categories']?></h3>
         <div class="container mt-5">
 
           <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
