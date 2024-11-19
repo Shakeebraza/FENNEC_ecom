@@ -143,6 +143,7 @@ include_once 'header.php';
       font-size: 12px;
     }
   }
+
 </style>
 <!-- index content -->
 <div class="custom-slider-container">
@@ -397,6 +398,12 @@ include_once 'header.php';
                           src="<?php echo $product['image']; ?>"
                           alt="<?php echo htmlspecialchars($product['name']); ?>"
                           class="product-image w-100" />
+                          <?php
+                                          if($product['product_type'] == "standard"){
+                                            echo '<div class="watermark">'. $title.'</div>';
+  
+                                          }
+                                        ?>
                       </a>
 
                       <?php if ($setSession == true) { ?>

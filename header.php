@@ -61,6 +61,22 @@ $lan = $fun->loadLanguage($lang);
 .language-switcher select:hover {
     background-color: #e2e2e2;
 }
+.watermark {
+    position: absolute;
+    top: 25%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-size: 40px;
+    color: rgba(255, 255, 255, 0.5); 
+    font-weight: bold;
+    text-align: center;
+    pointer-events: none; 
+    user-select: none;
+    z-index: 10; 
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    -webkit-text-stroke: 1px rgba(0, 0, 0, 0.7);
+}
   </style>
 </head>
 
