@@ -161,7 +161,7 @@ $lan = $fun->loadLanguage($lang);
       style="top: 3%; left: 57%; display: none;">0</span>
 
               <!-- Dropdown Menu -->
-              <div class="dropdown">
+              <div class="dropdown" style="top:-7px;">
                   <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
                       <i class="fas fa-bars"></i> 
                       <br>

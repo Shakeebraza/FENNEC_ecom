@@ -476,11 +476,12 @@ Class Productfun{
     function getProductsForUser($userId, $lan) {
         if ($userId) {
             $query = "
-                SELECT id, name, slug, description, image, price, created_at
+                SELECT id, name, slug, description, image, price, created_at, product_type
                 FROM products
                 WHERE user_id = :user_id AND is_enable = 1 AND status = 'active'
-                ORDER BY created_at DESC
+                ORDER BY FIELD(product_type, 'premium', 'gold', 'standard'), created_at DESC
             ";
+
     
             $stmt = $this->pdo->prepare($query);
             $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
@@ -521,9 +522,20 @@ Class Productfun{
                             </p>
                             <div class="d-flex justify-content-between">
                                 <a class="btn btn-button btn-sm" href="'.$this->urlval.'productedit.php?productid='.$this->security->encrypt($product['id']).'">'.$lan['edit'].'</a>
-                                <div>
+                                
+                                <div>';
+                                if($product['product_type'] == 'standard'){
+                                    echo'
                                     <a class="btn btn-button btn-sm btn-boost" href="'.$this->urlval.'productboost.php?productid='.base64_encode($product['id']).'">'.$lan['boost'].'</a>
-                                    <button class="btn btn-button btn-sm btn-delete" data-product-id="' . $this->security->encrypt($product['id']) . '">' . $lan['delete'] . '</button>
+                                    
+                                    ';
+                                }else{
+                                    echo'
+                                    
+                                    <a class="btn btn-button btn-sm btn-boost" href="'.$this->urlval.'uploadgalvideo.php?productid='.base64_encode($product['id']).'">'.$lan['upload_gallery_video'].'</a>
+                                    ';
+                                }
+                                echo'<button class="btn btn-button btn-sm btn-delete" data-product-id="' . $this->security->encrypt($product['id']) . '">' . $lan['delete'] . '</button>
                                 </div>
                             </div>
                         </div>
