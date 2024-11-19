@@ -789,7 +789,6 @@ button:focus {
         font-size: 12px !important;
     }
 }
-
 </style>
 <section class="message-area">
     <div class="container">

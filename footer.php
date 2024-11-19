@@ -108,4 +108,30 @@ function changeLanguage(languageFile) {
 }
 
 
+
+$(document).ready(function () {
+
+    function fetchUnreadMessages() {
+        $.ajax({
+            url: "<?= $urlval?>ajax/unread_messages.php",
+            type: "GET",
+            dataType: "json",
+            success: function (response) {
+                if (response.unread_count > 0) {
+                 
+                    $("#unread-count").text(response.unread_count).show();
+                } else {
+                  
+                    $("#unread-count").hide();
+                }
+            },
+            error: function () {
+                console.error("Error fetching unread messages.");
+            }
+        });
+    }
+
+
+    fetchUnreadMessages();
+});
 </script>

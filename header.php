@@ -134,27 +134,35 @@ $lan = $fun->loadLanguage($lang);
         </a>
         <?php
         if (isset($_SESSION['userid'])) {
+      
           echo '
-                      <div class="d-flex">
-                    <a class="btn btn-outline-light me-2" href="' . $urlval . 'msg.php">
-                        <i class="fas fa-envelope"></i> '.$lan['messages'].'
-                    </a>
-                    <div class="dropdown">
-                        <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-                            <i class="fas fa-bars"></i> <br>
-                            <p>'.$lan['menu'].'</p>
-                        </button>
-                        <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                            <li><a class="dropdown-item" href="' . $urlval . 'messages.php#upload-tab">'.$lan['manage_ads'].'</a></li>
-                            <li><a class="dropdown-item" href="' . $urlval . 'msg.php">'.$lan['messages'].'</a></li>
-                            <li><a class="dropdown-item" href="' . $urlval . 'messages.php#favourite-tab">'.$lan['favourites'].'</a></li>
-                            <li><a class="dropdown-item" href="' . $urlval . 'messages.php#details-tab">'.$lan['my_details'].'</a></li>
-                            <li><a class="dropdown-item" href="' . $urlval . 'messages.php#view-products-tab">'.$lan['view_job_ads'].'</a></li>
-                            <li><a class="dropdown-item" href="' . $urlval . 'logout.php">'.$lan['logout'].'</a></li>
-                        </ul>
-                    </div>
-                </div>
-            ';
+          <div class="d-flex">
+              <!-- Messages Button with Badge -->
+              <a class="btn btn-outline-light me-2 position-relative" href="' . $urlval . 'msg.php">
+                  <i class="fas fa-envelope"></i> ' . $lan['messages'] . '
+                 <span id="unread-count" 
+      class="position-absolute badge rounded-pill bg-danger" 
+      style="top: 3%; left: 57%; display: none;">0</span>
+
+              <!-- Dropdown Menu -->
+              <div class="dropdown">
+                  <button class="btn btn-outline-light dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+                      <i class="fas fa-bars"></i> 
+                      <br>
+                      <p>' . $lan['menu'] . '</p>
+                  </button>
+                  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+                      <li><a class="dropdown-item" href="' . $urlval . 'messages.php#upload-tab">' . $lan['manage_ads'] . '</a></li>
+                      <li><a class="dropdown-item" href="' . $urlval . 'msg.php">' . $lan['messages'] . '</a></li>
+                      <li><a class="dropdown-item" href="' . $urlval . 'messages.php#favourite-tab">' . $lan['favourites'] . '</a></li>
+                      <li><a class="dropdown-item" href="' . $urlval . 'messages.php#details-tab">' . $lan['my_details'] . '</a></li>
+                      <li><a class="dropdown-item" href="' . $urlval . 'messages.php#view-products-tab">' . $lan['view_job_ads'] . '</a></li>
+                      <li><a class="dropdown-item" href="' . $urlval . 'logout.php">' . $lan['logout'] . '</a></li>
+                  </ul>
+              </div>
+          </div>
+          ';
+
         } else {
           echo '
                      <a href="' . $urlval . 'LoginRegister.php" class="btn custom-btn d-flex flex-column align-items-center">
