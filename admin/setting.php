@@ -7,8 +7,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     foreach ($_POST as $key => $value) {
         if($key == 'google_add_script'){
             $settingsArray[$key] = $value;
+            
+        }elseif($key == 'google_map_script'){
+            $settingsArray[$key] = $value;
 
-        }elseif($key == 'google_ads_txt'){
+        }
+        elseif($key == 'google_ads_txt'){
             $filePath = $_SERVER['DOCUMENT_ROOT'] . '/Ads.txt';
 
             if (file_put_contents($filePath, $value) !== false) {

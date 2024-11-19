@@ -360,12 +360,16 @@ Class Productfun{
                 p.discount_price,
                 p.country_id,
                 p.city_id,
+                p.aera_id,
                 p.brand,
                 c.category_name,
                 c.slug AS catslug,
                 s.subcategory_name,
                 cou.name AS con_name,
                 city.name AS city_name,
+                area.name AS area_name,  -- Area name
+                city.longitude AS city_longitude,  -- Longitude of the city
+                city.latitude AS city_latitude,    -- Latitude of the city
                 pi.image_path AS image_path,
                 CASE WHEN f.user_id IS NOT NULL THEN 1 ELSE 0 END AS is_favorited
             FROM 
@@ -382,6 +386,8 @@ Class Productfun{
                 countries cou ON cou.id = p.country_id
             LEFT JOIN 
                 cities city ON city.id = p.city_id
+            LEFT JOIN 
+                areas area ON area.city_id = p.aera_id  -- Ensure correct join for areas
             WHERE 
                 p.slug = :slug
         ";
@@ -399,17 +405,23 @@ Class Productfun{
         if ($productDetails) {
             $firstProduct = $productDetails[0];
             $images = array_column($productDetails, 'image_path');
-            
+    
             return [
                 'product' => $firstProduct,
                 'gallery_images' => $images,
                 'is_favorited' => $firstProduct['is_favorited'],
-                'location' => $firstProduct['con_name'] . ' | ' . $firstProduct['city_name']
+                'location' => $firstProduct['con_name'] . ' | ' . $firstProduct['city_name'] . ' | ' . $firstProduct['area_name'],
+                'country' => $firstProduct['con_name'],
+                'city' => $firstProduct['city_name'],
+                'area' => $firstProduct['area_name'],
+                'city_longitude' => $firstProduct['city_longitude'],  // Longitude
+                'city_latitude' => $firstProduct['city_latitude'],    // Latitude
             ];
         }
     
         return null;
     }
+    
     
     
     public function toggleFavorite($productId, $userId) {

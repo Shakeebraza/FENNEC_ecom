@@ -29,11 +29,17 @@ $lan = $fun->loadLanguage($lang);
   <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick.min.css"/>
 <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
 
+
   <?php
   $googleAddScript = $fun->getSiteSettingValue('google_add_script');
+  $google_map_script = $fun->getSiteSettingValue('google_map_script');
 
   if (!empty($googleAddScript) && strpos($googleAddScript, '<script') !== false) {
     echo $googleAddScript;
+  }
+  if(!empty($google_map_script) && strpos($google_map_script, '<script') !== false){
+    echo $google_map_script;
+
   }
   ?>
 

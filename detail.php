@@ -20,8 +20,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     header('Location: index.php');
     exit();
 }
-// var_dump($productData['product']);
-
+$latitude = $productData['city_latitude'];
+$longitude = $productData['city_longitude'];
+$country = $productData['country'];
+$city = $productData['city'];
+$area = $productData['area'];
 ?>
 <style>
     /* Slider Item Styling */
@@ -303,6 +306,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     <button class="btn ">Get instant price</button>
                 </div>
             </div>
+            <div id="map"></div>
 
             <div class="card card-body">
 
@@ -664,6 +668,39 @@ include_once 'footer.php';
     const pdfUrl = URL.createObjectURL(pdfBlob);
     window.open(pdfUrl, '_blank');
 }
+
+
+
+function initMap() {
+
+    const latitude = <?php echo json_encode($latitude); ?>;
+    const longitude = <?php echo json_encode($longitude); ?>;
+    const country = <?php echo json_encode($country); ?>;
+    const city = <?php echo json_encode($city); ?>;
+    const area = <?php echo json_encode($area); ?>;
+
+    const map = new google.maps.Map(document.getElementById('map'), {
+        center: { lat: parseFloat(latitude), lng: parseFloat(longitude) },
+        zoom: 12
+    });
+
+    const marker = new google.maps.Marker({
+        position: { lat: parseFloat(latitude), lng: parseFloat(longitude) },
+        map: map,
+        title: `${area}, ${city}, ${country}`
+    });
+
+    const infowindow = new google.maps.InfoWindow({
+        content: `<h3>${area}</h3><p>${city}, ${country}</p>`
+    });
+
+    marker.addListener('click', function() {
+        infowindow.open(map, marker);
+    });
+}
+
+
+google.maps.event.addDomListener(window, 'load', initMap);
 
 </script>
 </body>
