@@ -846,4 +846,81 @@ function loadLanguage($lang) {
     return include(__DIR__ . "/../languages/en.php");
 }
 
+
+function getUserTransactionsAndProducts($startDate, $endDate, $productName = null, $priceRange = null) {
+    global $pdo;
+    $userId = base64_decode($_SESSION['userid']);
+    
+    $query = "
+        SELECT 
+            pay.id AS payment_id,
+            pay.txn_id AS payment_txn_id,
+            pay.amount AS payment_amount,
+            pay.status AS payment_status,
+            pay.created_at AS payment_created_at,
+            p.id AS product_id,
+            p.name AS product_name,
+            p.slug AS product_slug,
+            p.description AS product_description,
+            p.brand AS product_brand,
+            p.conditions AS product_conditions,
+            p.image AS product_image,
+            p.category_id AS product_category_id,
+            p.subcategory_id AS product_subcategory_id,
+            p.price AS product_price,
+            p.discount_price AS product_discount_price,
+            p.is_enable AS product_is_enable,
+            p.status AS product_status,
+            p.product_type AS product_type
+        FROM 
+            payments pay
+        INNER JOIN 
+            products p ON pay.proid = p.id
+        WHERE 
+            pay.user_id = :user_id
+        AND 
+            pay.created_at BETWEEN :start_date AND :end_date
+    ";
+    
+    // Add product name condition if provided
+    if ($productName) {
+        $query .= " AND p.name LIKE :product_name";
+    }
+    
+    // Add price range condition if provided
+    if ($priceRange) {
+        if (isset($priceRange['min_price'])) {
+            $query .= " AND p.price >= :min_price";
+        }
+        if (isset($priceRange['max_price'])) {
+            $query .= " AND p.price <= :max_price";
+        }
+    }
+
+    // Prepare and execute the SQL query
+    $stmt = $pdo->prepare($query);
+    $stmt->bindParam(':user_id', $userId, PDO::PARAM_INT);
+    $stmt->bindParam(':start_date', $startDate, PDO::PARAM_STR);
+    $stmt->bindParam(':end_date', $endDate, PDO::PARAM_STR);
+    
+    // Bind additional parameters if provided
+    if ($productName) {
+        $stmt->bindValue(':product_name', '%' . $productName . '%', PDO::PARAM_STR);
+    }
+    if ($priceRange) {
+        if (isset($priceRange['min_price'])) {
+            $stmt->bindParam(':min_price', $priceRange['min_price'], PDO::PARAM_INT);
+        }
+        if (isset($priceRange['max_price'])) {
+            $stmt->bindParam(':max_price', $priceRange['max_price'], PDO::PARAM_INT);
+        }
+    }
+
+    // Execute the query
+    $stmt->execute();
+    
+    // Fetch and return the results
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
 }

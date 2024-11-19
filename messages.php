@@ -14,6 +14,67 @@ if ($setSession == false) {
 $userid = intval(base64_decode($_SESSION['userid'])) ?? 0;
 $userData = $dbFunctions->getDatanotenc('user_detail', "userid = '$userid'");
 ?>
+<style>
+
+.modal {
+    display: none;
+    position: fixed;
+    z-index: 1;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); 
+}
+
+/* Modal content */
+.modal-content {
+    background-color: #fff;
+    margin: 10% auto; 
+    padding: 20px;
+    width: 80%; 
+    max-width: 600px;
+    border-radius: 5px;
+    position: relative;
+    box-sizing: border-box;  
+}
+
+
+.modal-content h2 {
+    margin-top: 0; 
+    margin-bottom: 20px; 
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+}
+
+
+.close-btn {
+    color: #aaa;
+    font-size: 28px;
+    font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 15px;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+    color: black;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+#transactionHistory {
+    max-height: 400px;
+    overflow-y: auto; 
+    padding: 10px;
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+</style>
 <div class="container mt-4 pb-5">
   <ul class="nav nav-tabs justify-content-between" id="myTab" role="tablist">
     <li class="nav-item" role="presentation">
@@ -276,6 +337,7 @@ $userData = $dbFunctions->getDatanotenc('user_detail', "userid = '$userid'");
                 <button type="submit" class="btn btn-primary"><?= $lan['save_contact_deatail']?></button>
 
                 <button type="button" class="btn btn-button" onclick="openPasswordModal()"><?= $lan['edit_password']?></button>
+                <button type="button" class="btn btn-button" onclick="openTransactionHistory()"><?= $lan['View_full_transaction_history']?></button>
               </form>
 
 
@@ -303,6 +365,17 @@ $userData = $dbFunctions->getDatanotenc('user_detail', "userid = '$userid'");
       </div>
     </div>
   </div>
+  <div id="transactionHistoryModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close-btn" onclick="closeModal()">&times;</span>
+        <h2><?= $lan['transaction_history'] ?></h2>
+        <div id="transactionHistory"></div> 
+        <!-- View More Button -->
+        <a href="<?= $urlval?>transaction_history.php" class="btn btn-primary" style="display: block; margin-top: 20px; text-align: center;">
+            <?= $lan['view_more'] ?>
+        </a>
+    </div>
+</div>
 </div>
 
 <?php
@@ -546,6 +619,32 @@ include_once 'footer.php';
       $('#city').html('<option value="" disabled>Select City</option>');
     }
   });
+
+  function openTransactionHistory() {
+    // Show the modal
+    document.getElementById('transactionHistoryModal').style.display = 'block';
+
+    // Fetch transaction history (you can replace this URL with your own backend endpoint)
+    fetch('<?=$urlval?>ajax/get_transaction_history.php') // PHP script that returns transaction history
+        .then(response => response.json()) // Assume the response is JSON
+        .then(data => {
+            let historyHtml = '<ul>';
+            data.forEach(transaction => {
+                historyHtml += `<li>Transaction ID: ${transaction.id} - Amount: $${transaction.amount} - Date: ${transaction.date}</li>`;
+            });
+            historyHtml += '</ul>';
+            document.getElementById('transactionHistory').innerHTML = historyHtml;
+        })
+        .catch(error => {
+            console.error('Error fetching transaction history:', error);
+            document.getElementById('transactionHistory').innerHTML = 'Failed to load transaction history.';
+        });
+}
+
+// Function to close the modal
+function closeModal() {
+    document.getElementById('transactionHistoryModal').style.display = 'none';
+}
 </script>
 </body>
 
