@@ -57,7 +57,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
     .image-container:hover .image-overlay {
         opacity: 1;
-        /* Show overlay on hover */
+       
     }
 
     .product-name {
@@ -65,11 +65,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         font-size: 1.5rem;
         font-weight: bold;
         text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
-        /* Add shadow to make text readable */
+        
     }
 
     .swiper-pagination.secoundpage.swiper-pagination-clickable.swiper-pagination-bullets.swiper-pagination-horizontal {
-        top: 195%;
+        top: 200%;
     }
 
 
@@ -85,6 +85,64 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             top: 275%;
         }
     }
+    .gallery-container {
+    padding: 30px;
+    max-width: 1200px;
+    margin: 0 auto;
+    text-align: center;
+}
+
+/* Gallery Title */
+.gallery-title {
+    font-size: 2em;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-transform: uppercase;
+    border-bottom: 2px solid #ff5733;
+    display: inline-block;
+    padding-bottom: 5px;
+}
+
+/* Gallery Grid */
+.gallery-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Gallery Item */
+.gallery-item {
+    position: relative;
+    width: 300px;
+    height: 200px;
+    overflow: hidden;
+    border-radius: 8px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+}
+
+/* Video */
+.gallery-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .gallery-item {
+        width: 100%;
+    }
+}
 </style>
 
 <div class="container mt-4">
@@ -319,6 +377,34 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             </div>
         </div>
     </div> -->
+    <?php if($productData['product']['product_type'] != 'standard'):?>
+    <div id="video-gallery" class="gallery-container">
+        <h2 class="gallery-title"><?= $lan['video_gallery'] ?></h2>
+        <div class="gallery-grid">
+            <?php
+            $proid = $productData['product']['product_id'];
+            $getVideoGalleryData = $dbFunctions->getDatanotenc('product_videos', "product_id ='$proid'");
+
+            if (!empty($getVideoGalleryData)) {
+                $videoPaths = explode(',', $getVideoGalleryData[0]['video_paths']); // Split the video paths
+
+                foreach ($videoPaths as $videoPath) {
+                    ?>
+                    <div class="gallery-item">
+                        <video class="gallery-video" controls>
+                            <source src="<?= $urlval.htmlspecialchars($videoPath) ?>" type="video/mp4">
+                            Your browser does not support the video tag.
+                        </video>
+                    </div>
+                    <?php
+                }
+            } else {
+                echo "<p>No videos available for this product.</p>";
+            }
+            ?>
+        </div>
+    </div>
+    <?php endif;?>
 
     <h3 class="mt-4 mb-3"><b><?= $lan['you_may_also_like']?></b></h3>
     <div class="swiper-container my-4" style="border-radius: 12px; overflow: hidden; box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);">

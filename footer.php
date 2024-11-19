@@ -1,3 +1,51 @@
+<div id="premium-video-section" class="premium-container" style="margin-bottom: 40px;">
+    <h2 class="premium-title"><?= $lan['premium_video_listing'] ?></h2>
+    <div class="premium-grid">
+        <?php
+        
+        $getVideoGalleryData = $productFun->getPremiumProductsWithVideos();
+
+        if (!empty($getVideoGalleryData)) {
+            foreach ($getVideoGalleryData as $product) {
+                
+                if (!empty($product['videos'])) {
+                    
+                    $randomVideo = $product['videos'][array_rand($product['videos'])];
+
+                    ?>
+                    <div class="premium-item">
+                       
+                        <!-- Display the product image as a thumbnail -->
+                        <div class="video-thumbnail" style="background-image: url('<?= htmlspecialchars(trim($product['image'])) ?>');">
+                            <video class="premium-video" controls>
+                                <source src="<?= htmlspecialchars(trim($randomVideo)) ?>" type="video/mp4">
+                                Your browser does not support the video tag.
+                            </video>
+                        </div>
+                       
+                        <a href="detail.php?slug=<?= $product['slug'] ?>" class="premium-product-link">
+                            <?= htmlspecialchars($product['name']) ?>
+                        </a>
+                    </div>
+                    <?php
+                } else {
+                    
+                    continue;
+                }
+            }
+        } else {
+            echo "<p>No premium videos available at the moment.</p>";
+        }
+        ?>
+    </div>
+</div>
+
+
+
+
+
+
+
 <footer class="text-light pt-5">
   <div class="container">
     <div class="row">

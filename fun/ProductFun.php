@@ -670,7 +670,68 @@ Class Productfun{
         }
     }
     
-
+    function getPremiumProductsWithVideos() {
+        try {
+            // Query to fetch 5 random premium products
+            $productQuery = "
+                SELECT 
+                    p.id AS product_id,
+                    p.name,
+                    p.slug,
+                    p.description,
+                    p.brand,
+                    p.conditions,
+                    p.image,
+                    p.category_id,
+                    p.subcategory_id,
+                    p.price,
+                    p.discount_price,
+                    p.is_enable,
+                    p.status,
+                    p.product_type,
+                    p.user_id,
+                    p.country_id,
+                    p.city_id,
+                    p.date,
+                    p.created_at,
+                    p.updated_at,
+                    pv.video_paths
+                FROM 
+                    products p
+                LEFT JOIN 
+                    product_videos pv 
+                ON 
+                    p.id = pv.product_id
+                WHERE 
+                    p.product_type = 'premium' AND p.is_enable = 1
+                ORDER BY 
+                    RAND() 
+                LIMIT 5
+            ";
+    
+            $stmt = $this->pdo->prepare($productQuery);
+            $stmt->execute();
+    
+            $premiumProducts = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    
+            foreach ($premiumProducts as &$product) {
+                // Check if video_paths exists and is not empty
+                if (!empty($product['video_paths'])) {
+                    $product['videos'] = explode(',', $product['video_paths']);
+                } else {
+                    $product['videos'] = []; // Default to an empty array
+                }
+                unset($product['video_paths']); // Remove the original key
+            }
+    
+            return $premiumProducts;
+        } catch (PDOException $e) {
+            error_log("Error fetching premium products: " . $e->getMessage());
+            return [];
+        }
+    }
+    
+    
 }
 
 ?>
