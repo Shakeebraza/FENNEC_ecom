@@ -417,8 +417,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                                                 src="' . $proval['image'] . '"
                                                 class="card-img-top"
                                                 alt="' . $name . '"
-                                            />
-                                            <div class="heart-icon">';
+                                            />';
+                                      
+                                          if($proval['product_type'] == "standard"){
+                                            echo '<div class="watermark">'. $title.'</div>';
+  
+                                          }
+                                     
+                                            echo'<div class="heart-icon">';
                                     if(isset($_SESSION['userid'])){
                                         echo'
                                              <a
