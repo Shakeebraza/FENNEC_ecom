@@ -80,6 +80,9 @@
                     <li class="nav-item <?=isActive('/fennec/admin/lan/index.php');  ?> <?=isActive('/fennec/admin/lan/add.php');  ?> <?=isActive('/fennec/admin/lan/edit.php');  ?>">
                         <a class="nav-link" href="<?php echo $urlval?>admin/packages/index.php"><i class="fas fa-language"></i> Languages</a>
                     </li>
+                    <li class="nav-item <?=isActive('/fennec/admin/location/index.php');  ?> <?=isActive('/fennec/admin/location/add.php');  ?> <?=isActive('/fennec/admin/location/edit.php');  ?>">
+                        <a class="nav-link" href="<?php echo $urlval?>admin/location/index.php"><i class="fa-solid fa-location-dot"></i>Location</a>
+                    </li>
                     <li class="nav-item <?=isActive('/fennec/admin/box/setting.php');  ?>">
                         <a class="nav-link" href="<?php echo $urlval?>admin/box/setting.php"><i class="fas fa-cog"></i> Site Setting</a>
                     </li>
@@ -135,6 +138,7 @@
                         <i class="fas fa-bars"></i>Menus</a>
                 </li>
 
+
                 <li class="has-sub <?=isActive('/fennec/admin/page/index.php');  ?> <?=isActive('/fennec/admin/page/addpage.php');  ?>">
                     <a class="js-arrow" href="#">
                         <i class="fas fa-copy"></i>Pages</a>
@@ -177,6 +181,10 @@
                 <li class="<?=isActive('/fennec/admin/lan/index.php');  ?> <?=isActive('/fennec/admin/lan/add.php');  ?> <?=isActive('/fennec/admin/lan/edit.php');  ?>">
                     <a href="<?php echo $urlval?>admin/lan/index.php">
                     <i class="fas fa-language"></i>Languages</a>
+                </li>
+                <li class="<?=isActive('/fennec/admin/location/index.php');  ?> <?=isActive('/fennec/admin/location/add.php');  ?> <?=isActive('/fennec/admin/location/edit.php');  ?> ">
+                    <a href="<?php echo $urlval?>admin/location/index.php">
+                    <i class="fa-solid fa-location-dot"></i>Location</a>
                 </li>
                 <li class="<?=isActive('/fennec/admin/setting.php');  ?>">
                     <a href="<?php echo $urlval?>admin/setting.php">
