@@ -30,7 +30,7 @@ if (isset($_SESSION['userid'])) {
             if ($stmt->rowCount() > 0) {
                 // echo 'Messages updated successfully.';
             } else {
-                echo 'No messages to update.';
+                // echo 'No messages to update.';
             }
         } catch (PDOException $e) {
 
