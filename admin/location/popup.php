@@ -102,3 +102,44 @@
         </div>
     </div>
 </div>
+
+<div id="editPopup" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="editPopupLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="background-color: white; border-radius: 8px; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+            <div class="modal-header" style="border-bottom: 1px solid #ddd;">
+                <h5 class="modal-title" id="editPopupLabel">Edit Location</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <form id="editLocationForm">
+                    <div class="form-group">
+                        <label for="countryName" class="font-weight-bold">Country</label>
+                        <input type="text" id="countryNameedit" class="form-control" placeholder="Country Name">
+                        <input type="hidden" id="countryid" class="form-control" >
+                        <input type="text" id="countryLongitude" class="form-control mt-2" placeholder="Longitude">
+                        <input type="text" id="countryLatitude" class="form-control mt-2" placeholder="Latitude">
+                    </div>
+                    <div class="form-group">
+                        <label for="cityName" class="font-weight-bold">City</label>
+                        <input type="text" id="cityNameedit" class="form-control" placeholder="City Name">
+                        <input type="hidden" id="cityId" class="form-control">
+                        <input type="text" id="cityLongitude" class="form-control mt-2" placeholder="Longitude">
+                        <input type="text" id="cityLatitude" class="form-control mt-2" placeholder="Latitude">
+                    </div>
+                    <div class="form-group">
+                        <label for="areaName" class="font-weight-bold">Area</label>
+                        <input type="text" id="areaNameedit" class="form-control" placeholder="Area Name">
+                        <input type="hidden" id="aeraid" class="form-control">
+                        <input type="text" id="areaLongitude" class="form-control mt-2" placeholder="Longitude">
+                        <input type="text" id="areaLatitude" class="form-control mt-2" placeholder="Latitude">
+                    </div>
+                    <button type="button" class="btn btn-primary btn-sm mt-3" onclick="saveLocation()">Save</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+

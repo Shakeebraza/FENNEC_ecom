@@ -52,26 +52,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $countStmt = $pdo->query("SELECT COUNT(*) FROM areas a JOIN cities ci ON a.city_id = ci.id JOIN countries c ON ci.country_id = c.id");
     $totalRecords = $countStmt->fetchColumn();
-
-
+    
     $response = [
         "draw" => $_POST['draw'] ?? 1, 
         "recordsTotal" => $totalRecords,
         "recordsFiltered" => count($locations),
         "data" => [] 
     ];
-
-
+    
+    
     foreach ($locations as $location) {
+        $encryptedId = $security->encrypt($location['area_id']);
         $response['data'][] = [
             "country" => $location['country'],
             "city" => $location['city'],
             "aera" => $location['area'],
-            "actions" => "<button class='btn btn-info btn-sm' onclick='editLocation({$location['area_id']}, {$location['city_id']}, {$location['country_id']})'>Edit</button>
-                          <button class='btn btn-danger btn-sm' onclick='deleteLocation({$location['area_id']})'>Delete</button>"
+            "actions" => "<button class='btn btn-info btn-sm' onclick=\"editLocation('$encryptedId')\">Edit</button>
+                          <button class='btn btn-danger btn-sm' onclick=\"deleteLocation('$encryptedId')\">Delete</button>"
         ];
     }
-
 
     echo json_encode($response);
 }

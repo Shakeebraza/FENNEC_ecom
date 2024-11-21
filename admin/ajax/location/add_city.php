@@ -1,6 +1,6 @@
 <?php
 require_once('../../../global.php');
-
+header('Content-Type: application/json');
 $response = ['success' => false];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
