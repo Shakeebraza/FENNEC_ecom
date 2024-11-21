@@ -102,7 +102,8 @@ foreach ($filteredQuery as $row) {
                 ▼
             </span>
         </div>',
-        'actions' => $editButton . ' ' . $deleteButton
+        // 'actions' => $editButton . ' ' . $deleteButton
+        'actions' => $editButton
     ];
 }
 
