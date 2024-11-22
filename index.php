@@ -142,7 +142,17 @@ include_once 'header.php';
     .sidebar-box h6 {
       font-size: 12px;
     }
+    .carousel-indicators{
+      display: none;
+    }
   }
+  .carousel-item img {
+    width: 100%; 
+    height: 250px;
+    object-fit: cover; 
+    border-radius: 8px; 
+}
+
 
 </style>
 <!-- index content -->
@@ -234,28 +244,51 @@ include_once 'header.php';
       $box2 = $fun->getBox('box2');
       $image2 = $urlval . $box2[0]['image'];
 
+      $productMultipalinPrebanner = $productFun->PoplarProductperMultipal();
+
       ?>
-      <div class="container mt-4">
-        <div class="banner">
-          <div class="container" style="box-shadow: 4px 3px 6px #A4A4A485;">
-            <div class="row align-items-center p">
-              <div class="col-md-3 mb-3 mb-md-0 p-0">
-                <img
-                  src="<?= $image2 ?>"
-                  alt="Blue car"
-                  class="img-fluid" />
-              </div>
-              <div class="col-md-6 mb-3 mb-md-0">
-                <h3><?= $box2[0]['heading']; ?></h3>
-                <p><?= $box2[0]['phara']; ?></p>
-                <?= $box2[0]['longtext']; ?>
-              </div>
-              <div class="col-md-3">
-                <a href="<?= $box2[0]['link']; ?>" class="btn btn-success w-100">Click now</a>
-              </div>
+        <div class="container mt-4">
+          <div id="customCarousel" class="carousel slide" data-bs-ride="carousel">
+ 
+            <div class="carousel-indicators">
+              <?php foreach ($productMultipalinPrebanner as $index => $item): ?>
+                <button type="button" data-bs-target="#customCarousel" data-bs-slide-to="<?= $index; ?>" class="<?= $index === 0 ? 'active' : ''; ?>" aria-current="true" aria-label="Slide <?= $index + 1; ?>"></button>
+              <?php endforeach; ?>
             </div>
-          </div>
-        </div>
+
+   
+                  <div class="carousel-inner">
+                    <?php foreach ($productMultipalinPrebanner as $index => $item): ?>
+                      <div class="carousel-item <?= $index === 0 ? 'active' : ''; ?>">
+                        <div class="banner" style="box-shadow: 4px 3px 6px #A4A4A485;">
+                          <div class="row align-items-center p">
+                            <div class="col-md-3 mb-3 mb-md-0 p-0">
+                              <img src="<?= $item['image']; ?>" alt="Slide <?= $index + 1; ?>" class="img-fluid" />
+                            </div>
+                            <div class="col-md-6 mb-3 mb-md-0">
+                              <h3><?= $item['name']; ?></h3>
+                              <p><?= $item['description']; ?></p>
+                            </div>
+                            <div class="col-md-3">
+                              <a href="<?= $urlval.'detail.php?slug='. $item['slug']; ?>" class="btn btn-success w-50">Click now</a>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    <?php endforeach; ?>
+                  </div>
+
+                  <!-- Controls -->
+                  <button class="carousel-control-prev" type="button" data-bs-target="#customCarousel" data-bs-slide="prev" style="background-color: #00000091;width: 31px; border-radius: 50%; background-size: 100%; width: 40px;  height: 40px; margin-top: 104px;">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Previous</span>
+                  </button>
+                  <button class="carousel-control-next" type="button" data-bs-target="#customCarousel" data-bs-slide="next" style="background-color: #00000091;width: 31px; border-radius: 50%; background-size: 100%; width: 40px;  height: 40px; margin-top: 104px;">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Next</span>
+                  </button>
+                </div>
+              </div>
 
         <div class="row mt-5">
           <!-- Sidebar Section -->
