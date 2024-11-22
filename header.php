@@ -106,6 +106,7 @@ $lan = $fun->loadLanguage($lang);
         id="menuToggle"
         class="navbar-toggler"
         type="button"
+        onclick="openNav()"
         style="display: none">
         <span class="navbar-toggler-icon"></span>
       </button>

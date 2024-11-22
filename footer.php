@@ -182,4 +182,12 @@ $(document).ready(function () {
 
     fetchUnreadMessages();
 });
+
+function openNav() {
+    document.getElementById("mySidebar").style.width = "70%";
+}
+
+function closeNav() {
+    document.getElementById("mySidebar").style.width = "0";
+}
 </script>
