@@ -36,6 +36,6 @@ if (isset($_GET['city'])) {
 }
 
 
-$response = $productFun->getProductsWithDetails($page, $limit, $filters);
+$response = $productFun->getProductsWithDetailsAdmin($page, $limit, $filters);
 
 echo json_encode($response);

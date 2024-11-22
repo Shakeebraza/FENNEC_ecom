@@ -114,24 +114,31 @@ $countries = $dbFunctions->getData('countries');
 
                             <!-- Country and City -->
                             <div class="row">
-                                <div class="col-md-6 mb-3">
-                                    <label for="country" class="form-label">Country <span style="color: red;">*</span></label>
-                                    <select id="country" name="country" class="form-select" >
-                                        <option value="" disabled selected>Select a country</option>
-                                        <?php
-                                        foreach ($countries as $cont) {
-                                            echo '<option value="' . $security->decrypt($cont['id']) . '">' . $security->decrypt($cont['name']) . '</option>';
-                                        }
-                                        ?>
-                                    </select>
-                                    <div class="text-danger" id="countryError"></div> <!-- Error message -->
+                                <div class="col-md-4 mb-3">
+    <label for="country" class="form-label">Country <span style="color: red;">*</span></label>
+    <select id="country" name="country" class="form-select">
+        <option value="" disabled selected>Select a country</option>
+        <?php
+        foreach ($countries as $cont) {
+            echo '<option value="' . $security->decrypt($cont['id']) . '">' . $security->decrypt($cont['name']) . '</option>';
+        }
+        ?>
+    </select>
+    <div class="text-danger" id="countryError"></div> <!-- Error message -->
                                 </div>
-                                <div class="col-md-6 mb-3">
+                                <div class="col-md-4 mb-3">
                                     <label for="city" class="form-label">City <span style="color: red;">*</span></label>
-                                    <select id="city" name="city" class="form-select" >
+                                    <select id="city" name="city" class="form-select">
                                         <option value="" disabled selected>Select a city</option>
                                     </select>
                                     <div class="text-danger" id="cityError"></div> <!-- Error message -->
+                                </div>
+                                <div class="col-md-4 mb-3">
+                                    <label for="aera" class="form-label">Area <span style="color: red;">*</span></label>
+                                    <select id="aera" name="aera" class="form-select">
+                                        <option value="" disabled selected>Select an area</option>
+                                    </select>
+                                    <div class="text-danger" id="aeraError"></div> <!-- Error message -->
                                 </div>
                             </div>
 
@@ -222,11 +229,10 @@ include_once('../footer.php');
                 $.ajax({
                     url: '<?php echo $urlval ?>admin/ajax/product/get_cities.php',
                     type: 'POST',
-                    data: {
-                        country_id: countryId
-                    },
+                    data: { country_id: countryId },
                     success: function(data) {
-                        $('#city').html(data);
+                        $('#city').html(data); // Populate cities dropdown
+                        $('#aera').html('<option value="" disabled selected>Select an area</option>'); // Reset areas dropdown
                     },
                     error: function() {
                         alert('Error fetching cities. Please try again.');
@@ -234,9 +240,30 @@ include_once('../footer.php');
                 });
             } else {
                 $('#city').html('<option value="" disabled selected>Select a city</option>');
+                $('#aera').html('<option value="" disabled selected>Select an area</option>');
             }
         });
 
+        // Handle city change
+        $('#city').on('change', function() {
+            var cityId = $(this).val();
+
+            if (cityId) {
+                $.ajax({
+                    url: '<?php echo $urlval ?>admin/ajax/product/get_areas.php',
+                    type: 'POST',
+                    data: { city_id: cityId },
+                    success: function(data) {
+                        $('#aera').html(data);
+                    },
+                    error: function() {
+                        alert('Error fetching areas. Please try again.');
+                    }
+                });
+            } else {
+                $('#aera').html('<option value="" disabled selected>Select an area</option>');
+            }
+        });
         $('#category').on('change', function() {
             var catId = $(this).val();
 
@@ -260,147 +287,147 @@ include_once('../footer.php');
         });
 
         $(document).ready(function() {
-    $('#productForm').on('submit', function(e) {
-        e.preventDefault(); 
-        $('.text-danger').text('');
-        let isValid = true;
-        const productName = $('#productName').val().trim();
-        const slug = $('#slug').val().trim();
-        const image = $('#image')[0].files[0];
-        const description = $('#description').val().trim();
-        const category = $('#category').val();
-        const subcategory = $('#subcategory').val();
-        const brand = $('#brand').val().trim();
-        const condition = $('#condition').val();
-        const country = $('#country').val();
-        const city = $('#city').val();
-        const price = $('#price').val().trim();
-        const discountPrice = $('#discountPrice').val().trim();
-        if (productName === '') {
-            $('#productNameError').text('Product name is required.');
-            isValid = false;
-        }
-        if (slug === '') {
-            $('#slugError').text('Slug is required.');
-            isValid = false;
-        }
-        if (!image) {
-            $('#imageError').text('Image is required.');
-            isValid = false;
-        }
-        if (description === '') {
-            $('#descriptionError').text('Description is required.');
-            isValid = false;
-        }
-        if (!category) {
-            $('#categoryError').text('Category is required.');
-            isValid = false;
-        }
-        if (!subcategory) {
-            $('#subcategoryError').text('Subcategory is required.');
-            isValid = false;
-        }
-        if (brand === '') {
-            $('#brandError').text('Brand is required.');
-            isValid = false;
-        }
-        if (!condition) {
-            $('#conditionError').text('Condition is required.');
-            isValid = false;
-        }
-        if (!country) {
-            $('#countryError').text('Country is required.');
-            isValid = false;
-        }
-        if (!city) {
-            $('#cityError').text('City is required.');
-            isValid = false;
-        }
-        if (price === '') {
-            $('#priceError').text('Price is required.');
-            isValid = false;
-        }
-        if (discountPrice === '') {
-            $('#discountPriceError').text('Discount price is required.');
-            isValid = false;
-        }
-        if (!isValid) {
-            return;
-        }
-        var formData = new FormData(this);
-
-        $.ajax({
-            url: '<?= $urlval?>admin/ajax/product/addproduct.php', 
-            type: 'POST',
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function(response) {
-                if (response.success) {
-                    showSuccessAlert(); 
-                } else {
-                    if (response.errors) {
-                        if (response.errors.productName) {
-                            $('#productNameError').text(response.errors.productName);
-                        }
-                        if (response.errors.slug) {
-                            $('#slugError').text(response.errors.slug);
-                        }
-                        if (response.errors.image) {
-                            $('#imageError').text(response.errors.image);
-                        }
-                        if (response.errors.description) {
-                            $('#descriptionError').text(response.errors.description);
-                        }
-                        if (response.errors.category) {
-                            $('#categoryError').text(response.errors.category);
-                        }
-                        if (response.errors.subcategory) {
-                            $('#subcategoryError').text(response.errors.subcategory);
-                        }
-                        if (response.errors.brand) {
-                            $('#brandError').text(response.errors.brand);
-                        }
-                        if (response.errors.condition) {
-                            $('#conditionError').text(response.errors.condition);
-                        }
-                        if (response.errors.country) {
-                            $('#countryError').text(response.errors.country);
-                        }
-                        if (response.errors.city) {
-                            $('#cityError').text(response.errors.city);
-                        }
-                        if (response.errors.price) {
-                            $('#priceError').text(response.errors.price);
-                        }
-                        if (response.errors.discountPrice) {
-                            $('#discountPriceError').text(response.errors.discountPrice);
-                        }
-                    }
+                $('#productForm').on('submit', function(e) {
+                e.preventDefault(); 
+                $('.text-danger').text('');
+                let isValid = true;
+                const productName = $('#productName').val().trim();
+                const slug = $('#slug').val().trim();
+                const image = $('#image')[0].files[0];
+                const description = $('#description').val().trim();
+                const category = $('#category').val();
+                const subcategory = $('#subcategory').val();
+                const brand = $('#brand').val().trim();
+                const condition = $('#condition').val();
+                const country = $('#country').val();
+                const city = $('#city').val();
+                const price = $('#price').val().trim();
+                const discountPrice = $('#discountPrice').val().trim();
+                if (productName === '') {
+                    $('#productNameError').text('Product name is required.');
+                    isValid = false;
                 }
-            },
-            error: function() {
-                showErrorAlert();
-            }
+                if (slug === '') {
+                    $('#slugError').text('Slug is required.');
+                    isValid = false;
+                }
+                if (!image) {
+                    $('#imageError').text('Image is required.');
+                    isValid = false;
+                }
+                if (description === '') {
+                    $('#descriptionError').text('Description is required.');
+                    isValid = false;
+                }
+                if (!category) {
+                    $('#categoryError').text('Category is required.');
+                    isValid = false;
+                }
+                if (!subcategory) {
+                    $('#subcategoryError').text('Subcategory is required.');
+                    isValid = false;
+                }
+                if (brand === '') {
+                    $('#brandError').text('Brand is required.');
+                    isValid = false;
+                }
+                if (!condition) {
+                    $('#conditionError').text('Condition is required.');
+                    isValid = false;
+                }
+                if (!country) {
+                    $('#countryError').text('Country is required.');
+                    isValid = false;
+                }
+                if (!city) {
+                    $('#cityError').text('City is required.');
+                    isValid = false;
+                }
+                if (price === '') {
+                    $('#priceError').text('Price is required.');
+                    isValid = false;
+                }
+                if (discountPrice === '') {
+                    $('#discountPriceError').text('Discount price is required.');
+                    isValid = false;
+                }
+                if (!isValid) {
+                    return;
+                }
+                var formData = new FormData(this);
+
+                $.ajax({
+                    url: '<?= $urlval?>admin/ajax/product/addproduct.php', 
+                    type: 'POST',
+                    data: formData,
+                    processData: false,
+                    contentType: false,
+                    success: function(response) {
+                        if (response.success) {
+                            showSuccessAlert(); 
+                        } else {
+                            if (response.errors) {
+                                if (response.errors.productName) {
+                                    $('#productNameError').text(response.errors.productName);
+                                }
+                                if (response.errors.slug) {
+                                    $('#slugError').text(response.errors.slug);
+                                }
+                                if (response.errors.image) {
+                                    $('#imageError').text(response.errors.image);
+                                }
+                                if (response.errors.description) {
+                                    $('#descriptionError').text(response.errors.description);
+                                }
+                                if (response.errors.category) {
+                                    $('#categoryError').text(response.errors.category);
+                                }
+                                if (response.errors.subcategory) {
+                                    $('#subcategoryError').text(response.errors.subcategory);
+                                }
+                                if (response.errors.brand) {
+                                    $('#brandError').text(response.errors.brand);
+                                }
+                                if (response.errors.condition) {
+                                    $('#conditionError').text(response.errors.condition);
+                                }
+                                if (response.errors.country) {
+                                    $('#countryError').text(response.errors.country);
+                                }
+                                if (response.errors.city) {
+                                    $('#cityError').text(response.errors.city);
+                                }
+                                if (response.errors.price) {
+                                    $('#priceError').text(response.errors.price);
+                                }
+                                if (response.errors.discountPrice) {
+                                    $('#discountPriceError').text(response.errors.discountPrice);
+                                }
+                            }
+                        }
+                    },
+                    error: function() {
+                        showErrorAlert();
+                    }
+                });
+            });
+
+            function showSuccessAlert() {
+            const successAlert = document.getElementById('successAlert');
+            successAlert.style.display = 'block';
+            setTimeout(() => {
+                successAlert.style.display = 'none';
+            }, 3000); 
+        }
+
+        function showErrorAlert() {
+            const errorAlert = document.getElementById('errorAlert');
+            errorAlert.style.display = 'block';
+            setTimeout(() => {
+                errorAlert.style.display = 'none';
+            }, 3000);
+        }
         });
-    });
-
-    function showSuccessAlert() {
-    const successAlert = document.getElementById('successAlert');
-    successAlert.style.display = 'block';
-    setTimeout(() => {
-        successAlert.style.display = 'none';
-    }, 3000); 
-}
-
-function showErrorAlert() {
-    const errorAlert = document.getElementById('errorAlert');
-    errorAlert.style.display = 'block';
-    setTimeout(() => {
-        errorAlert.style.display = 'none';
-    }, 3000);
-}
-});
 
     });
 </script>

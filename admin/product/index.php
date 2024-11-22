@@ -169,6 +169,7 @@ var city = $('select[name="city"]').val();
             $('#product-container').empty();
             if (data.products.length > 0) {
                 $.each(data.products, function(index, product) {
+                    console.log(product);
                     var productHTML = `
                     <div class="col-md-4">
                         <div class="card product-card mb-4 shadow-sm">
@@ -190,9 +191,45 @@ var city = $('select[name="city"]').val();
                                         ${product.country} | ${product.city}
                                     </div>
                                     <div class="btn-group">
+                                        <div style="position: relative; display: inline-block; width: 100%; margin-right: 5px; margin-top: 3px;">
+                                            <select class="js-select2 user-status-select" data-id="${product.id}"
+                                                style="
+                                                width: 100%;
+                                                background-color: #f5f5f5;
+                                                color: #333;
+                                                border: 1px solid #ddd;
+                                                border-radius: 8px;
+                                                padding: 5px 23px;
+                                                font-size: 14px;
+                                                appearance: none;
+                                                transition: all 0.3s ease;
+                                                cursor: pointer;
+                                                " 
+                                                onmouseover="this.style.backgroundColor=\'#fff\'; this.style.borderColor=\'#007bff\'; this.style.boxShadow=\'0px 4px 6px rgba(0, 0, 0, 0.1)\';" 
+                                                onmouseout="this.style.backgroundColor=\'#f5f5f5\'; this.style.borderColor=\'#ddd\'; this.style.boxShadow=\'none\';"
+                                                onfocus="this.style.borderColor=\'#007bff\'; this.style.boxShadow=\'0px 4px 6px rgba(0, 123, 255, 0.3)\';"
+                                                onblur="this.style.borderColor=\'#ddd\'; this.style.boxShadow=\'none\';"
+                                            >
+                                                <option value="1"' ${product.is_enable == 1 ? 'selected' :''}>Activate</option>
+                                                <option value="0"' ${product.is_enable == 0 ? 'selected' :''}>Block</option>
+                                            </select>
+                                            <span style="
+                                                position: absolute;
+                                                top: 50%;
+                                                right: 10px;
+                                                transform: translateY(-50%);
+                                                pointer-events: none;
+                                                color: #007bff;
+                                                font-size: 12px;
+                                            ">
+                                                ▼
+                                            </span>
+                                        </div>
+
                                         <a href="#" class="btn btn-sm btn-warning view-product" data-id="${product.id}">
                                             <i class="fa fa-eye"></i> View
                                         </a>
+                                        
                                         <a href="#" class="btn btn-sm btn-danger delete-product" data-id="${product.id}">
                                             <i class="fa fa-trash"></i> Delete
                                         </a>
@@ -227,7 +264,26 @@ var city = $('select[name="city"]').val();
         }
     });
 }
+$(document).on('change', '.user-status-select', function() {
+        var userId = $(this).data('id');
+        var status = $(this).val();
 
+        $.ajax({
+            url: '<?php echo $urlval ?>admin/ajax/product/update_status.php',
+            type: 'POST',
+            data: {
+                id: userId,
+                status: status
+            },
+            success: function(response) {
+                alert('User status updated successfully!');
+            },
+            error: function(xhr, status, error) {
+                // Handle error
+                alert('An error occurred while updating status.');
+            }
+        });
+    });
 function showProductDetails(productId) {
     $.ajax({
         url: '<?php echo $urlval ?>admin/ajax/product/fetchProductDetails.php', 

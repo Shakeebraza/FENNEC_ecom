@@ -2,6 +2,18 @@
 require_once 'global.php';
 include_once 'header.php';
 include_once 'google-login.php';
+
+$setSession = $fun->isSessionSet();
+
+if ($setSession == true) {
+    $redirectUrl = $urlval . 'index.php'; 
+    echo '
+    <script>
+        window.location.href = "' . $redirectUrl . '";
+    </script>'; 
+    exit();
+}
+
 ?>
 <div
   class="container-fluid bg-light min-vh-100 d-flex justify-content-center align-items-center">
