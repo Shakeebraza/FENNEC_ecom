@@ -83,6 +83,43 @@ $lan = $fun->loadLanguage($lang);
     letter-spacing: 2px;
     -webkit-text-stroke: 1px rgba(0, 0, 0, 0.7);
 }
+.premium-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; 
+}
+
+.premium-item {
+    width: calc(25% - 20px);
+    position: relative; 
+    overflow: hidden; 
+}
+
+.video-thumbnail {
+    width: 100%;
+    padding-top: 56.25%; 
+    background-size: cover;
+    background-position: center;
+    position: relative;
+    cursor: pointer;
+    border-radius: 10px;
+    height: 80%;
+}
+
+.premium-video {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    pointer-events: none; 
+}
+
+.video-thumbnail:hover .premium-video {
+    opacity: 1;
+    pointer-events: auto; 
+}
   </style>
 </head>
 

@@ -529,7 +529,7 @@ Class Productfun{
             LEFT JOIN 
                 cities city ON city.id = p.city_id
             LEFT JOIN 
-                areas area ON area.city_id = p.aera_id  -- Ensure correct join for areas
+                areas area ON area.id = p.aera_id  
             WHERE 
                 p.slug = :slug
         ";

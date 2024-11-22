@@ -230,6 +230,13 @@ $userData = $dbFunctions->getDatanotenc('user_detail', "userid = '$userid'");
                 </select>
                 <div class="text-danger" id="cityError"></div>
               </div>
+              <div class="mb-3">
+                <label for="aera" class="form-label">Aera <span style="color: red;">*</span></label>
+                <select id="aera" name="aera" class="form-select" required>
+                  <option value="" disabled selected><?= $lan['Select_city'] ?></option>
+                </select>
+                <div class="text-danger" id="aera_Error"></div>
+              </div>
 
               <h5><?= $lan['media'] ?></h5>
 
@@ -533,46 +540,46 @@ include_once 'footer.php';
   }
 
   $('#productForm').on('submit', function(e) {
-    e.preventDefault(); // Prevent the form from submitting normally
+    e.preventDefault(); 
 
-    // Create a FormData object from the form
+  
     let formData = new FormData(this);
 
-    // Send AJAX request
+   
     $.ajax({
-      url: '<?= $urlval ?>ajax/addproduct.php', // The URL where the form data will be sent
-      type: 'POST', // The HTTP request method
-      data: formData, // The form data
-      processData: false, // Prevent jQuery from automatically processing the data
-      contentType: false, // Prevent jQuery from setting the content type
+      url: '<?= $urlval ?>ajax/addproduct.php', 
+      type: 'POST', 
+      data: formData, 
+      processData: false, 
+      contentType: false, 
       success: function(response) {
-        // Handle the response from the server
+       
         if (response.success) {
-          showSuccessAlert(); // Show success alert
+          showSuccessAlert(); 
         } else if (response.errors) {
-          handleErrors(response.errors); // Handle validation or other errors
+          handleErrors(response.errors); 
         }
       },
       error: function() {
-        // Handle AJAX request error
-        showErrorAlert(); // Show error alert
+     
+        showErrorAlert();
       }
     });
   });
 
   function showSuccessAlert() {
-    alert('Ad posted successfully!'); // Display success message
+    alert('Ad posted successfully!'); 
   }
 
   function showErrorAlert() {
-    alert('There was an error posting your ad. Please try again.'); // Display error message
+    alert('There was an error posting your ad. Please try again.'); 
   }
 
   function handleErrors(errors) {
-    // Handle errors such as validation issues or missing fields
+
     for (let field in errors) {
       let errorMessage = errors[field];
-      $('#' + field + 'Error').text(errorMessage); // Display error next to the field
+      $('#' + field + 'Error').text(errorMessage); 
     }
   }
 
@@ -619,7 +626,25 @@ include_once 'footer.php';
       $('#city').html('<option value="" disabled>Select City</option>');
     }
   });
+  $('#city').on('change', function() {
+            var cityId = $(this).val();
 
+            if (cityId) {
+                $.ajax({
+                    url: '<?php echo $urlval ?>admin/ajax/product/get_areas.php',
+                    type: 'POST',
+                    data: { city_id: cityId },
+                    success: function(data) {
+                        $('#aera').html(data);
+                    },
+                    error: function() {
+                        alert('Error fetching areas. Please try again.');
+                    }
+                });
+            } else {
+                $('#aera').html('<option value="" disabled selected>Select an area</option>');
+            }
+        });
   function openTransactionHistory() {
     // Show the modal
     document.getElementById('transactionHistoryModal').style.display = 'block';

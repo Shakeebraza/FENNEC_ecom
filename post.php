@@ -198,6 +198,12 @@ $countries = $dbFunctions->getData('countries');
                     </select>
                 </div>
                 <div class="mb-3">
+                    <label for="aera" class="form-label">Aera</label>
+                    <select class="form-select" id="aera" name="aera" required>
+                        <option value="" disabled>Select Aera</option>
+                    </select>
+                </div>
+                <div class="mb-3">
                     <label for="price" class="form-label">Price<span style="color: red;">*</span></label>
                     <input type="number" class="form-control" id="price" name="price" required>
                 </div>
@@ -370,6 +376,26 @@ $countries = $dbFunctions->getData('countries');
             $('#city').html('<option value="" disabled>Select City</option>');
         }
     });
+
+    $('#city').on('change', function() {
+            var cityId = $(this).val();
+
+            if (cityId) {
+                $.ajax({
+                    url: '<?php echo $urlval ?>admin/ajax/product/get_areas.php',
+                    type: 'POST',
+                    data: { city_id: cityId },
+                    success: function(data) {
+                        $('#aera').html(data);
+                    },
+                    error: function() {
+                        alert('Error fetching areas. Please try again.');
+                    }
+                });
+            } else {
+                $('#aera').html('<option value="" disabled selected>Select an area</option>');
+            }
+        });
 
     // Handle form submission
     $('#productForm').on('submit', function(e) {
