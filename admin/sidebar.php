@@ -1,5 +1,5 @@
 <nav>
-<div class="container-fluid">
+<div class="container-fluid mobileview">
         <a class="navbar-brand" href="#">
             <img src="<?= $urlval?>/custom/asset/Capture-removebg-preview.png" alt="Cool Admin Logo" width="40" height="40">
             <span>Fennec</span>
