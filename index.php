@@ -174,6 +174,8 @@ include_once 'header.php';
 </div>
 
 <div class="container">
+
+            
   <div class="row">
     <div class="col-md-12">
       <div class="container mt-5">
@@ -248,6 +250,9 @@ include_once 'header.php';
 
       ?>
         <div class="container mt-4">
+        <h5 class="text-center mb-5" >
+              <b><?= $lan['top_products']?></b>
+            </h5>
           <div id="customCarousel" class="carousel slide" data-bs-ride="carousel">
  
             <div class="carousel-indicators">
@@ -288,8 +293,7 @@ include_once 'header.php';
                     <span class="visually-hidden">Next</span>
                   </button>
                 </div>
-              </div>
-
+              
         <div class="row mt-5">
           <!-- Sidebar Section -->
           <div class="col-md-3 mb-4">
@@ -400,6 +404,9 @@ include_once 'header.php';
 
           <!-- Products Section -->
           <div class="col-md-9">
+       
+
+
             <div class="row">
               <?php
               $productFind = $productFun->getProductsWithDetails(1, 12, []);
