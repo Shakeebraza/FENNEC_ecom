@@ -20,86 +20,87 @@ $countries = $dbFunctions->getData('countries');
 </head>
 <style>
 .custom-file-upload {
-        display: inline-block;
-        padding: 20px;
-        cursor: pointer;
-        color: black;
-        border-radius: 5px;
-        text-align: center;
-        transition: background-color 0.3s;
-        
-        width: 100%;
-    }
+    display: inline-block;
+    padding: 20px;
+    cursor: pointer;
+    color: black;
+    border-radius: 5px;
+    text-align: center;
+    transition: background-color 0.3s;
 
-    .form-container .form-group:hover {
-        background-color: #2624243b;
-    }
+    width: 100%;
+}
 
-    .custom-file-upload input[type="file"] {
-        display: none;
-    } 
+.form-container .form-group:hover {
+    background-color: #2624243b;
+}
 
-    .image-preview {
-        display: flex;
-        flex-wrap: wrap;
-        margin-top: 10px;
-    }
+.custom-file-upload input[type="file"] {
+    display: none;
+}
 
-    .image-preview img {
-        width: 100px;
-        height: 100px;
-        object-fit: cover;
-        margin-right: 10px;
-        margin-bottom: 10px;
-        border: 1px solid #ccc;
-        border-radius: 5px;
-    }
+.image-preview {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
 
-    .form-container h1 {
-        text-align: center;
-        font-size: 28px;
-        margin-bottom: 30px;
-        color: #333;
-    }
+.image-preview img {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    margin-right: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
 
-
-    .form-group {
-        display: flex;
-        flex-direction: column;
-        margin-bottom: 20px;
-    }
-
-    .form-group.full-width {
-        display: block;
-        margin-right: 0;
-    }
-
-    #image,
-    #gallery {
-        width: 100%;
-    }
+.form-container h1 {
+    text-align: center;
+    font-size: 28px;
+    margin-bottom: 30px;
+    color: #333;
+}
 
 
-    .form-container .form-group {
-        display: flex;
-        justify-content: space-between;
-        border: 1px solid black;
-        border-radius: 5px;
-    }
+.form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.form-group.full-width {
+    display: block;
+    margin-right: 0;
+}
+
+#image,
+#gallery {
+    width: 100%;
+}
 
 
-    input:hover,
-    select:hover,
-    textarea:hover,
-    input:focus,
-    select:focus,
-    textarea:focus {
- 
-        border-color: #f39c12;
-        box-shadow: 0px 0px 5px rgba(243, 156, 18, 0.5);
-        outline: none;
-    }
+.form-container .form-group {
+    display: flex;
+    justify-content: space-between;
+    border: 1px solid black;
+    border-radius: 5px;
+}
+
+
+input:hover,
+select:hover,
+textarea:hover,
+input:focus,
+select:focus,
+textarea:focus {
+
+    border-color: #f39c12;
+    box-shadow: 0px 0px 5px rgba(243, 156, 18, 0.5);
+    outline: none;
+}
 </style>
+
 <body>
 
     <nav class="navbar navbar-light">
@@ -111,7 +112,7 @@ $countries = $dbFunctions->getData('countries');
 
     <div class="container my-5">
         <h1 class="text-center mb-4">POST YOUR AD</h1>
-        
+
         <div id="step1">
             <h2 class="text-center mb-4">Choose a Category</h2>
             <div class="row g-4 justify-content-center">
@@ -144,36 +145,33 @@ $countries = $dbFunctions->getData('countries');
                 <div class="mb-3">
                     <label class="form-label">Category</label>
                     <input type="text" class="form-control" id="finalCategory" name="finalCategory" readonly>
-                    <input type="hidden" id="finalCategoryId" name="category"> 
+                    <input type="hidden" id="finalCategoryId" name="category">
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Subcategory</label>
                     <input type="text" class="form-control" id="finalSubcategory" name="finalSubcategory" readonly>
                     <input type="hidden" id="finalSubcategoryId" name="subcategory">
                 </div>
-                <div class="mb-3">
-                    <label for="imageUpload" class="form-label">Upload Image<span style="color: red;">*</span></label>
-                    <input type="file" class="form-control" id="imageUpload" name="image" required>
-                </div>
-                <div class="form-group mb-3" style="padding: 20px;border: 2px solid #28a745;border-radius: 10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);background-color: #f9f9f9;">
-                    <label for="gallery" class="custom-file-upload">Upload Gallery Images</label>
+                <div class="form-group mb-3"
+                    style="padding: 20px;border: 2px solid #28a745;border-radius: 10px;box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);background-color: #f9f9f9;">
+                    <label for="gallery" class="custom-file-upload">Upload Gallery</label>
                     <input type="file" id="gallery" name="gallery[]" accept="image/*" multiple>
                     <div id="imagePreview" class="image-preview"></div>
-                    <div class="text-danger" id="galleryError"></div> 
+                    <div class="text-danger" id="galleryError"></div>
                 </div>
                 <div class="mb-3">
                     <label for="brand" class="form-label">Brand<span style="color: red;">*</span></label>
                     <input type="text" class="form-control" id="brand" name="brand" required>
                 </div>
                 <div class="col-md-12 mb-3">
-                                    <label for="condition" class="form-label">Condition <span style="color: red;">*</span></label>
-                                    <select id="condition" name="condition" class="form-select" required>
-                                        <option value="" disabled selected>Select condition</option>
-                                        <option value="new">New</option>
-                                        <option value="used">Used</option>
-                                    </select>
-                                    <div class="text-danger" id="conditionError"></div> <!-- Error message -->
-                                </div>
+                    <label for="condition" class="form-label">Condition <span style="color: red;">*</span></label>
+                    <select id="condition" name="condition" class="form-select" required>
+                        <option value="" disabled selected>Select condition</option>
+                        <option value="new">New</option>
+                        <option value="used">Used</option>
+                    </select>
+                    <div class="text-danger" id="conditionError"></div> <!-- Error message -->
+                </div>
                 <div class="mb-3">
                     <label for="adTitle" class="form-label">Ad Title<span style="color: red;">*</span></label>
                     <input type="text" class="form-control" id="adTitle" name="productName" required>
@@ -187,19 +185,20 @@ $countries = $dbFunctions->getData('countries');
                     <select class="form-select" id="country" name="country" required>
                         <option value="" disabled>Select Country</option>
                         <?php foreach($countries as $val): ?>
-                            <option value="<?= $security->decrypt($val['id']) ?>"><?= $security->decrypt($val['name']) ?></option>
+                        <option value="<?= $security->decrypt($val['id']) ?>"><?= $security->decrypt($val['name']) ?>
+                        </option>
                         <?php endforeach; ?>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label for="city" class="form-label">City</label>
-                    <select class="form-select" id="city" name="city" required>
+                    <select class="form-select" id="city" name="city">
                         <option value="" disabled>Select City</option>
                     </select>
                 </div>
                 <div class="mb-3">
                     <label for="aera" class="form-label">Aera</label>
-                    <select class="form-select" id="aera" name="aera" required>
+                    <select class="form-select" id="aera" name="aera">
                         <option value="" disabled>Select Aera</option>
                     </select>
                 </div>
@@ -209,14 +208,17 @@ $countries = $dbFunctions->getData('countries');
                 </div>
                 <div class="mb-3">
                     <label for="email" class="form-label">Email</label>
-                    <input type="email" class="form-control" id="email" name="email" value="<?= $_SESSION['email']?>" required>
+                    <input type="email" class="form-control" id="email" name="email" value="<?= $_SESSION['email']?>"
+                        required>
                 </div>
-                <div class="mb-3" style="padding: 20px; border: 2px solid #007bff; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); background-color: #f0f8ff;">
+                <div class="mb-3"
+                    style="padding: 20px; border: 2px solid #007bff; border-radius: 10px; box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); background-color: #f0f8ff;">
                     <h5>Select Package</h5>
                     <div>
                         <!-- Free Package Option -->
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="boostPlan" id="packageFree" value="standard" checked>
+                            <input class="form-check-input" type="radio" name="boostPlan" id="packageFree"
+                                value="standard" checked>
                             <label class="form-check-label" for="packageFree">
                                 Free Package
                             </label>
@@ -226,16 +228,17 @@ $countries = $dbFunctions->getData('countries');
                         <?php
                         $boostPlans = $fun->getBoostPlans(); 
                         if (!empty($boostPlans)) : ?>
-                            <?php foreach ($boostPlans as $plan) : ?>
-                                <div class="form-check">
-                                    <input class="form-check-input" type="radio" name="boostPlan" id="package_<?= $plan['id'] ?>" value="<?= $plan['id'] ?>">
-                                    <label class="form-check-label" for="package_<?= $plan['id'] ?>">
-                                        <?=$plan['name'] ?> - <?= $plan['price'] ?> USD
-                                    </label>
-                                </div>
-                            <?php endforeach; ?>
+                        <?php foreach ($boostPlans as $plan) : ?>
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="boostPlan"
+                                id="package_<?= $plan['id'] ?>" value="<?= $plan['id'] ?>">
+                            <label class="form-check-label" for="package_<?= $plan['id'] ?>">
+                                <?=$plan['name'] ?> - <?= $plan['price'] ?> USD
+                            </label>
+                        </div>
+                        <?php endforeach; ?>
                         <?php else : ?>
-                            <p>No packages available.</p>
+                        <p>No packages available.</p>
                         <?php endif; ?>
                     </div>
                 </div>
@@ -263,38 +266,39 @@ $countries = $dbFunctions->getData('countries');
 
         if (categoryId) {
             fetch('<?php echo $urlval ?>admin/ajax/product/get_catjson.php', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-                body: 'catId=' + encodeURIComponent(categoryId)
-            })
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error('Network response was not ok');
-                }
-                return response.text();
-            })
-            .then(data => {
-                try {
-                    const parsedData = JSON.parse(data);
-                    if (parsedData.status === 'success') {
-                        parsedData.data.forEach(subcategory => {
-                            const colDiv = document.createElement('div');
-                            colDiv.className = 'col-md-3';
-                            colDiv.innerHTML = `<button class="btn btn-outline-primary w-100" onclick="selectSubcategory('${subcategory.name}', '${subcategory.id}')">${subcategory.name}</button>`;
-                            subcategoryOptions.appendChild(colDiv);
-                        });
-                    } else {
-                        alert(parsedData.message);
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/x-www-form-urlencoded',
+                    },
+                    body: 'catId=' + encodeURIComponent(categoryId)
+                })
+                .then(response => {
+                    if (!response.ok) {
+                        throw new Error('Network response was not ok');
                     }
-                } catch (error) {
-                    alert('Error parsing JSON: ' + error.message);
-                }
-            })
-            .catch(error => {
-                alert('Error fetching subcategories: ' + error.message);
-            });
+                    return response.text();
+                })
+                .then(data => {
+                    try {
+                        const parsedData = JSON.parse(data);
+                        if (parsedData.status === 'success') {
+                            parsedData.data.forEach(subcategory => {
+                                const colDiv = document.createElement('div');
+                                colDiv.className = 'col-md-3';
+                                colDiv.innerHTML =
+                                    `<button class="btn btn-outline-primary w-100" onclick="selectSubcategory('${subcategory.name}', '${subcategory.id}')">${subcategory.name}</button>`;
+                                subcategoryOptions.appendChild(colDiv);
+                            });
+                        } else {
+                            alert(parsedData.message);
+                        }
+                    } catch (error) {
+                        alert('Error parsing JSON: ' + error.message);
+                    }
+                })
+                .catch(error => {
+                    alert('Error fetching subcategories: ' + error.message);
+                });
         } else {
             subcategoryOptions.innerHTML = '<p class="text-danger">No subcategories available.</p>';
         }
@@ -316,7 +320,7 @@ $countries = $dbFunctions->getData('countries');
         document.getElementById('step3').classList.add('hidden');
         document.getElementById('step2').classList.remove('hidden');
     }
-    
+
     document.getElementById('gallery').addEventListener('change', function(event) {
         const imagePreview = document.getElementById('imagePreview');
         imagePreview.innerHTML = '';
@@ -357,34 +361,38 @@ $countries = $dbFunctions->getData('countries');
     });
 
     $(document).ready(function() {
-    // Fetch cities based on country selection
-    $('#country').on('change', function() {
-        var countryId = $(this).val();
-        if (countryId) {
-            $.ajax({
-                url: '<?php echo $urlval ?>admin/ajax/product/get_cities.php',
-                type: 'POST',
-                data: { country_id: countryId },
-                success: function(data) {
-                    $('#city').html(data);
-                },
-                error: function() {
-                    alert('Error fetching cities. Please try again.');
-                }
-            });
-        } else {
-            $('#city').html('<option value="" disabled>Select City</option>');
-        }
-    });
+        // Fetch cities based on country selection
+        $('#country').on('change', function() {
+            var countryId = $(this).val();
+            if (countryId) {
+                $.ajax({
+                    url: '<?php echo $urlval ?>admin/ajax/product/get_cities.php',
+                    type: 'POST',
+                    data: {
+                        country_id: countryId
+                    },
+                    success: function(data) {
+                        $('#city').html(data);
+                    },
+                    error: function() {
+                        alert('Error fetching cities. Please try again.');
+                    }
+                });
+            } else {
+                $('#city').html('<option value="" disabled>Select City</option>');
+            }
+        });
 
-    $('#city').on('change', function() {
+        $('#city').on('change', function() {
             var cityId = $(this).val();
 
             if (cityId) {
                 $.ajax({
                     url: '<?php echo $urlval ?>admin/ajax/product/get_areas.php',
                     type: 'POST',
-                    data: { city_id: cityId },
+                    data: {
+                        city_id: cityId
+                    },
                     success: function(data) {
                         $('#aera').html(data);
                     },
@@ -397,70 +405,90 @@ $countries = $dbFunctions->getData('countries');
             }
         });
 
-    // Handle form submission
-    $('#productForm').on('submit', function(e) {
-    e.preventDefault();
+        // Handle form submission
+        $('#productForm').on('submit', function(e) {
+            e.preventDefault();
 
-    // Get the selected package value
-    let selectedPackage = $('#packageSelect').val();
-    
-    // Determine the URL based on the selected package
-    let url = (selectedPackage === 'standard')
-        ? '<?= $urlval ?>ajax/addproduct.php'
-        : '<?= $urlval ?>ajax/addproductpackige.php';
-    
-    let formData = new FormData(this);
+            // Get the selected package value
+            let selectedPackage = $('#packageSelect').val();
 
-    // Submit the form using the determined URL
-    $.ajax({
-        url: url,
-        type: 'POST',
-        data: formData,
-        processData: false,
-        contentType: false,
-        success: function(response) {
-            if (response.success) {
-                if(selectedPackage === 'standard'){
-                    showSuccessAlert();
+            // Determine the URL based on the selected package
+            let url = (selectedPackage === 'standard') ?
+                '<?= $urlval ?>ajax/addproduct.php' :
+                '<?= $urlval ?>ajax/addproductpackige.php';
 
-                }else{
-                    let paymentForm = $('<form>', {
-                        'action': response.redirect,
-                        'method': 'POST'
-                    }).append(
-                        $('<input>', { 'type': 'hidden', 'name': 'boost_type', 'value': response.boostType }),
-                        $('<input>', { 'type': 'hidden', 'name': 'plan_id', 'value': response.planId }),
-                        $('<input>', { 'type': 'hidden', 'name': 'price', 'value': response.price }),
-                        $('<input>', { 'type': 'hidden', 'name': 'plan_name', 'value': response.planName }),
-                        $('<input>', { 'type': 'hidden', 'name': 'productId', 'value': response.productId })
-                    );
-                    $('body').append(paymentForm);
-                    paymentForm.submit();
+            let formData = new FormData(this);
+
+            // Submit the form using the determined URL
+            $.ajax({
+                url: url,
+                type: 'POST',
+                data: formData,
+                processData: false,
+                contentType: false,
+                success: function(response) {
+                    if (response.success) {
+                        if (selectedPackage === 'standard') {
+                            showSuccessAlert();
+
+                        } else {
+                            let paymentForm = $('<form>', {
+                                'action': response.redirect,
+                                'method': 'POST'
+                            }).append(
+                                $('<input>', {
+                                    'type': 'hidden',
+                                    'name': 'boost_type',
+                                    'value': response.boostType
+                                }),
+                                $('<input>', {
+                                    'type': 'hidden',
+                                    'name': 'plan_id',
+                                    'value': response.planId
+                                }),
+                                $('<input>', {
+                                    'type': 'hidden',
+                                    'name': 'price',
+                                    'value': response.price
+                                }),
+                                $('<input>', {
+                                    'type': 'hidden',
+                                    'name': 'plan_name',
+                                    'value': response.planName
+                                }),
+                                $('<input>', {
+                                    'type': 'hidden',
+                                    'name': 'productId',
+                                    'value': response.productId
+                                })
+                            );
+                            $('body').append(paymentForm);
+                            paymentForm.submit();
+                        }
+                    } else if (response.errors) {
+                        handleErrors(response.errors);
+                    }
+                },
+                error: function() {
+                    showErrorAlert();
                 }
-            } else if (response.errors) {
-                handleErrors(response.errors);
+            });
+        });
+
+        function showSuccessAlert() {
+            alert('Ad posted successfully!');
+        }
+
+        function showErrorAlert() {
+            alert('There was an error posting your ad. Please try again.');
+        }
+
+        function handleErrors(errors) {
+            for (let key in errors) {
+                $(`#${key}Error`).text(errors[key]);
             }
-        },
-        error: function() {
-            showErrorAlert();
         }
     });
-});
-
-    function showSuccessAlert() {
-        alert('Ad posted successfully!');
-    }
-
-    function showErrorAlert() {
-        alert('There was an error posting your ad. Please try again.');
-    }
-
-    function handleErrors(errors) {
-        for (let key in errors) {
-            $(`#${key}Error`).text(errors[key]);
-        }
-    }
-});
     </script>
 
 </body>
