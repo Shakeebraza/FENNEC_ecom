@@ -193,11 +193,11 @@ h3 {
 div#chat-list {
     padding-left: 1rem;
     padding-top: 1rem;
-    background-color: #157347;
+    background-color: #fff;
 }
 h4 {
     width: 100%;
-    padding-left: 4rem;
+    text-align:center;
     font-size: 22px;
     padding-top: 1rem;
     font-weight: 700 !important;
@@ -244,7 +244,7 @@ message-area
     width: 100%;
     background-color: #fff;
     border-radius: 0.3rem;
-    height: 90vh;
+    height: 92vh;
     overflow: hidden;
     min-height: calc(100% - 1rem);
 }
@@ -869,7 +869,7 @@ button:focus {
 
                                 <div class="send-box" style="padding: 10px; background-color: #f9f9f9;">
                                     <form id="send-message-form" action="javascript:void(0);" style="display: flex; align-items: center;">
-                                        <input type="text" id="message-input" class="form-control" placeholder="Write message…" style="flex-grow: 1; border-radius: 20px; padding: 10px;">
+                                        <input type="text" id="message-input" class="form-control" placeholder="Write message…" style="flex-grow: 1; border-radius: 10px; padding: 10px;">
                                         <button type="submit" style="border: none; background-color: transparent; margin-left: 10px; cursor: pointer;">
                                             <i class="fa fa-paper-plane" aria-hidden="true" style="font-size: 20px; color: #00494f;"></i>
                                         </button>

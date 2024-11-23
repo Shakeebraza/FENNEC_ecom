@@ -54,11 +54,11 @@ if (isset($_SESSION['userid'])) {
                     <img class="img-fluid" src="' . $urlval . $product_image . '" alt="product img" style="width: 40px; height: 40px; border-radius: 50%;">
                 </div>
                 <div class="flex-grow-1 ms-3">
-                    <h3 style="font-size: 16px; margin: 0; color: #fff; font-weight:700px;">' . $product_name . '</h3>
-                    <p style="font-size: 12px; color: #fff; ' . $message_style . '">' . $last_message . '</p> 
+                    <h3 style="font-size: 16px; margin: 0; color: #157347; font-weight:700">' . $product_name . '</h3>
+                    <p style="font-size: 12px; color: #000; ' . $message_style . '">' . $last_message . '</p> 
                 </div>
             </a>
-                            <hr style="color: #fff !important; width:100%; height:2px;">
+                            <hr style="color: #157347 !important; width:100%; height:2px;">
             ';
         }
     } else {
