@@ -1861,7 +1861,6 @@ display: none;
 .searchResults {
   position: absolute;
     top: 41px;
-    left: -252px;
     right: 46%;
     background-color: white;
     border: 1px solid #ddd;
