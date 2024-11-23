@@ -43,21 +43,23 @@ if (isset($_SESSION['userid'])) {
             $last_sender_id = $conversation['last_sender_id']; 
 
             if ($last_sender_id != base64_decode($_SESSION['userid'])) {
-                $message_style = ($last_message_read == 0) ? 'font-weight: bold;' : '';
+                $message_style = ($last_message_read == 0) ? 'font-weight: ;' : '';
             } else {
                 $message_style = '';
             }
 
             echo '
-            <a href="#" class="d-flex align-items-center" style="text-decoration: none; padding: 10px; border-bottom: 1px solid #ddd;" onclick="loadMessages(\'' . $conversation_id . '\')">
+            <a href="#" class="d-flex align-items-center"  onclick="loadMessages(\'' . $conversation_id . '\')">
                 <div class="flex-shrink-0">
                     <img class="img-fluid" src="' . $urlval . $product_image . '" alt="product img" style="width: 40px; height: 40px; border-radius: 50%;">
                 </div>
                 <div class="flex-grow-1 ms-3">
-                    <h3 style="font-size: 16px; margin: 0; color: #00494f;">' . $product_name . '</h3>
-                    <p style="font-size: 14px; color: #888; ' . $message_style . '">' . $last_message . '</p> 
+                    <h3 style="font-size: 16px; margin: 0; color: #fff; font-weight:700px;">' . $product_name . '</h3>
+                    <p style="font-size: 12px; color: #fff; ' . $message_style . '">' . $last_message . '</p> 
                 </div>
-            </a>';
+            </a>
+                            <hr style="color: #fff !important; width:100%; height:2px;">
+            ';
         }
     } else {
         echo '<p>No conversations found</p>';

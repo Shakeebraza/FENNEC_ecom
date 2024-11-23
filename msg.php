@@ -190,12 +190,20 @@ h2 {
 h3 {
     font-size: 26px;
 }
-
+div#chat-list {
+    padding-left: 1rem;
+    padding-top: 1rem;
+    background-color: #157347;
+}
 h4 {
+    width: 100%;
     padding-left: 4rem;
     font-size: 22px;
     padding-top: 1rem;
-    font-weight: 800 !important;
+    font-weight: 700 !important;
+    padding-bottom: 1rem;
+    background-color: #00494F;
+    color: white;
 }
 
 h5 {
@@ -243,7 +251,7 @@ message-area
 
 .chatlist {
     outline: 0;
-    height: 100%;
+    height: 89%;
     overflow: hidden;
     width: 300px;
     float: left;
@@ -305,7 +313,14 @@ message-area
 a.add img {
     height: 36px;
 }
-
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+    width: 50px !important;
+    height: 50px !important;
+    border-radius: 20% !important;
+    border: 2px solid #fff;
+}
 .chat-area .nav-tabs {
     border-bottom: 1px solid #dee2e6;
     align-items: center;
@@ -371,7 +386,9 @@ div#message-body {
     position: relative;
     text-decoration: none;
 }
-
+div#chat-list {
+    padding-left: 1rem;
+}
 .chat-list .active {
     display: block;
     content: '';
@@ -387,7 +404,7 @@ div#message-body {
 }
 
 .msg-head h3 {
-    color: #222;
+    color: #fff;
     font-size: 18px;
     font-weight: 600;
     line-height: 1.5;
@@ -809,7 +826,7 @@ button:focus {
                 <div class="chat-area">
                     <!-- chatlist -->
                     <div class="chatlist">
-                        <h4>Chats</h4>
+                        <h4>Conversation</h4>
                         <div class="modal-dialog-scrollable">
                             <div class="modal-content">
                                 <div class="modal-body">
@@ -845,7 +862,7 @@ button:focus {
                                 </div>
 
                                 <div class="modal-body">
-                                    <div class="msg-body" id="message-body">
+                                    <div class="msg-body" id="message-body">  
                                         <!-- Dynamically populated messages here -->
                                     </div>
                                 </div>
