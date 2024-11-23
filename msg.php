@@ -16,7 +16,7 @@ $userData = $dbFunctions->getDatanotenc('user_detail', "userid = '$userid'");
 ?>
 <style>
 /* ************
-Reset CSS
+Reset CSSs
 ************** */
 
 html,
