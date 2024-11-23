@@ -1860,9 +1860,9 @@ display: none;
 }
 .searchResults {
   position: absolute;
-    top: 7%;
+    top: 41px;
     left: -252px;
-    right: 2px;
+    right: 211px;
     background-color: white;
     border: 1px solid #ddd;
     border-top-width: 1px;
@@ -1875,7 +1875,7 @@ display: none;
     margin: auto;
       margin-top: auto;
     margin-top: auto;
-    width: 26%;
+    width: 21%;
 }
 
 .suggestion-item {
