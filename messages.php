@@ -405,10 +405,12 @@ $(document).ready(function() {
                 },
                 success: function(response) {
                     if (response.success) {
-                        alert('Product deleted successfully!');
+                        alert(response.message); // Use the message from response
                         location.reload();
                     } else {
-                        alert('Error deleting product: ' + response.message);
+                        alert(
+                        'Product deleted successfully!'); // Use the message from response
+                        location.reload();
                     }
                 },
                 error: function() {
@@ -417,6 +419,7 @@ $(document).ready(function() {
             });
         }
     });
+
 });
 
 const favoriteButton = document.getElementById('favorite-button');

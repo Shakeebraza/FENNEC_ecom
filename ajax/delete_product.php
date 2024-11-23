@@ -31,10 +31,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $pdo->commit();
 
-        echo json_encode(['success' => true]);
+        // Modify response to include a message even on success
+        echo json_encode(['success' => true, 'message' => 'Product deleted successfully!']);
     } catch (Exception $e) {
         $pdo->rollBack();
-        echo json_encode(['success' => false, 'message' => $e->getMessage()]);
+        echo json_encode(['success' => false, 'message' => 'Error deleting product: ' . $e->getMessage()]);
     }
 }
 
