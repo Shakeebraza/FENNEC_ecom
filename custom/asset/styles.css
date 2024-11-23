@@ -1862,7 +1862,7 @@ display: none;
   position: absolute;
     top: 41px;
     left: -252px;
-    right: 211px;
+    right: 46%;
     background-color: white;
     border: 1px solid #ddd;
     border-top-width: 1px;
@@ -1875,7 +1875,7 @@ display: none;
     margin: auto;
       margin-top: auto;
     margin-top: auto;
-    width: 21%;
+    width: 26%;
 }
 
 .suggestion-item {
