@@ -106,7 +106,7 @@ textarea:focus {
     <nav class="navbar navbar-light">
         <div class="container">
             <a class="navbar-brand" href="<?= $urlval?>"><?php echo $fun->getSiteSettingValue('website_name') ?></a>
-            <button class="btn btn-outline-secondary" type="button">Back</button>
+            <a class="btn btn-outline-secondary" href="<?= $urlval?>">Back to home</a>
         </div>
     </nav>
 
@@ -243,9 +243,11 @@ textarea:focus {
                     </div>
                 </div>
                 <div class="btn-main-div" style="display: flex;justify-content: space-between;">
-                    <button type="submit" class="btn btn-primary">Post Ad</button>
+                    <button type="submit" class="btn btn-primary post-btn">Post Ad</button>
                     <button type="button" class="btn btn-secondary" onclick="goBackToSubcategory()">Back</button>
+                    <div class="success-message" style="display: none; margin-top: 10px; color: green;"></div>
                 </div>
+
             </form>
 
         </div>
@@ -405,12 +407,11 @@ textarea:focus {
             }
         });
 
-        // Handle form submission
         $('#productForm').on('submit', function(e) {
             e.preventDefault();
 
             // Get the selected package value
-            let selectedPackage = $('#packageSelect').val();
+            let selectedPackage = $('input[name="boostPlan"]:checked').val();
 
             // Determine the URL based on the selected package
             let url = (selectedPackage === 'standard') ?
@@ -427,67 +428,43 @@ textarea:focus {
                 processData: false,
                 contentType: false,
                 success: function(response) {
+                    console.log(response); // Log the entire response to check its structure
                     if (response.success) {
-                        if (selectedPackage === 'standard') {
-                            showSuccessAlert();
+                        // Show success message below the button
+                        $('.success-message').text(response.message).fadeIn();
 
-                        } else {
-                            let paymentForm = $('<form>', {
-                                'action': response.redirect,
-                                'method': 'POST'
-                            }).append(
-                                $('<input>', {
-                                    'type': 'hidden',
-                                    'name': 'boost_type',
-                                    'value': response.boostType
-                                }),
-                                $('<input>', {
-                                    'type': 'hidden',
-                                    'name': 'plan_id',
-                                    'value': response.planId
-                                }),
-                                $('<input>', {
-                                    'type': 'hidden',
-                                    'name': 'price',
-                                    'value': response.price
-                                }),
-                                $('<input>', {
-                                    'type': 'hidden',
-                                    'name': 'plan_name',
-                                    'value': response.planName
-                                }),
-                                $('<input>', {
-                                    'type': 'hidden',
-                                    'name': 'productId',
-                                    'value': response.productId
-                                })
-                            );
-                            $('body').append(paymentForm);
-                            paymentForm.submit();
-                        }
+                        // Hide the "Post Ad" button
+                        $('.post-btn').hide();
                     } else if (response.errors) {
                         handleErrors(response.errors);
                     }
                 },
                 error: function() {
-                    showErrorAlert();
+                    // Log error if AJAX fails
+                    console.log("Error: Something went wrong with the AJAX request.");
                 }
             });
         });
 
-        function showSuccessAlert() {
-            alert('Ad posted successfully!');
-        }
+        function showMessage(type, message) {
+            // Remove any existing message
+            $('.form-message').remove();
 
-        function showErrorAlert() {
-            alert('There was an error posting your ad. Please try again.');
+            // Create a new message below the buttons
+            let messageBox =
+                `<div class="form-message alert alert-${type}" style="margin-top: 10px;">${message}</div>`;
+            $('.btn-main-div').after(messageBox); // Add the message below the button section
         }
 
         function handleErrors(errors) {
-            for (let key in errors) {
-                $(`#${key}Error`).text(errors[key]);
+            // Clear previous error messages
+            $('.text-danger').text('');
+            // Display errors for specific fields
+            for (let field in errors) {
+                $(`#${field}Error`).text(errors[field]);
             }
         }
+
     });
     </script>
 

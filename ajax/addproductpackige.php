@@ -85,7 +85,7 @@ try {
         'discount_price' => "",
         'country_id' => $_POST['country'],
         'city_id' => $_POST['city'],
-        'aera_id' => $_POST['aera'],
+        'aera_id' => $_POST['aera'] ?? 0,
         'user_id' => base64_decode($_SESSION['userid']),
     ];
 

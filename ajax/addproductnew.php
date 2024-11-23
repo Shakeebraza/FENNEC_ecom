@@ -1,6 +1,5 @@
 <?php
 require_once('../global.php');
-header('Content-Type: application/json');
 
 $errors = [];
 

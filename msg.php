@@ -205,7 +205,7 @@ a {
 }
 
 * {
-  margin-bottom: 0;
+    margin-bottom: 0;
 }
 
 
@@ -730,9 +730,11 @@ button:focus {
         display: block;
         margin-right: 151px;
     }
+
     .chatlist {
         width: 100%;
     }
+
     .chatbox {
         width: 100%;
         position: absolute;
@@ -742,31 +744,40 @@ button:focus {
         transition: all 0.5s ease;
         border-left: none;
     }
+
     .showbox {
         left: 0 !important;
         transition: all 0.5s ease;
     }
+
     .msg-head h3 {
         font-size: 14px;
     }
+
     .msg-head p {
         font-size: 12px;
     }
+
     .msg-head .flex-shrink-0 img {
         height: 30px;
     }
+
     .send-box button {
         width: 28%;
     }
+
     .send-box .form-control {
         width: 70%;
     }
+
     .chat-list h3 {
         font-size: 14px;
     }
+
     .chat-list p {
         font-size: 12px;
     }
+
     .msg-body ul li.sender p {
         font-size: 13px;
         padding: 8px;
@@ -774,6 +785,7 @@ button:focus {
         border-top-right-radius: 6px;
         border-bottom-right-radius: 6px;
     }
+
     .msg-body ul li.repaly p {
         font-size: 13px;
         padding: 8px;
@@ -781,11 +793,13 @@ button:focus {
         border-top-right-radius: 6px;
         border-bottom-left-radius: 6px;
     }
-    #product-info-popup{
+
+    #product-info-popup {
         top: 40% !important;
         left: 53% !important;
     }
-    #product-name{
+
+    #product-name {
         font-size: 12px !important;
     }
 }
@@ -803,7 +817,8 @@ button:focus {
                                     <!-- chat-list -->
                                     <div class="chat-lists">
                                         <div class="tab-content" id="myTabContent">
-                                            <div class="tab-pane fade show active" id="Open" role="tabpanel" aria-labelledby="Open-tab">
+                                            <div class="tab-pane fade show active" id="Open" role="tabpanel"
+                                                aria-labelledby="Open-tab">
                                                 <div class="chat-list" id="chat-list">
                                                     <!-- Dynamically populated chat list here -->
                                                 </div>
@@ -824,7 +839,9 @@ button:focus {
                                         <div class="col-8">
                                             <div class="d-flex align-items-center">
                                                 <span class="chat-icon">
-                                                    <img class="img-fluid" src="https://mehedihtml.com/chatbox/assets/img/arroleftt.svg" alt="image title" style="width: 20px; height: 20px;">
+                                                    <img class="img-fluid"
+                                                        src="https://mehedihtml.com/chatbox/assets/img/arroleftt.svg"
+                                                        alt="image title" style="width: 20px; height: 20px;">
                                                 </span>
                                             </div>
                                         </div>
@@ -838,10 +855,15 @@ button:focus {
                                 </div>
 
                                 <div class="send-box" style="padding: 10px; background-color: #f9f9f9;">
-                                    <form id="send-message-form" action="javascript:void(0);" style="display: flex; align-items: center;">
-                                        <input type="text" id="message-input" class="form-control" placeholder="Write message…" style="flex-grow: 1; border-radius: 20px; padding: 10px;">
-                                        <button type="submit" style="border: none; background-color: transparent; margin-left: 10px; cursor: pointer;">
-                                            <i class="fa fa-paper-plane" aria-hidden="true" style="font-size: 20px; color: #00494f;"></i>
+                                    <form id="send-message-form" action="javascript:void(0);"
+                                        style="display: flex; align-items: center;">
+                                        <input type="text" id="message-input" class="form-control"
+                                            placeholder="Write message…"
+                                            style="flex-grow: 1; border-radius: 20px; padding: 10px;">
+                                        <button type="submit"
+                                            style="border: none; background-color: transparent; margin-left: 10px; cursor: pointer;">
+                                            <i class="fa fa-paper-plane" aria-hidden="true"
+                                                style="font-size: 20px; color: #00494f;"></i>
                                         </button>
                                     </form>
                                 </div>
@@ -857,61 +879,55 @@ button:focus {
 
 
 
-    <?php
+<?php
     include_once 'footer.php';
     ?>
 <script>
-
-
-
-
-
-
-
-
 $(document).ready(function() {
-        loadChatList();
+    loadChatList();
 
 
-        $(document).on('click', '.chat-list-item', function() {
-            var conversationId = $(this).data('conversation-id');
-            loadMessages(conversationId);
-        });
-
-
-        $('#send-message-form').submit(function(event) {
-            event.preventDefault();
-            var message = $('#message-input').val();
-            var conversationId = $('#chat-box').data('conversation-id'); 
-
-            if (message !== '') {
-                sendMessage(conversationId, message);
-            }
-        });
+    $(document).on('click', '.chat-list-item', function() {
+        var conversationId = $(this).data('conversation-id');
+        loadMessages(conversationId);
     });
 
 
-    function loadChatList() {
-        $.ajax({
-            url: '<?= $urlval?>ajax/fetch_conversations.php', 
-            method: 'GET',
-            success: function(response) {
-                $('#chat-list').html(response);
-            }
-        });
-    }
+    $('#send-message-form').submit(function(event) {
+        event.preventDefault();
+        var message = $('#message-input').val();
+        var conversationId = $('#chat-box').data('conversation-id');
 
-   
-    function loadMessages(conversationId) {
+        if (message !== '') {
+            sendMessage(conversationId, message);
+        }
+    });
+});
+
+
+function loadChatList() {
     $.ajax({
-        url: '<?= $urlval?>ajax/fetch_messages.php', 
+        url: '<?= $urlval?>ajax/fetch_conversations.php',
+        method: 'GET',
+        success: function(response) {
+            $('#chat-list').html(response);
+        }
+    });
+}
+
+
+function loadMessages(conversationId) {
+    $.ajax({
+        url: '<?= $urlval?>ajax/fetch_messages.php',
         method: 'POST',
-        data: { conversation_id: conversationId },
+        data: {
+            conversation_id: conversationId
+        },
         success: function(response) {
             $('#message-body').html(response);
             if ($(window).width() <= 768) {
-            $(".chatbox").addClass('showbox');
-                }
+                $(".chatbox").addClass('showbox');
+            }
             $('#chat-box').data('conversation-id', conversationId);
             // Auto-scroll to bottom
             $('#message-body').scrollTop($('#message-body')[0].scrollHeight);
@@ -920,30 +936,31 @@ $(document).ready(function() {
 }
 
 
-    function sendMessage(conversationId, message) {
-        $.ajax({
-            url: '<?= $urlval?>ajax/send_message.php', 
-            method: 'POST',
-            data: {
-                conversation_id: conversationId,
-                message: message
-            },
-            success: function(response) {
-                $('#message-input').val(''); 
-                loadMessages(conversationId); 
-            }
-        });
-    }
-    $(".chat-icon").click(function() {
+function sendMessage(conversationId, message) {
+    $.ajax({
+        url: '<?= $urlval?>ajax/send_message.php',
+        method: 'POST',
+        data: {
+            conversation_id: conversationId,
+            message: message
+        },
+        success: function(response) {
+            $('#message-input').val('');
+            loadMessages(conversationId);
+        }
+    });
+}
+$(".chat-icon").click(function() {
     $(".chatbox").removeClass('showbox');
 });
-    function hidepopup(){
-        $('#popup-overlay').hide();
+
+function hidepopup() {
+    $('#popup-overlay').hide();
     $('#product-info-popup').hide();
-    
+
     $('body').css('overflow', 'auto');
-    }
-    $(window).on('scroll', function() {
+}
+$(window).on('scroll', function() {
     var scrollThreshold = 600;
 
     if ($(window).scrollTop() > scrollThreshold) {
@@ -952,4 +969,5 @@ $(document).ready(function() {
 });
 </script>
 </body>
+
 </html>
