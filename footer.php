@@ -181,4 +181,15 @@ function openNav() {
 function closeNav() {
     document.getElementById("mySidebar").style.width = "0";
 }
+
+document.getElementById('locationSelect').addEventListener('change', function() {
+    var cityId = this.value; // Get the selected city ID
+
+    // If a city is selected, redirect to the category page with the city ID in the query string
+    if (cityId) {
+        window.location.href = 'category.php?location=' + cityId;
+    } else {
+        alert('Please select a country and city.');
+    }
+  });
 </script>

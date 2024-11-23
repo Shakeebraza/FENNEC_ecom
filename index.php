@@ -499,45 +499,54 @@ include_once 'header.php';
   <div id="topLocationsContent" style="display: none;">
     <!-- <h6 class="text-center mb-2"><b>Top Cities</b></h6> -->
     <?php
-    $topLocations = $fun->TopLocations();
-    if ($topLocations['status'] === 'success') {
-      $data = $topLocations['data'];
-      $locationsByCountry = [];
-      foreach ($data as $location) {
+$topLocations = $fun->TopLocations();
+if ($topLocations['status'] === 'success') {
+    $data = $topLocations['data'];
+    $locationsByCountry = [];
+
+    // Group cities by country
+    foreach ($data as $location) {
         $countryName = $location['country_name'];
         $cityName = $location['city_name'];
+        $cityId = $location['city_id'];  // Access the city_id now
+
         if (!isset($locationsByCountry[$countryName])) {
-          $locationsByCountry[$countryName] = [];
+            $locationsByCountry[$countryName] = [];
         }
         if (!empty($cityName)) {
-          $locationsByCountry[$countryName][] = $cityName;
+            $locationsByCountry[$countryName][] = [
+                'name' => $cityName,
+                'id' => $cityId
+            ];
         }
-      }
+    }
     ?>
 
-      <h6 class="text-center mb-2"><b><?=$lan['top_cities']?></b></h6>
+    <h6 class="text-center mb-2"><b><?=$lan['top_cities']?></b></h6>
 
-      <?php foreach ($locationsByCountry as $country => $cities): ?>
+    <?php foreach ($locationsByCountry as $country => $cities): ?>
         <h6 class="text-center"><b><?php echo htmlspecialchars($country); ?></b></h6>
         <div class="row text-center justify-content-center mb-3">
-          <div class="col-md-10">
-            <p class="location-list">
-              <?php
-              $cityLinks = array_map(function ($city) use ($urlval) {
-                return '<a href="' . htmlspecialchars($urlval) . '">' . htmlspecialchars($city) . '</a>';
-              }, $cities);
-              echo implode(' | ', $cityLinks);
-              ?>
-            </p>
-          </div>
+            <div class="col-md-10">
+                <p class="location-list">
+                    <?php
+                    // Create links for each city
+                    $cityLinks = array_map(function ($city) use ($urlval) {
+                        return '<a href="' . htmlspecialchars($urlval) . 'category.php?location=' . htmlspecialchars($city['id']) . '">' . htmlspecialchars($city['name']) . '</a>';
+                    }, $cities);
+                    echo implode(' | ', $cityLinks);
+                    ?>
+                </p>
+            </div>
         </div>
-      <?php endforeach; ?>
+    <?php endforeach; ?>
 
-    <?php } else { ?>
-      <div class="alert alert-danger text-center">
+<?php } else { ?>
+    <div class="alert alert-danger text-center">
         <strong>Error:</strong> <?php echo htmlspecialchars($topLocations['message']); ?>
-      </div>
-    <?php } ?>
+    </div>
+<?php } ?>
+
   </div>
 </div>
 

@@ -22,14 +22,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $filterConditions['min_price'] = (float)$min_price;
     }
 
-    if ($max_price < PHP_INT_MAX) {
+    if ($max_price < PHP_INT_MAX && $max_price > 0) {
         $filterConditions['max_price'] = (float)$max_price; 
     }
 
     if (!empty($slug)) {
-        $slugId = $dbFunctions->getDatanotenc('categories', "slug ='$slug'");
-        $filterConditions['category'] = $slugId[0]['id'];
+        $query = "SELECT id FROM categories WHERE slug = :slug LIMIT 1";
+        $stmt = $pdo->prepare($query);
         
+        $stmt->bindParam(':slug', $slug, PDO::PARAM_STR);
+        
+        $stmt->execute();
+
+        if ($stmt->rowCount() > 0) {
+            $row_data = $stmt->fetch(PDO::FETCH_ASSOC);
+            $filterConditions['category'] = $row_data['id'];
+        }        
+                    
+    }else{
+        $row_data= $dbFunctions->getDatanotenc('cities', "id ='$location'");
+
     }
     if(!empty($subcategories)){
         $filterConditions['subcategory'] = $subcategories; 
@@ -290,9 +302,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             </select>
 
             <h5>Sub Category</h5>
-            <div class="categories-container"> <!-- Added a container for categories -->
+            <div class="categories-container"> 
                 <?php
-                $findCate = $productFun->getAllcatandSubcat($slugId[0]['id']);
+                $findCate = $productFun->getAllcatandSubcat($row_data['id']);
 
                 if ($findCate['status'] == 'success') {
                     foreach ($findCate['data'] as $index => $category) {
@@ -382,8 +394,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     id="product-grid"
                     class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
                     <?php
+                    
 
-                        $productFind = $productFun->getProductsWithDetails(1, 16, $filterConditions);
+                        $productFind = $productFun->getProductsWithDetails(1, 500000, $filterConditions);
                         $products = $productFind['products'];
                         // var_dump($productFind);
                         if(!empty($products)){
@@ -495,7 +508,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         <div class="col-md-3 left-side">
         <div class="bg-light p-4 rounded">
             <form id="filterForm" method="GET" action="">
-                <input type="hidden" name="slug" value="<?php echo $_GET['slug']?>">
+            
                 <div class="mb-4">
                     <h5><?= $lan['location']?></h5>
                     <div class="input-group mb-3">
@@ -517,14 +530,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
 
                     <button type="submit" class="btn btn-sell-car ms-3 w-50 custom-button"><?=$lan['search']?></button>
                 </div>
-
+                <?php
+                    if(isset($slug)){
+                        ?>
                 <div class="">
                     <h5><?= $lan['sub_category']?></h5>
                     <div class="ms-3">
                        
                     <?php
-                    $findCate = $productFun->getAllcatandSubcat($slugId[0]['id']);
+                    
 
+                    
+                    $findCate = $productFun->getAllcatandSubcat($row_data['id']);
+                     
                     if ($findCate['status'] == 'success') {
                         foreach ($findCate['data'] as $index => $category) {
                             echo '
@@ -549,6 +567,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                             echo '  </div>
                                 </div>';
                         }
+                    }
+                }else{
+                    echo '
+                        <div class="">
+                            <h5>' . $lan['sub_category'] . '</h5>
+                            <div class="ms-3">
+                        ';
+
+                        $findatacatandsubcat = $productFun->getCategoriesWithChildren();
+
+                        if ($findatacatandsubcat['status'] == 'success') {
+                            $categories = $findatacatandsubcat['data'];
+                            foreach ($categories as $index => $category) {
+                                echo '
+                                <div class="custom-category" onclick="toggleSubcategory(' . $index . ')">
+                                    <p class="category-title">' . htmlspecialchars($category['category_name']) . '</p>
+                                    <div id="subcategory-' . $index . '" class="subcategory-dropdown" style="display: none;">
+                                ';
+                        
+                                if (!empty($category['children'])) {
+                                    foreach ($category['children'] as $subcategory) {
+                                        echo '<div class="subcategory-item">
+                                                <label>
+                                                    <input type="radio" name="subcategory" value="' . htmlspecialchars($subcategory['id']) . '" 
+                                                           onclick="updateSlug(\'' . htmlspecialchars($subcategory['slug']) . '\')">
+                                                    ' . htmlspecialchars($subcategory['subcategory_name']) . '
+                                                </label>
+                                            </div>';
+                                    }
+                                } else {
+                                    echo '<p class="subcategory-item">No subcategories</p>';
+                                }
+                        
+                                echo '
+                                    </div>
+                                </div>';
+                            }
+                        } else {
+                            echo '<p>No categories found.</p>';
+                        }
+                        echo '<input type="hidden" name="slug" id="selectedSlug">';
                     }
                     ?>
 
@@ -700,6 +759,10 @@ $(document).ready(function(){
       autoplaySpeed: 2000,   // Set the speed of autoplay
     });
   });
+  function updateSlug(slug) {
+    // Update the hidden field with the selected slug
+    document.getElementById('selectedSlug').value = slug;
+}
 </script>
 </body>
 

@@ -678,7 +678,9 @@ class Fun {
 
     public function TopLocations() {
         try {
-            $stmt = $this->pdo->prepare("SELECT countries.name AS country_name, cities.name AS city_name FROM countries LEFT JOIN cities ON countries.id = cities.country_id");
+            // Fetch country name, city name, and city id
+            $stmt = $this->pdo->prepare("SELECT countries.name AS country_name, cities.name AS city_name, cities.id AS city_id 
+                                         FROM countries LEFT JOIN cities ON countries.id = cities.country_id");
             $stmt->execute();
             $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     

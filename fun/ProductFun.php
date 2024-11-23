@@ -202,6 +202,10 @@ Class Productfun{
             $sql .= " AND p.country_id = :country";
             $params[':country'] = $filters['country'];
         }
+        if (!empty($filters['aera_id'])) {
+            $sql .= " AND p.aera_id = :aera_id";
+            $params[':aera_id'] = $filters['aera_id'];
+        }
         if (!empty($filters['city'])) {
             $sql .= " AND p.city_id = :city";
             $params[':city'] = $filters['city'];
@@ -884,6 +888,55 @@ Class Productfun{
             return [];
         }
     }
+
+    public function getCategoriesWithChildren()
+    {
+        try {
+          
+            $categoriesStmt = $this->pdo->prepare("
+                SELECT id, category_name, slug, category_image, icon, sort_order, is_enable, is_show 
+                FROM categories 
+                WHERE is_enable = 1 AND is_show = 1
+                ORDER BY sort_order ASC
+            ");
+            $categoriesStmt->execute();
+            $categories = $categoriesStmt->fetchAll(PDO::FETCH_ASSOC);
+    
+
+            $subcategoriesStmt = $this->pdo->prepare("
+                SELECT category_id, id,subcategory_name, slug, subcategory_image, icon, sort_order, is_enable 
+                FROM subcategories 
+                WHERE is_enable = 1 
+                ORDER BY sort_order ASC
+            ");
+            $subcategoriesStmt->execute();
+            $subcategories = $subcategoriesStmt->fetchAll(PDO::FETCH_ASSOC);
+    
+      
+            $subcategoriesByCategory = [];
+            foreach ($subcategories as $subcategory) {
+                $subcategoriesByCategory[$subcategory['category_id']][] = $subcategory;
+            }
+    
+         
+            foreach ($categories as &$category) {
+                $category['children'] = $subcategoriesByCategory[$category['id']] ?? [];
+            }
+    
+            return [
+                'status' => 'success',
+                'data' => $categories
+            ];
+        } catch (Exception $e) {
+            // Handle exception and return an empty array
+            error_log('Error fetching categories with children: ' . $e->getMessage());
+            return [
+                'status' => 'error',
+                'data' => []
+            ];
+        }
+    }
+    
     
     
 }

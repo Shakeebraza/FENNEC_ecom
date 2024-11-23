@@ -148,34 +148,35 @@ $lan = $fun->loadLanguage($lang);
         <span class="navbar-toggler-icon"></span>
       </button>
       <form id="searchForm" class="d-flex mx-lg-auto my-lg-0 flex-column flex-lg-row w-100 justify-content-center custom-form">
-        <div class="input-group w-50 me-lg-1 mb-2 mb-lg-0 custom-form">
-          <span class="input-group-text bg-white border-0 rounded-0">
-            <i class="fa-solid fa-magnifying-glass"></i>
-          </span>
-          <input
-            id="searchInput"
-            class="form-control p-2 rounded-0 search-input"
-            type="search"
-            placeholder="<?= $lan['Search_fennec']?>"
-            aria-label="Search" />
-        </div>
-        <div class="input-group w-25 mb-2 mb-lg-0 custom-form-location">
-          <span class="input-group-text rounded-0 bg-light border-0">
-            <i class="fa-solid fa-location-dot me-2"></i>
-          </span>
-          <select class="form-select rounded-0 location-select custom-select">
-            <option value="" selected><?= $lan['Select_country']?></option>
-            <?php
-            $countries = $dbFunctions->getData('countries');
-            foreach ($countries as $cont) {
-              echo '<option value="' . $security->decrypt($cont['id']) . '">' . $security->decrypt($cont['name']) . '</option>';
-            }
-            ?>
-          </select>
-        </div>
-        <button class="btn btn-success rounded-0 btn_seach_header" type="submit">
-          <i class="fa-solid fa-magnifying-glass fa-magnifying-glass2"></i>
-        </button>
+          <div class="input-group w-50 me-lg-1 mb-2 mb-lg-0 custom-form">
+              <span class="input-group-text bg-white border-0 rounded-0">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+              </span>
+              <input
+                  id="searchInput"
+                  class="form-control p-2 rounded-0 search-input"
+                  type="search"
+                  placeholder="<?= $lan['Search_fennec']?>"
+                  aria-label="Search" />
+          </div>
+          <div class="input-group w-25 mb-2 mb-lg-0 custom-form-location">
+              <span class="input-group-text rounded-0 bg-light border-0">
+                  <i class="fa-solid fa-location-dot me-2"></i>
+              </span>
+              <select class="form-select rounded-0 location-select custom-select" id="locationSelect">
+                  <option value="" selected><?= $lan['Select_country']?></option>
+                  <?php
+                  $countryCityPairs = $productFun->getCountryCityPairs();
+                  foreach ($countryCityPairs as $pair) {
+                      echo '<option value="' . $pair['city_id'] . '" 
+                                  data-country-id="' . $pair['country_id'] . '" 
+                                  data-city-id="' . $pair['city_id'] . '">
+                                  ' . $pair['country_name'] . ' | ' . $pair['city_name'] . '
+                          </option>';
+                  }
+                  ?>
+              </select>
+          </div>
       </form>
 
 
