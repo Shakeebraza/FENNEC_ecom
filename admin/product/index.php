@@ -23,18 +23,21 @@ include_once('style.php');
                     <form method="GET" action="" class="mb-4 custom-form">
                         <div class="row g-3">
                             <div class="col-md-3">
-                                <input type="text" name="product_name" class="form-control" placeholder="Search by Product Name" value="">
+                                <input type="text" name="product_name" class="form-control"
+                                    placeholder="Search by Product Name" value="">
                             </div>
 
                             <div class="col-md-2">
-                                <input type="number" name="min_price" class="form-control" placeholder="Min Price" value="">
+                                <input type="number" name="min_price" class="form-control" placeholder="Min Price"
+                                    value="">
                             </div>
                             <div class="col-md-2">
-                                <input type="number" name="max_price" class="form-control" placeholder="Max Price" value="">
+                                <input type="number" name="max_price" class="form-control" placeholder="Max Price"
+                                    value="">
                             </div>
 
                             <div class="col-md-2">
-                                <select id ="category" name="category" class="form-select">
+                                <select id="category" name="category" class="form-select">
                                     <option value="">All Categories</option>
                                     <?php
                                     if(isset($categories)){
@@ -51,7 +54,7 @@ include_once('style.php');
                             </div>
 
                             <div class="col-md-2">
-                                <select id ="subcategory" name="subcategory" class="form-select">
+                                <select id="subcategory" name="subcategory" class="form-select">
                                     <option value="">All Subcategory</option>
                                 </select>
                             </div>
@@ -59,7 +62,7 @@ include_once('style.php');
                             <div class="col-md-2">
                                 <select name="product_type" class="form-select">
                                     <option value="">All Product Types</option>
-                                    <option value="standard" >Standard</option>
+                                    <option value="standard">Standard</option>
                                     <option value="premium">Premium</option>
                                     <option value="gold">Gold</option>
                                 </select>
@@ -78,7 +81,7 @@ include_once('style.php');
                                         }
                                     }
                                     ?>
-                                  
+
                                 </select>
                             </div>
 
@@ -88,10 +91,11 @@ include_once('style.php');
                                 </select>
                             </div>
 
-                       
+
                             <div class="col-md-2">
                                 <button type="submit" class="btn btn-warning custom-button">Filter</button>
-                                <a href="http://localhost/fennec/admin/product/add.php" class="btn btn-success custom-button">Add</a>
+                                <a href="<?= $urlval?>admin/product/add.php"
+                                    class="btn btn-success custom-button">Add</a>
                             </div>
                         </div>
                     </form>
@@ -141,28 +145,28 @@ $(document).ready(function() {
 
 function fetchProducts(page) {
     var product_name = $('input[name="product_name"]').val();
-var min_price = $('input[name="min_price"]').val();
-var max_price = $('input[name="max_price"]').val();
-var category = $('select[name="category"]').val();
-var subcategory = $('select[name="subcategory"]').val();
-var product_type = $('select[name="product_type"]').val();
-var country = $('select[name="country"]').val();
-var city = $('select[name="city"]').val();
+    var min_price = $('input[name="min_price"]').val();
+    var max_price = $('input[name="max_price"]').val();
+    var category = $('select[name="category"]').val();
+    var subcategory = $('select[name="subcategory"]').val();
+    var product_type = $('select[name="product_type"]').val();
+    var country = $('select[name="country"]').val();
+    var city = $('select[name="city"]').val();
 
     $.ajax({
         url: '<?php echo $urlval ?>admin/ajax/product/fetchpro.php',
         type: 'GET',
         data: {
             page: page,
-        limit: 6,
-        product_name: product_name,
-        min_price: min_price,
-        max_price: max_price,
-        category: category,
-        subcategory: subcategory,
-        product_type: product_type,
-        country: country,
-        city: city
+            limit: 6,
+            product_name: product_name,
+            min_price: min_price,
+            max_price: max_price,
+            category: category,
+            subcategory: subcategory,
+            product_type: product_type,
+            country: country,
+            city: city
         },
         dataType: 'json',
         success: function(data) {
@@ -265,34 +269,38 @@ var city = $('select[name="city"]').val();
     });
 }
 $(document).on('change', '.user-status-select', function() {
-        var userId = $(this).data('id');
-        var status = $(this).val();
+    var userId = $(this).data('id');
+    var status = $(this).val();
 
-        $.ajax({
-            url: '<?php echo $urlval ?>admin/ajax/product/update_status.php',
-            type: 'POST',
-            data: {
-                id: userId,
-                status: status
-            },
-            success: function(response) {
-                alert('User status updated successfully!');
-            },
-            error: function(xhr, status, error) {
-                // Handle error
-                alert('An error occurred while updating status.');
-            }
-        });
+    $.ajax({
+        url: '<?php echo $urlval ?>admin/ajax/product/update_status.php',
+        type: 'POST',
+        data: {
+            id: userId,
+            status: status
+        },
+        success: function(response) {
+            alert('User status updated successfully!');
+        },
+        error: function(xhr, status, error) {
+            // Handle error
+            alert('An error occurred while updating status.');
+        }
     });
+});
+
 function showProductDetails(productId) {
     $.ajax({
-        url: '<?php echo $urlval ?>admin/ajax/product/fetchProductDetails.php', 
+        url: '<?php echo $urlval ?>admin/ajax/product/fetchProductDetails.php',
         type: 'GET',
-        data: { id: productId },
+        data: {
+            id: productId
+        },
         dataType: 'json',
         success: function(data) {
             if (data.success) {
-                var galleryImagesArray = data.product.gallery_images ? data.product.gallery_images.split(',') : [];
+                var galleryImagesArray = data.product.gallery_images ? data.product.gallery_images.split(
+                    ',') : [];
 
                 var detailsHTML = `
                 <div class="profileimagee"><img src="<?= $urlval?>${data.product.product_image}" alt="${data.product.product_name}" class="img-fluid mb-3 profileimg"></div>
@@ -339,14 +347,16 @@ function showProductDetails(productId) {
 
 function deleteProduct(productId) {
     $.ajax({
-        url: '<?php echo $urlval ?>admin/ajax/product/deleteProduct.php', 
+        url: '<?php echo $urlval ?>admin/ajax/product/deleteProduct.php',
         type: 'POST',
-        data: { id: productId },
+        data: {
+            id: productId
+        },
         dataType: 'json',
         success: function(data) {
             if (data.success) {
                 alert('Product deleted successfully.');
-                fetchProducts(1); 
+                fetchProducts(1);
             } else {
                 alert('Error deleting product: ' + data.error);
             }
@@ -362,7 +372,8 @@ function setupPagination(totalProducts, currentPage) {
     var paginationHTML = '';
 
     if (currentPage > 1) {
-        paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="fetchProducts(${currentPage - 1})">Previous</a></li>`;
+        paginationHTML +=
+            `<li class="page-item"><a class="page-link" href="#" onclick="fetchProducts(${currentPage - 1})">Previous</a></li>`;
     } else {
         paginationHTML += `<li class="page-item disabled"><a class="page-link" href="#">Previous</a></li>`;
     }
@@ -371,12 +382,14 @@ function setupPagination(totalProducts, currentPage) {
         if (i == currentPage) {
             paginationHTML += `<li class="page-item active"><a class="page-link" href="#">${i}</a></li>`;
         } else {
-            paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="fetchProducts(${i})">${i}</a></li>`;
+            paginationHTML +=
+                `<li class="page-item"><a class="page-link" href="#" onclick="fetchProducts(${i})">${i}</a></li>`;
         }
     }
 
     if (currentPage < totalPages) {
-        paginationHTML += `<li class="page-item"><a class="page-link" href="#" onclick="fetchProducts(${currentPage + 1})">Next</a></li>`;
+        paginationHTML +=
+            `<li class="page-item"><a class="page-link" href="#" onclick="fetchProducts(${currentPage + 1})">Next</a></li>`;
     } else {
         paginationHTML += `<li class="page-item disabled"><a class="page-link" href="#">Next</a></li>`;
     }
