@@ -477,7 +477,7 @@ p {
                                         <p class="location">
                                             <i class="fas fa-map-marker-alt"></i>
                                             <?php echo htmlspecialchars($product['country']); ?> |
-                                            <?php echo htmlspecialchars($product['city']); ?>
+                                            <?php echo htmlspecialchars($product['city'] ?? ''); ?>
                                         </p>
                                         <p class="date">
                                             <i class="far fa-clock"></i>
