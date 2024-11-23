@@ -428,7 +428,8 @@ textarea:focus {
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    console.log(response); // Log the entire response to check its structure
+                    console.log(response);
+                    window.location.href = '<?=$urlval?>success_page.php';
                     if (response.success) {
                         // Show success message below the button
                         $('.success-message').text(response.message).fadeIn();
