@@ -428,13 +428,14 @@ textarea:focus {
                 processData: false,
                 contentType: false,
                 success: function(response) {
-                    console.log(response);
-                    window.location.href = '<?=$urlval?>success_page.php';
-                    if (response.success) {
+                    let parsedResponse = JSON.parse(response);
+                    if (parsedResponse.success) {
+                        console.log(parsedResponse);
                         // Show success message below the button
-                        $('.success-message').text(response.message).fadeIn();
+                        $('.success-message').text(parsedResponse.message).fadeIn();
+                        // window.location.href = '<?=$urlval?>success_page.php';
 
-                        // Hide the "Post Ad" button
+
                         $('.post-btn').hide();
                     } else if (response.errors) {
                         handleErrors(response.errors);
