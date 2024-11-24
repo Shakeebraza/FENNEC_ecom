@@ -883,7 +883,7 @@ button:focus {
                                 <div class="msg-head" style="padding: 15px; background-color: #00494f;">
                                     <div class="row align-items-center">
 
-                                        <div class="col-2">
+                                        <div class="col-2 hide-by">
                                             <button type="button" class="btn btn-light btn-sm back-button"
                                                 style="display: none;">
                                                 <i class="fa fa-arrow-left"></i>
@@ -982,9 +982,12 @@ function loadMessages(conversationId, productName, productImage) {
             // Show the chatbox on mobile if needed
             if ($(window).width() <= 768) {
                 $(".chatbox").addClass('showbox');
+                $(".hide-by").show();
                 $(".back-button").show();
-            }
+            } else {
 
+                $(".hide-by").hide();
+            }
             // Set the conversation ID in the chat box data attribute
             $('#chat-box').data('conversation-id', conversationId);
 
