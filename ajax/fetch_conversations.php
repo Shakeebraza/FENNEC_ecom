@@ -49,7 +49,11 @@ if (isset($_SESSION['userid'])) {
             }
 
             echo '
-            <a href="#" class="d-flex align-items-center"  onclick="loadMessages(\'' . $conversation_id . '\')">
+            <a href="#" class="d-flex align-items-center"  onclick="loadMessages(
+        \'' . $conversation_id . '\', 
+        \'' . addslashes($product_name) . '\', 
+        \'' . $urlval . addslashes($product_image) . '\'
+    )">
                 <div class="flex-shrink-0">
                     <img class="img-fluid" src="' . $urlval . $product_image . '" alt="product img" style="width: 40px; height: 40px; border-radius: 50%;">
                 </div>
