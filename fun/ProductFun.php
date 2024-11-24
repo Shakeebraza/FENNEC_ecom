@@ -681,7 +681,7 @@ Class Productfun{
                             <div class="d-flex justify-content-between">
                                 <a class="btn btn-button btn-sm" href="'.$this->urlval.'productedit.php?productid='.$this->security->encrypt($product['id']).'">'.$lan['edit'].'</a>
                                 
-                                <div>';
+                                <div class="btn-delete-upload">';
                                 if($product['product_type'] == 'standard'){
                                     echo'
                                     <a class="btn btn-button btn-sm btn-boost" href="'.$this->urlval.'productboost.php?productid='.base64_encode($product['id']).'">'.$lan['boost'].'</a>

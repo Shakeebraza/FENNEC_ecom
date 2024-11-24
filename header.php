@@ -121,6 +121,12 @@ $lan = $fun->loadLanguage($lang);
         opacity: 1;
         pointer-events: auto;
     }
+
+    @media (max-width: 768px) {
+        .premium-item {
+            width: 100%;
+        }
+    }
     </style>
 </head>
 

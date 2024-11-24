@@ -72,6 +72,32 @@ $userData = $dbFunctions->getDatanotenc('user_detail', "userid = '$userid'");
     border: 1px solid #ddd;
     border-radius: 5px;
 }
+
+@media (max-width: 768px) {
+
+    .nav-tabs .nav-link {
+        font-weight: 400;
+        font-size: 9px;
+    }
+
+    .d-flex {
+        flex-direction: column;
+        align-items: stretch;
+        /* gap: 5px; */
+    }
+
+    .btn-delete-upload {
+        display: flex;
+        margin-top: 10%;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .btn-mobile {
+        margin-bottom: 10px;
+    }
+
+}
 </style>
 <div class="container mt-4 pb-5">
     <ul class="nav nav-tabs justify-content-between" id="myTab" role="tablist">
@@ -339,11 +365,11 @@ $userData = $dbFunctions->getDatanotenc('user_detail', "userid = '$userid'");
                                     value="<?php echo $CsrfProtection->generateToken() ?>">
 
                                 <button type="submit"
-                                    class="btn btn-primary"><?= $lan['save_contact_deatail']?></button>
+                                    class="btn btn-primary btn-mobile"><?= $lan['save_contact_deatail']?></button>
 
-                                <button type="button" class="btn btn-button"
+                                <button type="button" class="btn btn-button btn-mobile"
                                     onclick="openPasswordModal()"><?= $lan['edit_password']?></button>
-                                <button type="button" class="btn btn-button"
+                                <button type="button" class="btn btn-button btn-mobile"
                                     onclick="openTransactionHistory()"><?= $lan['View_full_transaction_history']?></button>
                             </form>
 
@@ -409,7 +435,8 @@ $(document).ready(function() {
                         location.reload();
                     } else {
                         alert(
-                        'Product deleted successfully!'); // Use the message from response
+                            'Product deleted successfully!'
+                        ); // Use the message from response
                         location.reload();
                     }
                 },
