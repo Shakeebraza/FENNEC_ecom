@@ -431,14 +431,19 @@ textarea:focus {
                     let parsedResponse = JSON.parse(response);
                     if (parsedResponse.success) {
                         console.log(parsedResponse);
+
                         // Show success message below the button
                         $('.success-message').text(parsedResponse.message).fadeIn();
-                        // window.location.href = '<?=$urlval?>success_page.php';
 
-
+                        // Hide the "Post Ad" button
                         $('.post-btn').hide();
-                    } else if (response.errors) {
-                        handleErrors(response.errors);
+
+                        // Redirect to success_page.php after 5 seconds
+                        setTimeout(function() {
+                            window.location.href = '<?=$urlval?>success_page.php';
+                        }, 5000); // 5000 ms = 5 seconds
+                    } else if (parsedResponse.errors) {
+                        handleErrors(parsedResponse.errors);
                     }
                 },
                 error: function() {
@@ -447,6 +452,7 @@ textarea:focus {
                 }
             });
         });
+
 
         function showMessage(type, message) {
             // Remove any existing message
