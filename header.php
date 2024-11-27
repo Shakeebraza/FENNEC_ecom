@@ -209,11 +209,11 @@ $lan = $fun->loadLanguage($lang);
                       <p>' . $lan['menu'] . '</p>
                   </button>
                   <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-                      <li><a class="dropdown-item" href="' . $urlval . 'messages.php#upload-tab">' . $lan['manage_ads'] . '</a></li>
+                      <li><a class="dropdown-item" href="' . $urlval . 'messages.php#upload">' . $lan['manage_ads'] . '</a></li>
                       <li><a class="dropdown-item" href="' . $urlval . 'msg.php">' . $lan['messages'] . '</a></li>
-                      <li><a class="dropdown-item" href="' . $urlval . 'messages.php#favourite-tab">' . $lan['favourites'] . '</a></li>
-                      <li><a class="dropdown-item" href="' . $urlval . 'messages.php#details-tab">' . $lan['my_details'] . '</a></li>
-                      <li><a class="dropdown-item" href="' . $urlval . 'messages.php#view-products-tab">' . $lan['view_job_ads'] . '</a></li>
+                      <li><a class="dropdown-item" href="' . $urlval . 'messages.php#favourite">' . $lan['favourites'] . '</a></li>
+                      <li><a class="dropdown-item" href="' . $urlval . 'messages.php#details">' . $lan['my_details'] . '</a></li>
+                      <li><a class="dropdown-item" href="' . $urlval . 'messages.php#view-products">' . $lan['view_job_ads'] . '</a></li>
                       <li><a class="dropdown-item" href="' . $urlval . 'logout.php">' . $lan['logout'] . '</a></li>
                   </ul>
               </div>
@@ -263,15 +263,15 @@ $lan = $fun->loadLanguage($lang);
               if (isset($_SESSION['userid'])) {
                 echo $urlval . 'post.php';
               } else {
-                echo $urlval . 'Product.php';
+                echo $urlval . 'LoginRegister.php';
               }
               ?>"><?= $lan['post']?></a>
         <?php if (isset($_SESSION['userid'])): ?>
-        <a href="<?= $urlval ?>messages.php#upload-tab"><?= $lan['manage_ads']?></a>
+        <a href="<?= $urlval ?>messages.php#upload"><?= $lan['manage_ads']?></a>
         <a href="<?= $urlval ?>msg.php"><?= $lan['messages']?></a>
-        <a href="<?= $urlval ?>messages.php#favourite-tab"><?= $lan['favourites']?></a>
-        <a href="<?= $urlval ?>messages.php#details-tab"><?= $lan['my_details']?></a>
-        <a href="<?= $urlval ?>messages.php#view-products-tab"><?= $lan['view_job_ads']?></a>
+        <a href="<?= $urlval ?>messages.php#favourite"><?= $lan['favourites']?></a>
+        <a href="<?= $urlval ?>messages.php#details"><?= $lan['my_details']?></a>
+        <a href="<?= $urlval ?>messages.php#view-products"><?= $lan['view_job_ads']?></a>
         <?php endif; ?>
 
 

@@ -209,9 +209,11 @@ p {
                 ?>
                                 <div class="col-md-3">
                                     <div class="card crt-timg-hm">
+                                        <a href="<?= $urlval?>category.php?slug=<?=$category['slug']?>">
                                         <img src="<?php echo htmlspecialchars($urlval . $category['category_image']); ?>"
                                             class="card-img-top"
                                             alt="<?php echo htmlspecialchars($category['category_name']); ?>" />
+                                            </a>
                                         <div class="card-body">
                                             <p class="card-text crt-txt-hm">
                                                 <?php echo htmlspecialchars($category['category_name']); ?></p>

@@ -26,7 +26,6 @@ $userData = $dbFunctions->getDatanotenc('user_detail', "userid = '$userid'");
     background-color: rgba(0, 0, 0, 0.5);
 }
 
-/* Modal content */
 .modal-content {
     background-color: #fff;
     margin: 10% auto;
@@ -306,6 +305,7 @@ $userData = $dbFunctions->getDatanotenc('user_detail', "userid = '$userid'");
                       <a data-productid="' . $favorite['id'] . '" id="favorite-button">
                       <i class="fas fa-heart heart-icon"></i>
                       </a>
+                      <a href="'.$urlval.'detail.php?slug='.$favorite['slug'].'">
                       <div class="p-3">
                           <h5 class="mb-1">' . htmlspecialchars($favorite['name']) . '</h5>
                           <p class="mb-2">' . htmlspecialchars($description) . '</p>
@@ -313,6 +313,7 @@ $userData = $dbFunctions->getDatanotenc('user_detail', "userid = '$userid'");
                               <strong>£' . number_format($favorite['price'], 2) . '</strong>
                           </p>
                       </div>
+                      </a>
                   </div>
               </div>';
         }
@@ -431,12 +432,12 @@ $(document).ready(function() {
                 },
                 success: function(response) {
                     if (response.success) {
-                        alert(response.message); // Use the message from response
+                        alert(response.message); 
                         location.reload();
                     } else {
                         alert(
                             'Product deleted successfully!'
-                        ); // Use the message from response
+                        ); 
                         location.reload();
                     }
                 },
@@ -535,7 +536,7 @@ function updatePassword(event) {
     const confirmPassword = document.getElementById('confirmPassword').value;
     const token = document.getElementById('csrf_token_password_chnage').value;
 
-    // Password confirmation check
+
     if (newPassword !== confirmPassword) {
         displayMessage('Passwords do not match!', 'error');
         return;
@@ -584,10 +585,10 @@ $('#productForm').on('submit', function(e) {
         processData: false,
         contentType: false,
         success: function(response) {
-            let parsedResponse = JSON.parse(response); // Parse response JSON
+            let parsedResponse = JSON.parse(response); 
             if (parsedResponse.success) {
                 displayMessage('Product added successfully!', 'success');
-                $('#productForm')[0].reset(); // Optionally reset the form
+                $('#productForm')[0].reset(); 
             } else if (parsedResponse.errors) {
                 displayMessage('There are errors in the form. Please fix them and try again.',
                     'danger');
@@ -684,12 +685,12 @@ $('#city').on('change', function() {
 });
 
 function openTransactionHistory() {
-    // Show the modal
+ 
     document.getElementById('transactionHistoryModal').style.display = 'block';
 
-    // Fetch transaction history (you can replace this URL with your own backend endpoint)
-    fetch('<?=$urlval?>ajax/get_transaction_history.php') // PHP script that returns transaction history
-        .then(response => response.json()) // Assume the response is JSON
+
+    fetch('<?=$urlval?>ajax/get_transaction_history.php') 
+        .then(response => response.json()) 
         .then(data => {
             let historyHtml = '<ul>';
             data.forEach(transaction => {
@@ -705,10 +706,36 @@ function openTransactionHistory() {
         });
 }
 
-// Function to close the modal
+
 function closeModal() {
     document.getElementById('transactionHistoryModal').style.display = 'none';
 }
+
+document.addEventListener("DOMContentLoaded", function () {
+    function activateTabFromHash() {
+        const urlHash = window.location.hash; 
+        if (urlHash) {
+            const tabTrigger = document.querySelector(`[data-bs-target="${urlHash}"]`);
+            if (tabTrigger) {
+                const tab = new bootstrap.Tab(tabTrigger);
+                tab.show();
+            }
+        }
+    }
+
+    activateTabFromHash();
+    const tabLinks = document.querySelectorAll('.nav-link[data-bs-toggle="tab"]');
+    tabLinks.forEach(tabLink => {
+        tabLink.addEventListener("shown.bs.tab", function (event) {
+            const targetHash = event.target.getAttribute("data-bs-target"); 
+            history.replaceState(null, null, targetHash); 
+        });
+    });
+
+    window.addEventListener("hashchange", activateTabFromHash);
+});
+
+
 </script>
 </body>
 

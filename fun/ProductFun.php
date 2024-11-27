@@ -589,6 +589,7 @@ Class Productfun{
             SELECT 
                 p.id AS product_id,
                 p.name AS title,
+                p.slug,
                 p.price,
                 p.image AS image
             FROM 

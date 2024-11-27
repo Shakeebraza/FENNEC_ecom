@@ -297,14 +297,14 @@ $area = $productData['area'];
             </div>
 
             <div class="card mb-4">
-                <div class="card-body">
+                <!-- <div class="card-body">
                     <h5 class="card-title">Deliver this with AnyVan</h5>
                     <ul class="list-unstyled">
                         <li><i class="fas fa-check text-success"></i> Unbeatable instant prices</li>
                         <li><i class="fas fa-check text-success"></i> Choose your date & time</li>
                     </ul>
                     <button class="btn ">Get instant price</button>
-                </div>
+                </div> -->
             </div>
             <div id="map"></div>
 
@@ -417,14 +417,20 @@ $area = $productData['area'];
             $relatedProducts = $productFun->getRelatedProducts($productData['product']['category_id'], $productData['product']['product_id']);
             foreach ($relatedProducts as $relatedProduct) {
                 echo '
-            <div class="swiper-slide d-flex flex-column align-items-center">
-                <div class="slide-content text-center p-3">
-                    <img src="' . htmlspecialchars($urlval . $relatedProduct['image']) . '" alt="' . htmlspecialchars($relatedProduct['title']) . '" class="img-fluid rounded">
-                    <h5 class="mt-2" style="font-size: 1.2em; color: #333;">' . htmlspecialchars($relatedProduct['title']) . '</h5>
-                    <p class="font-weight-bold text-success" style="font-size: 1.1em; margin-top: 5px;">£' . htmlspecialchars($relatedProduct['price']) . '</p>
+                <div class="swiper-slide d-flex flex-column align-items-center">
+                    <div class="slide-content text-center p-3">
+                    <a href="'.$urlval.'detail.php?slug='.$relatedProduct['slug'].'">
+                        <img 
+                            src="' . htmlspecialchars($urlval . $relatedProduct['image']) . '" 
+                            alt="' . htmlspecialchars($relatedProduct['title']) . '" 
+                            class="img-fluid rounded" 
+                            style="width: 250px; height: 150px; object-fit: cover;">
+                        <h5 class="mt-2" style="font-size: 1.2em; color: #333;">' . htmlspecialchars($relatedProduct['title']) . '</h5>
+                        <p class="font-weight-bold text-success" style="font-size: 1.1em; margin-top: 5px;">£' . htmlspecialchars($relatedProduct['price']) . '</p>
+                    </a>
+                        </div>
                 </div>
-            </div>
-            ';
+                ';
             }
             ?>
         </div>
