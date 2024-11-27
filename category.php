@@ -541,7 +541,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
                     
 
                     
-                    $findCate = $productFun->getAllcatandSubcat($row_data['id']);
+                    @$findCate = $productFun->getAllcatandSubcat($row_data['id']);
                      
                     if ($findCate['status'] == 'success') {
                         foreach ($findCate['data'] as $index => $category) {
