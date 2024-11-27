@@ -286,7 +286,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         <span class="close-modal" id="closeModalBtn">&times;</span>
         <h5>Filter Options</h5>
         <form id="mobileFilterForm" method="GET" action="">
-        <input type="hidden" name="slug" value="<?php echo $_GET['slug']?>">
+
             <h5>Location</h5>
             <select name="location" required class="styled-select">
                 <?php
