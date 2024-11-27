@@ -15,9 +15,6 @@ $userid = intval(base64_decode($_SESSION['userid'])) ?? 0;
 $userData = $dbFunctions->getDatanotenc('user_detail', "userid = '$userid'");
 ?>
 <style>
-/* ************
-Reset CSSs
-************** */
 
 html,
 body,
@@ -109,7 +106,7 @@ video {
 }
 
 
-/* HTML5 display-role reset for older browsers */
+
 
 article,
 aside,
@@ -210,6 +207,8 @@ h4 {
     padding-bottom: 2rem;
     background-color: #00494F;
     color: white;
+    padding-top: 24px;
+  padding-bottom: 23px;
 }
 
 h5 {
@@ -472,7 +471,7 @@ div#chat-list {
     margin: 15px 0;
 }
 
-.msg-body ul li.sender {
+/* .msg-body ul li.sender {
     display: block;
     width: 100%;
     position: relative;
@@ -494,9 +493,9 @@ div#chat-list {
     -webkit-transform: rotate(-37deg);
     -ms-transform: rotate(-37deg);
     transform: rotate(-37deg);
-}
+} */
 
-.msg-body ul li.sender p {
+/* .msg-body ul li.sender p {
     color: #000;
     font-size: 14px;
     line-height: 1.5;
@@ -516,7 +515,7 @@ div#chat-list {
     font-size: 14px;
     line-height: 1.5;
     font-weight: 500;
-}
+} */
 
 .msg-body ul li.repaly {
     display: block;
@@ -848,25 +847,40 @@ button:focus {
         text-align: center;
     }
 }
+.emoji-picker i:hover,
+label[for="file-upload"]:hover i {
+    color: #007bff;
+}
+
+#emoji-list span {
+    font-size: 20px;
+    cursor: pointer;
+    margin: 5px;
+}
+
+#emoji-list span:hover {
+    background-color: #f1f1f1;
+    border-radius: 5px;
+}
 </style>
 <section class="message-area">
     <div class="container">
         <div class="row">
             <div class="col-12">
                 <div class="chat-area">
-                    <!-- chatlist -->
+                   
                     <div class="chatlist">
                         <h4>Conversation</h4>
                         <div class="modal-dialog-scrollable">
                             <div class="modal-content">
                                 <div class="modal-body">
-                                    <!-- chat-list -->
+                                
                                     <div class="chat-lists">
                                         <div class="tab-content" id="myTabContent">
                                             <div class="tab-pane fade show active" id="Open" role="tabpanel"
                                                 aria-labelledby="Open-tab">
                                                 <div class="chat-list" id="chat-list">
-                                                    <!-- Dynamically populated chat list here -->
+                                                   
                                                 </div>
                                             </div>
                                         </div>
@@ -876,7 +890,7 @@ button:focus {
                         </div>
                     </div>
 
-                    <!-- chatbox -->
+               
                     <div class="chatbox" id="chat-box">
                         <div class="modal-dialog-scrollable">
                             <div class="modal-content">
@@ -890,7 +904,7 @@ button:focus {
                                             </button>
                                         </div>
 
-                                        <!-- Profile picture and name -->
+                                      
                                         <div class="col-8 d-flex align-items-center">
                                             <img class="img-fluid rounded-circle" src="" alt=""
                                                 style="width: 40px; height: 40px; margin-right: 10px; border: 2px solid #00494f;">
@@ -902,32 +916,58 @@ button:focus {
                                 <div class="modal-body">
                                     <div class="msg-body" id="message-body">
 
-                                        <!-- Dynamically populated messages here -->
+                                   
                                     </div>
                                 </div>
 
-                                <div class="send-box" style="padding: 10px; background-color: #f9f9f9;">
-                                    <form id="send-message-form" action="javascript:void(0);"
-                                        style="display: flex; align-items: center;">
-                                        <input type="text" id="message-input" class="form-control"
-                                            placeholder="Write message…"
-                                            style="flex-grow: 1; border-radius: 10px; padding: 10px;">
-                                        <button type="submit"
-                                            style="border: none; background-color: transparent; margin-left: 10px; cursor: pointer;">
-                                            <i class="fa fa-paper-plane" aria-hidden="true"
-                                                style="font-size: 20px; color: #00494f;"></i>
-                                        </button>
-                                    </form>
+                                <div class="send-box" style="padding: 10px; background-color: #f9f9f9; display:none;">
+                                <form id="send-message-form" action="javascript:void(0);" method="POST" enctype="multipart/form-data" style="display: flex; align-items: center;">
+                                    <div style="margin: 0px 9px;">
+                                        <label for="file-upload" style="cursor: pointer;">
+                                            <i class="fa fa-paperclip" aria-hidden="true" style="font-size: 20px; color: #00494f;"></i>
+                                        </label>
+                                        <input type="file" id="file-upload" name="attachments[]" style="display: none;" accept="image/*">
+                                    </div>
+
+                                    <div class="emoji-picker" style="position: relative; margin: 0px 9px;">
+                                        <i class="fa fa-smile" aria-hidden="true" style="font-size: 20px; color: #00494f; cursor: pointer;"></i>
+                                        <div id="emoji-list" style="display: none; position: absolute; bottom: 40px; left: 0; background: white; border: 1px solid #ccc; padding: 5px; border-radius: 5px; max-width: 300px; z-index: 1000; white-space: nowrap; overflow-x: auto; display: flex; align-items: center; gap: 10px;">
+                                        </div>
+                                    </div>
+
+                                    <input type="text" id="message-input" class="form-control" placeholder="Write message…" style="flex-grow: 1; border-radius: 10px; padding: 10px;">
+
+                                    <input type="hidden" id="image-file" name="image-file" value="">
+
+                                    <button type="submit" style="border: none; background-color: transparent; margin-left: 10px; cursor: pointer;">
+                                        <i class="fa fa-paper-plane" aria-hidden="true" style="font-size: 20px; color: #00494f;"></i>
+                                    </button>
+                                </form>
+
+
+                              
+                                <div id="image-preview" style="margin-top: 10px;"></div>
+
                                 </div>
                             </div>
                         </div>
                     </div>
-                    <!-- chatbox -->
+                   
                 </div>
             </div>
         </div>
     </div>
 </section>
+
+
+<div id="imageModal" style="display: none !important; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.8); z-index: 1000; display: flex; justify-content: center; align-items: center; overflow: hidden;">
+    <div style="position: relative; max-width: 80%; max-height: 80%; box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5); border-radius: 10px; overflow: hidden;">
+        <span onclick="closeImagePopup()" style="position: absolute; top: 10px; right: 10px; color: white; font-size: 28px; cursor: pointer; z-index: 1001; font-family: Arial, sans-serif; padding: 5px;">&times;</span>
+        <img id="modalImage" src="" alt="Full Image" style="width: 100%; height: auto; border-radius: 10px; display: block;">
+    </div>
+</div>
+
+
 
 
 
@@ -976,47 +1016,74 @@ function loadMessages(conversationId, productName, productImage) {
             conversation_id: conversationId
         },
         success: function(response) {
-            // Update the message body with the response
             $('#message-body').html(response);
-
-            // Show the chatbox on mobile if needed
             if ($(window).width() <= 768) {
                 $(".chatbox").addClass('showbox');
                 $(".hide-by").show();
                 $(".back-button").show();
+              
             } else {
 
                 $(".hide-by").hide();
+                $('.send-box').show();
+                
             }
-            // Set the conversation ID in the chat box data attribute
             $('#chat-box').data('conversation-id', conversationId);
-
-            // Auto-scroll to the bottom of the message body
+            
             $('#message-body').scrollTop($('#message-body')[0].scrollHeight);
-
-            // Update profile picture and name in the msg-head section
-            $('.msg-head .col-8 img').attr('src', productImage); // Update profile picture
-            $('.msg-head .col-8 span').text(productName); // Update product name
+            $('.msg-head .col-8 img').attr('src', productImage); 
+            $('.msg-head .col-8 span').text(productName); 
         }
     });
 }
 
 
 
-function sendMessage(conversationId, message) {
+document.getElementById('file-upload').addEventListener('change', function(event) {
+    const file = event.target.files[0];
+    if (file) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const imagePreview = document.getElementById('image-preview');
+            imagePreview.innerHTML = `<img src="${e.target.result}" style="max-width: 100px; max-height: 100px; border-radius: 10px;">`;
+            document.getElementById('image-file').value = e.target.result;
+        };
+        reader.readAsDataURL(file);
+    }
+});
+
+document.getElementById('send-message-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+
+    const message = document.getElementById('message-input').value;
+    const imageFile = document.getElementById('file-upload').files[0];
+    const conversationId = $('#chat-box').data('conversation-id');
+    const formData = new FormData();
+    formData.append('message', message);
+    formData.append('conversation_id', conversationId);
+
+    if (imageFile) {
+        formData.append('attachments[]', imageFile);
+    }
+
     $.ajax({
-        url: '<?= $urlval?>ajax/send_message.php',
+        url: '<?= $urlval ?>ajax/send_message.php',
         method: 'POST',
-        data: {
-            conversation_id: conversationId,
-            message: message
-        },
+        data: formData,
+        processData: false,
+        contentType: false,
         success: function(response) {
             $('#message-input').val('');
+            $('#file-upload').val('');
+            $('#image-preview').html('');
             loadMessages(conversationId);
         }
     });
-}
+});
+
+
+
+
 $(".chat-icon").click(function() {
     $(".chatbox").removeClass('showbox');
 });
@@ -1039,6 +1106,44 @@ $(document).on('click', '.back-button', function() {
     $(".chatbox").removeClass('showbox');
     $(".back-button").hide();
 });
+
+
+$(document).ready(function () {
+    const emojis = ['😊', '😂', '😍', '😢', '😎', '👍', '🎉', '❤️', '🔥', '💯', '😜', '🥳', '😏', '🙌', '💃', '🕺', '🤩', '😎', '🤗', '😇'];
+
+    const emojiList = $('#emoji-list');
+
+    emojis.forEach(emoji => {
+        const span = $('<span>').text(emoji).css({
+            fontSize: '25px',
+            cursor: 'pointer',
+            margin: '5px',
+        }).click(function () {
+            $('#message-input').val($('#message-input').val() + emoji);
+            emojiList.hide();  
+        });
+        emojiList.append(span);
+    });
+
+    $('.emoji-picker i').click(function () {
+        emojiList.toggle();
+    });
+
+
+
+
+});
+
+function openImagePopup(src) {
+        document.getElementById('modalImage').src = src;
+        document.getElementById('imageModal').style.display = 'flex';
+    }
+
+    function closeImagePopup() {
+        document.getElementById('imageModal').style.display = 'none';
+    }
+
+
 </script>
 </body>
 

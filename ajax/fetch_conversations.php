@@ -34,10 +34,10 @@ if (isset($_SESSION['userid'])) {
 
     if ($conversations) {
         foreach ($conversations as $conversation) {
-            $product_name = $conversation['product_name'];
-            $product_image = $conversation['product_image'] ? $conversation['product_image'] : 'images/default_product.jpg';  // Default product image if not available
+            $product_name = $conversation['product_name'] ?? 'admin';
+            $product_image = $conversation['product_image'] ? $conversation['product_image'] : 'images/admin.jpg';  
 
-            $conversation_id = $security->encrypt($conversation['id']);
+            $conversation_id = base64_encode($conversation['id']);
             $last_message = $conversation['last_message'] ? $conversation['last_message'] : 'Send a message to start the conversation';
             $last_message_read = $conversation['last_message_read']; 
             $last_sender_id = $conversation['last_sender_id']; 
