@@ -174,8 +174,8 @@ if ($setSession == true) {
                 </div>
                 <div class="mb-3">
                   <div class="input-group">
-                    <input type="password" class="form-control" name="password" id="registerPassword" placeholder="Choose a strong password" required>
-                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword()">Show</button>
+                    <input type="password" class="form-control password" name="password" id="registerPassword" placeholder="Choose a strong password" required>
+                    <button class="btn btn-outline-secondary" type="button" onclick="togglePassword2()">Show</button>
                   </div>
                 </div>
                 <div class="mb-3 form-check">
@@ -277,7 +277,30 @@ include_once 'footer.php';
   });
 });
 
+function togglePassword() {
+    const passwordField = document.getElementById('password');
+    const toggleButton = event.target;
 
+    if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        toggleButton.textContent = "<?= 'hide' ?>"; 
+    } else {
+        passwordField.type = 'password';
+        toggleButton.textContent = "<?= $lan['show'] ?>"; 
+    }
+}
+function togglePassword2() {
+    const passwordField = document.getElementById('registerPassword');
+    const toggleButton = event.target;
+
+    if (passwordField.type === 'password') {
+        passwordField.type = 'text';
+        toggleButton.textContent = "<?= 'hide' ?>"; 
+    } else {
+        passwordField.type = 'password';
+        toggleButton.textContent = "<?= $lan['show'] ?>"; 
+    }
+}
 </script>
 </body>
 

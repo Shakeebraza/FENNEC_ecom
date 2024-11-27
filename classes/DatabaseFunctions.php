@@ -130,10 +130,10 @@ class DatabaseFunctions {
         $sanitizedData = [];
     
         foreach ($data as $key => $value) {
-            $value = strip_tags($value);
-    
-            $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
-            
+            $value = strip_tags($value); // Remove HTML tags
+            if ($key !== 'name') { // Exclude htmlspecialchars for specific fields (e.g., 'name')
+                $value = htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
+            }
             $sanitizedData[$key] = $value;
         }
     
@@ -173,6 +173,7 @@ class DatabaseFunctions {
             return ['success' => false, 'message' => 'Database error: ' . $e->getMessage()];
         }
     }
+    
 
     public function setDataWithHtmlAllowed($tableName, $data, $where = null) {
         $tableName = preg_replace('/[^a-zA-Z0-9_]/', '', $tableName);
