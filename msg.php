@@ -862,6 +862,10 @@ label[for="file-upload"]:hover i {
     background-color: #f1f1f1;
     border-radius: 5px;
 }
+div#chat-list {
+
+  padding-bottom: 80px !important;
+}
 </style>
 <section class="message-area">
     <div class="container">
@@ -894,7 +898,7 @@ label[for="file-upload"]:hover i {
                     <div class="chatbox" id="chat-box">
                         <div class="modal-dialog-scrollable">
                             <div class="modal-content">
-                                <div class="msg-head" style="padding: 15px; background-color: #00494f;">
+                                <div class="msg-head" style="padding: 15px; background-color: #00494f; height: 80px;">
                                     <div class="row align-items-center">
 
                                         <div class="col-2 hide-by">
@@ -905,10 +909,8 @@ label[for="file-upload"]:hover i {
                                         </div>
 
                                       
-                                        <div class="col-8 d-flex align-items-center">
-                                            <img class="img-fluid rounded-circle" src="" alt=""
-                                                style="width: 40px; height: 40px; margin-right: 10px; border: 2px solid #00494f;">
-                                            <span style="color: white; font-size: 16px; font-weight: bold;"></span>
+                                        <div class="msg-head-innder">
+                                            
                                         </div>
                                     </div>
                                 </div>
@@ -1031,8 +1033,14 @@ function loadMessages(conversationId, productName, productImage) {
             $('#chat-box').data('conversation-id', conversationId);
             
             $('#message-body').scrollTop($('#message-body')[0].scrollHeight);
-            $('.msg-head .col-8 img').attr('src', productImage); 
-            $('.msg-head .col-8 span').text(productName); 
+            var headerHTML = `
+                <div class="col-8 d-flex align-items-center">
+                    <img src="${productImage}" alt="${productName}" class="img-fluid rounded-circle" style="width: 40px; height: 40px; margin-right: 10px; border: 2px solid #00494f;">
+                    <span style="color: white; font-size: 16px; font-weight: bold;">${productName}</span>
+                </div>
+            `;
+
+            $('.msg-head-innder').html(headerHTML); 
         }
     });
 }
