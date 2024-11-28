@@ -197,36 +197,45 @@ $area = $productData['area'];
                         ?>
                     </div>
                     <div class="swiper-pagination" style="bottom: 415px;"></div>
-                </div>
-                <div class="card-body" style="padding: 1.5em; background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
-                    <h5 class="card-title" style="font-size: 2em; font-weight: bold; color: #333; letter-spacing: 1px; margin-bottom: 0.8em; text-transform: uppercase;"><?= htmlspecialchars($productData['product']['product_name'] ?? 'Product Name'); ?></h5>
-                    <p class="card-text" style="font-size: 1.1em; color: #777; line-height: 1.6; text-align: justify;">
-                        <?= htmlspecialchars($productData['product']['product_description'] ?? 'No description available.'); ?>
-                    </p>
+                        </div>
+                        <div class="card-body" style="padding: 1.5em; background: #fff; border-radius: 8px; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);">
+                            <h5 class="card-title" style="font-size: 2em; font-weight: bold; color: #333; letter-spacing: 1px; margin-bottom: 0.8em; text-transform: uppercase;"><?= htmlspecialchars($productData['product']['product_name'] ?? 'Product Name'); ?></h5>
+                            <p class="card-text" style="font-size: 1.1em; color: #777; line-height: 1.6; text-align: justify;">
+                                <?= htmlspecialchars($productData['product']['product_description'] ?? 'No description available.'); ?>
+                            </p>
+                        </div>
+
+                        <div class="product-details" style="padding: 2em 1.5em; background-color: #f7f7f7; border-radius: 12px; margin-top: 1.5em; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
+                            <div style="margin-bottom: 1.2em;">
+                                <p style="font-size: 1.2em; color: #333; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 0.5em;">Brand:
+                                    <span style="font-size: 1.1em; color: #555; font-weight: 400;">
+                                        <?= isset($productData['product']['brand']) ? ucwords(strtolower($productData['product']['brand'])) : 'N/A'; ?>
+                                    </span>
+                                </p>
+                            </div>
+                            <div style="margin-bottom: 1.2em;">
+                                <p style="font-size: 1.2em; color: #333; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 0.5em;">Condition:
+                                    <span style="font-size: 1.1em; color: #555; font-weight: 400;">
+                                        <?= isset($productData['product']['conditions']) ? ucwords(strtolower($productData['product']['conditions'])) : 'N/A'; ?>
+                                    </span>
+                                </p>
+                            </div>
+                            <div style="margin-bottom: 1.2em;">
+                                <p style="font-size: 1.2em; color: #333; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 0.5em;">Product Type:
+                                    <span style="font-size: 1.1em; color: #555; font-weight: 400;">
+                                        <?= isset($productData['product']['product_type']) ? ucwords(strtolower($productData['product']['product_type'])) : 'N/A'; ?>
+                                    </span>
+                                </p>
+                            </div>
+                            <div>
+                                <p style="font-size: 1.2em; color: #333; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 0.5em;">Created At:
+                                    <span style="font-size: 1.1em; color: #555; font-weight: 400;">
+                                        <?= isset($productData['product']['prodate']) ? date('F j, Y', strtotime($productData['product']['prodate'])) : 'N/A'; ?>
+                                    </span>
+                                </p>
+                            </div>
                 </div>
 
-                <div class="product-details" style="padding: 2em 1.5em; background-color: #f7f7f7; border-radius: 12px; margin-top: 1.5em; box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1); font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;">
-                    <div style="margin-bottom: 1.2em;">
-                        <p style="font-size: 1.2em; color: #333; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 0.5em;">Brand:
-                            <span style="font-size: 1.1em; color: #555; font-weight: 400;"><?= isset($productData['product']['brand']) ? $productData['product']['brand'] : 'N/A'; ?></span>
-                        </p>
-                    </div>
-                    <div style="margin-bottom: 1.2em;">
-                        <p style="font-size: 1.2em; color: #333; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 0.5em;">Condition:
-                            <span style="font-size: 1.1em; color: #555; font-weight: 400;"><?= isset($productData['product']['conditions']) ? $productData['product']['conditions'] : 'N/A'; ?></span>
-                        </p>
-                    </div>
-                    <div style="margin-bottom: 1.2em;">
-                        <p style="font-size: 1.2em; color: #333; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 0.5em;">Product Type:
-                            <span style="font-size: 1.1em; color: #555; font-weight: 400;"><?= isset($productData['product']['product_type']) ? $productData['product']['product_type'] : 'N/A'; ?></span>
-                        </p>
-                    </div>
-                    <div>
-                        <p style="font-size: 1.2em; color: #333; font-weight: 600; letter-spacing: 0.5px; margin-bottom: 0.5em;">Created At:
-                            <span style="font-size: 1.1em; color: #555; font-weight: 400;"><?= isset($productData['product']['prodate']) ? date('F j, Y', strtotime($productData['product']['prodate'])) : 'N/A'; ?></span>
-                        </p>
-                    </div>
-                </div>
 
 
             </div>

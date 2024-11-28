@@ -300,7 +300,7 @@ $lan = $fun->loadLanguage($lang);
 
                   $duncatdata = $categoryManager->getAllSubCategoriesHeaderMenu($category['id']);
                   foreach ($duncatdata['data'] as $val) {
-                    echo '<li class="lihpoverset"><a href="' . $urlval . 'category.php?slug=' . $category['slug'] . '&subcategory=' . htmlspecialchars($val['id']) . '">' . htmlspecialchars($val['subcategory_name']) . '</a></li>';
+                    echo '<li class="lihpoverset"><a href="' . $urlval . 'category.php?slug=' . $category['slug'] . '&subcategory=' . htmlspecialchars($val['id']) . '">' . htmlspecialchars(ucwords(strtolower($val['subcategory_name']))) . '</a></li>';
                   }
                   $productPremium=$productFun->PoplarProductper();
                   echo '
